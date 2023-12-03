@@ -9,6 +9,12 @@ export default class User extends BaseModel {
   @column()
   public email: string
 
+  @column()
+  public numeintreg: string
+
+  @column()
+  public rol: string
+
   @column({ serializeAs: null })
   public password: string
 
@@ -20,6 +26,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column()
+  public stare: string
 
   @beforeSave()
   public static async hashPassword (user: User) {
