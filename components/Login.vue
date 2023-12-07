@@ -38,6 +38,7 @@ async function login(){
         $q.notify({
           type: 'negative',
           position:'top',
+      
           message: 'Autentificare esuata !'
         })
          email.value=""

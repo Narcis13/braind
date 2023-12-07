@@ -11,6 +11,7 @@ public async register({request,response}){
     
             
             rol:schema.string({trim:true}),
+            telefon:schema.string({trim:true}),
             numeintreg:schema.string({trim:true}),
             password:schema.string({trim:true}),
             email:schema.string({trim:true},[rules.email()]),
@@ -23,8 +24,11 @@ public async register({request,response}){
         const utilizator_validat = await request.validate({schema:validare_user});
 
         const utilizator = await User.create(utilizator_validat);
-    
-        return utilizator;
+        
+        // generat link de trimis pe mail si chiar trimis pe mail
+
+
+        return {utilizator,succes:true};
       } catch (error) {
         response.send({errors:error.messages})
       }
