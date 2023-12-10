@@ -27,3 +27,4 @@ Route.get('/', async ({ view }) => {
 Route.post('/registeruser','AuthController.register')
 Route.post('/login','AuthController.login')
 Route.post('/logout','AuthController.logout')
+Route.get('/validemail', 'AuthController.validezemail')

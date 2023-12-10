@@ -16,6 +16,9 @@ export default class User extends BaseModel {
   public rol: string
 
   @column()
+  public urlverificare: string | null
+
+  @column()
   public telefon: string
 
   @column({ serializeAs: null })
