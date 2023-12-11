@@ -1,5 +1,13 @@
 
 <script setup>
+import { useUserStore } from '~/stores/userStore';
+const utilizatorStore = useUserStore();
+
+const onboarding = utilizatorStore.onboarding_key;
+//console.log(onboarding)
+if(!onboarding){
+    navigateTo("/")
+}
 definePageMeta({
     layout:'onboarding'
 })
@@ -7,15 +15,30 @@ const config = useRuntimeConfig()
 
 const host=config.public.apihost;
 const codTrimis = ref(false)
-function trimiteSMS(){
-codTrimis.value=true;
+
+async function trimiteSMS(){
+    let response=  await $fetch(host+`smstrimiterecod/${onboarding}`, {
+        method: "POST",
+        headers: {
+         
+        },
+        body: {
+          
+         
+        },
+      });
+
+    if(response.succes) codTrimis.value=true;
 }
+
 function valideazaCod(){
 navigateTo("/")
 }
+
 function gotoApp(){
     navigateTo("/")
 }
+
 </script>
 
 <template>

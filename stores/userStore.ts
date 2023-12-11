@@ -6,6 +6,7 @@ export const useUserStore = defineStore('userStore',()=>{
     const utilizator = ref(<UserPayload|null>null)
     const eAutentificat = ref(false)
     const eAdmin = ref(false)
+    const onboarding_key =  ref(<string|null>"test13")//ref(<string|null>null)
     const token = computed(()=>{
         return eAutentificat.value? utilizator.value?.token.token:'' 
     })
@@ -23,6 +24,10 @@ export const useUserStore = defineStore('userStore',()=>{
         eAdmin.value=false;
     }
 
+    function setOnboardingUser(key:string){
+        onboarding_key.value=key;
+    }
+
     return {
         numarNorocos,
         utilizator,
@@ -30,6 +35,8 @@ export const useUserStore = defineStore('userStore',()=>{
         logout,
         eAutentificat,
         eAdmin,
-        token
+        token,
+        onboarding_key,
+        setOnboardingUser
     }
 }) 

@@ -4,7 +4,7 @@ import User from 'App/Models/User';
 import Encryption from '@ioc:Adonis/Core/Encryption'
 import Env from '@ioc:Adonis/Core/Env'
 import Mail from '@ioc:Adonis/Addons/Mail'
-
+const axios = require('axios');
 export default class AuthController {
 
 public async register({request,response}){
@@ -86,4 +86,31 @@ public async logout({auth}){
     }
 }
 
+public async trimitere_cod_sms({params}){
+  const key= params.key;
+  //console.log(key)
+  const random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+  const smskey= Env.get("SMS_KEY")
+  let mesaj=`Codul pentru validarea numarului de telefon in platforma brAInd.ro este: ${random}`
+
+  mesaj=mesaj.split(' ').join('%20')
+  var options = {
+    method: 'POST',
+    url: `https://app.smso.ro/api/v1/send?to=%2040745089013&sender=4&body=${mesaj}`,
+    headers: {
+      Accept: '*/*',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      'X-Authorization': smskey
+    }
+  };
+    try {
+         axios.request(options)
+
+
+      } catch (error) {
+        console.log(error);
+      }
+
+  return {succes:true}
+}
 }

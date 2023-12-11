@@ -4,8 +4,8 @@ import { useQuasar } from 'quasar'
 import { useUserStore } from '~/stores/userStore';
 
 const config = useRuntimeConfig()
-//console.log('Host:',config.public.apihost)
 const host=config.public.apihost;
+
 const utilizatorStore = useUserStore();
 let email=ref('')
 let parola=ref('')
