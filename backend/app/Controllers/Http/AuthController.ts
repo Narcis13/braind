@@ -86,9 +86,22 @@ public async logout({auth}){
     }
 }
 
+public async validezcodsms({request}){
+  const {cod,key} = request.all();
+  //console.log(cod)
+  const user = await User.findByOrFail("urlverificare",key)
+  const match=user&&cod==user.telvalid
+  if(match){
+    await user.merge({telvalid:"13"}).save()
+  }
+ return {succes:match};
+}
+
 public async trimitere_cod_sms({params}){
+
   const key= params.key;
-  //console.log(key)
+ 
+  const user = await User.findByOrFail("urlverificare",key)
   const random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   const smskey= Env.get("SMS_KEY")
   let mesaj=`Codul pentru validarea numarului de telefon in platforma brAInd.ro este: ${random}`
@@ -96,21 +109,30 @@ public async trimitere_cod_sms({params}){
   mesaj=mesaj.split(' ').join('%20')
   var options = {
     method: 'POST',
-    url: `https://app.smso.ro/api/v1/send?to=%2040745089013&sender=4&body=${mesaj}`,
+    url: `https://app.smso.ro/api/v1/send?to=%204${user.telefon}&sender=4&body=${mesaj}`,
     headers: {
       Accept: '*/*',
       'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
       'X-Authorization': smskey
     }
   };
+  if(user){
+
+    await user.merge({telvalid:random.toString()}).save()
+
     try {
-         axios.request(options)
+
+       axios.request(options)
+      return {succes:true}
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  else {
+    return {succes:false}
+  }
 
 
-      } catch (error) {
-        console.log(error);
-      }
-
-  return {succes:true}
 }
 }

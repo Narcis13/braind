@@ -1,8 +1,9 @@
 
 <script setup>
 import { useUserStore } from '~/stores/userStore';
+import { useQuasar } from 'quasar'
 const utilizatorStore = useUserStore();
-
+const $q = useQuasar()
 const onboarding = utilizatorStore.onboarding_key;
 //console.log(onboarding)
 if(!onboarding){
@@ -15,7 +16,7 @@ const config = useRuntimeConfig()
 
 const host=config.public.apihost;
 const codTrimis = ref(false)
-
+const codsms = ref("")
 async function trimiteSMS(){
     let response=  await $fetch(host+`smstrimiterecod/${onboarding}`, {
         method: "POST",
@@ -31,8 +32,38 @@ async function trimiteSMS(){
     if(response.succes) codTrimis.value=true;
 }
 
-function valideazaCod(){
-navigateTo("/")
+async function valideazaCod(){
+//navigateTo("/")
+let response=  await $fetch(host+"validezcodsms", {
+        method: "POST",
+        headers: {
+         
+        },
+        body: {
+          key:onboarding,
+          cod:codsms.value
+         
+        },
+      });
+    if(response.succes){
+        $q.notify({
+          type: 'positive',
+          position:'top',
+      
+          message: 'Numar de telefon validat'
+        })
+        navigateTo("/")
+    }  
+    else{
+        $q.notify({
+          type: 'negative',
+          position:'top',
+      
+          message: 'Cod eronat!'
+        })
+        codTrimis.value=false;
+        codsms.value="";
+    }
 }
 
 function gotoApp(){
@@ -62,7 +93,7 @@ function gotoApp(){
                     </q-card-section>
                     <q-card-actions vertical class="q-pa-md">
                         <q-btn @click="trimiteSMS" flat v-if="!codTrimis">Trimite cod prin SMS</q-btn>
-                        <q-input v-if="codTrimis" label="Introduceti codul primit"  >
+                        <q-input v-if="codTrimis" v-model="codsms" label="Introduceti codul primit"  >
 
 
                             <template v-slot:after>

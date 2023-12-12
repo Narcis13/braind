@@ -1,12 +1,14 @@
 <script setup>
 import { useQuasar } from 'quasar'
+import { useUserStore } from '~/stores/userStore';
+
 definePageMeta({
     layout:'onboarding'
 })
 const config = useRuntimeConfig()
 
 const host=config.public.apihost;
-
+const utilizatorStore = useUserStore();
 
 let numeintreg = ref("")
 let email = ref("")
@@ -77,6 +79,7 @@ if(response.succes){
           timeout:3000,
           message: 'Formular trimis cu succes! Verificati casuta de email pentru validarea adresei de e-mail!'
         })
+        utilizatorStore.setOnboardingUser(response.utilizator.urlverificare)
         navigateTo("./welcome")
         //redirect spre pagina de welcome
 }
