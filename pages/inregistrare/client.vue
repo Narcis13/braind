@@ -83,6 +83,17 @@ if(response.succes){
         navigateTo("./welcome")
         //redirect spre pagina de welcome
 }
+else {
+  if(response.errors){
+    $q.notify({
+          type: 'negative',
+          position:'top',
+          timeout:2500,
+          message: response.errors.errors[0].message
+        })
+      email.value="" ; 
+  }
+}
 
   }
   else {
@@ -110,7 +121,7 @@ if(response.succes){
         <q-input ref="emailRef" standout="bg-indigo text-white"  bottom-slots  v-model="email"  lazy-rules :rules="mailRules" label="Adresa email" />
         <q-input ref="parolaRef" hint="Minim 8 caractere, litere mari, mici, cifre si semne de punctuatie" lazy-rules :rules="passRules" type="password" standout="bg-indigo text-white" v-model="parola" label="Parola" />
         <q-input ref="confirmareparolaRef" class="q-mt-md" type="password" standout="bg-indigo text-white" v-model="confirmareparola" lazy-rules :rules="confRules" label="Confirmare parola" />
-        <q-input ref="telRef" standout="bg-indigo text-white" v-model="telefon" lazy-rules :rules="telRules" label="Telefon mobil" />
+        <q-input ref="telRef" standout="bg-indigo text-white" hint="De forma 07XXXXXXXX" v-model="telefon" lazy-rules :rules="telRules" label="Telefon mobil" />
       </q-card-section>
 
       <q-card-section>

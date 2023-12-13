@@ -17,14 +17,16 @@ public async register({request,response}){
             telefon:schema.string({trim:true}),
             numeintreg:schema.string({trim:true}),
             password:schema.string({trim:true}),
-            email:schema.string({trim:true},[rules.email()]),
+            email:schema.string({trim:true},[rules.email(),rules.unique({table:'users',column:'email'})]),
             stare:schema.string.optional({trim:true}),
             urlverificare:schema.string.optional({trim:true}),
         }
     )
 
     try {
-        const utilizator_validat = await request.validate({schema:validare_user});
+        const utilizator_validat = await request.validate({schema:validare_user,messages:{
+          'email.unique':'Cu aceasta adresa de email a fost deja creat un cont!'
+        }});
         const url_verificare=Encryption.encrypt(utilizator_validat.email);/*Route.makeSignedUrl('verifyEmail', {
           email: utilizator_validat.email,
         })*/
