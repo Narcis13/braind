@@ -36,10 +36,11 @@
               </q-badge>
               <q-tooltip>Notifications</q-tooltip>
             </q-btn>
-            <q-btn round flat @click="logout">
+            <q-btn round flat >
               <q-avatar size="48px">
                 <img src="https://cdn.quasar.dev/img/boy-avatar.png">
               </q-avatar>
+              <user-menu />
               <q-tooltip>Account</q-tooltip>
             </q-btn>
           </div>
@@ -150,7 +151,7 @@
   
       function logout(){
         utilizatorStore.logout()
-        navigateTo("../../")
+        navigateTo("/")
       }
   
 
