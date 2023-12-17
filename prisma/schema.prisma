@@ -15,3 +15,38 @@ model User {
   email String  @unique
   name  String?
 }
+
+
+
+model Firme {
+  id    Int     @id @default(autoincrement())
+  denumire     String           @db.VarChar(100)
+  cui     String           @db.VarChar(20)
+  judet     String           @db.VarChar(13)
+  oras     String           @db.VarChar(20)
+  adresa     String           @db.VarChar(120)
+  forma_juridica     String           @db.VarChar(10)
+  capital_social     Int?           
+  registru_comert     String?           @db.VarChar(20)
+  codCAEN     String?           @db.VarChar(10) 
+  logo     String?           @db.VarChar(255)
+  CIAdministrator     String?           @db.VarChar(255)
+  CertificatCUI     String?           @db.VarChar(255)
+  ActConstitutiv     String?           @db.VarChar(255)
+  administratori Administratori[]
+  created_at     DateTime         @default(now()) @db.DateTime(0)
+  updated_at     DateTime?        @updatedAt
+}
+
+model Administratori {
+  id           Int       @id @default(autoincrement())
+  firma         Firme?    @relation(fields: [id_firma], references: [id], onDelete: Cascade)
+  id_firma      Int
+  nume     String           @db.VarChar(120)
+  ci     String?           @db.VarChar(120)
+  cnp     String           @db.VarChar(120)
+  email     String?           @db.VarChar(120)
+  telefon     String?           @db.VarChar(120)
+  created_at     DateTime         @default(now()) @db.DateTime(0)
+  updated_at     DateTime?        @updatedAt
+}

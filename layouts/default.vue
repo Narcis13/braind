@@ -49,7 +49,7 @@
   
       <q-drawer
         v-model="leftDrawerOpen"
-        v-if="utilizatorStore.eAutentificat"
+        v-if="utilizatorStore.eAutentificat&&utilizatorStore.firmaDefinita"
         show-if-above
         bordered
         class="bg-grey-2"
