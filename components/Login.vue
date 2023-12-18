@@ -29,7 +29,10 @@ async function login(){
        utilizatorStore.autentificare({...response.loggeduser,token:response.token})
       //  utilizatorStore.setELogat()
       //  if(response.utilizator.e_admin) utilizatorStore.setEAdmin()
-      const {rol}= response.loggeduser
+      const {rol,id}= response.loggeduser
+
+      const {data} = await useFetch(`/api/firme/asignateclientului/${id}`)
+      console.log('Firma asignata',data.value.firma)
       if(rol=="admin") navigateTo("./dashboard")
       if(rol=="contabil") navigateTo("./contabil/dashboard")
       if(rol=="client") navigateTo("./client/dashboard")
