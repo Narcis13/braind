@@ -15,7 +15,9 @@ export const useUserStore = defineStore('userStore',()=>{
     })
 
     const token = computed(()=>{
-        return eAutentificat.value? utilizator.value?.token.token:'' 
+        let fid = firma.value? firma.value.id : 0;      
+
+        return eAutentificat.value? fid+" "+utilizator.value?.token.token:'' 
     })
 
     function autentificare(payload:UserPayload){
@@ -25,10 +27,15 @@ export const useUserStore = defineStore('userStore',()=>{
         eAdmin.value = payload.rol==='admin'
     } 
 
+    function asigneazaFirma(f:Firma){
+        firma.value=f
+    }
+
     function logout(){
         utilizator.value=null;
         eAutentificat.value=false;
         eAdmin.value=false;
+        firma.value=null;
     }
 
     function setOnboardingUser(key:string){
@@ -45,6 +52,8 @@ export const useUserStore = defineStore('userStore',()=>{
         token,
         onboarding_key,
         setOnboardingUser,
-        firmaDefinita
+        firmaDefinita,
+        asigneazaFirma,
+        firma
     }
 }) 

@@ -9,6 +9,7 @@ const host=config.public.apihost;
 const utilizatorStore = useUserStore();
 let email=ref('')
 let parola=ref('')
+let firmaclientului =null
 const $q = useQuasar()
 async function login(){
 
@@ -30,12 +31,33 @@ async function login(){
       //  utilizatorStore.setELogat()
       //  if(response.utilizator.e_admin) utilizatorStore.setEAdmin()
       const {rol,id}= response.loggeduser
+      try {
+         firmaclientului = await $fetch(`/api/firme/asignateclientului/${id}`,{
+              headers:{
+               "b-access-token":utilizatorStore.token
+              }
+            })
+            if(firmaclientului){
+              utilizatorStore.asigneazaFirma(firmaclientului);
+         //updateaza storeul User cu informatiile firmei
+             }
 
-      const {data} = await useFetch(`/api/firme/asignateclientului/${id}`)
-      console.log('Firma asignata',data.value.firma)
-      if(rol=="admin") navigateTo("./dashboard")
-      if(rol=="contabil") navigateTo("./contabil/dashboard")
-      if(rol=="client") navigateTo("./client/dashboard")
+            if(rol=="admin") navigateTo("./dashboard")
+            if(rol=="contabil") navigateTo("./contabil/dashboard")
+            if(rol=="client") firmaclientului? navigateTo("./client/dashboard"):navigateTo("./client/onboarding")  
+      }
+      catch (error) {
+        $q.notify({
+          type: 'negative',
+          position:'top',
+      
+          message: error.message
+        })
+        navigateTo("./eroare")
+      }
+
+     // console.log('Firma asignata',firmaclientului)
+
       }
       else {
         $q.notify({

@@ -20,6 +20,8 @@ model User {
 
 model Firme {
   id    Int     @id @default(autoincrement())
+  id_user Int
+  stare     String           @db.VarChar(20) @default("inactiv")
   denumire     String           @db.VarChar(100)
   cui     String           @db.VarChar(20)
   judet     String           @db.VarChar(13)

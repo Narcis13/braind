@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler( async (event)=>{
     const {cid} = event.context.params
-    const firme =await prisma.Firme.findMany();
+    const firma =await prisma.Firme.findFirst({where:{id_user:parseInt(cid)}});
     
-    console.log(firme)
-    return {firma:cid}
+   // console.log(firme)
+    return firma
 })
