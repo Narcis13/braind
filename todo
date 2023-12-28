@@ -5,6 +5,10 @@ Usor asa,
 - validari si error management
 ....
 - continuam cu partea de onboarding client
-- utilizatorul sa fie uic dupa adresa de email!
+- utilizatorul sa fie unic dupa adresa de email!
+- verificare valabilitate token
+- actualizare date firma cu upload, etc
+- mail cu contract si link catre plata
+
 
 ZKO9cbHtSzQIIWUZaenIg8GQ6ZVL6dmxMOVpKELJ

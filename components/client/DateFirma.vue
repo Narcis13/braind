@@ -3,19 +3,31 @@
 import { useQuasar } from 'quasar'
 import { useUserStore } from '~/stores/userStore';
 
+const props=defineProps({
+  onboarding:{
+    type:Boolean,
+    default:false
+  }
+})
+
+//console.log(props.onboarding)
 const utilizatorStore = useUserStore();
+
 const $q = useQuasar()
 const bannerVizibil = ref(false)
 const tab = ref("mails")
 const splitterModel = ref(20)
 
-const denumire = ref("")
-const cui = ref("")
-const adresa = ref("")
-const judet = ref("")
-const localitate = ref("")
-const formajuridica = ref("PFA")
+const denumire = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.denumire:"")
+const cui = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.cui:"")
+const adresa = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.adresa:"")
+const judet = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.judet:"")
+const localitate = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.oras:"")
+const formajuridica = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.forma_juridica:"")
 
+function actualizare(){
+  console.log('Actualizare ...')
+}
 async function firmanoua(){
 const response = await $fetch("/api/firme/inregistrare",{
   method: "POST",
@@ -54,7 +66,7 @@ if(response.succes){
           </template>
       </q-banner>
 
-        <div class="text-h4 q-mb-md">Inrolare client</div>
+        <div class="text-h4 q-mb-md">{{ onboarding? 'Inrolare client':'Actualizare date client' }}</div>
         <p>Trebuie sa introduceti datele necesare configurarii complete a contului firmei dumneavoastra.</p>
     <q-splitter
       v-model="splitterModel"
@@ -85,8 +97,8 @@ if(response.succes){
           <q-tab-panel name="mails">
             <div class="text-h4 q-mb-md">Informatii de baza</div>
             <div class="row q-gutter-md" >
-                <q-input  v-model="cui" label="Cod fiscal" />
-                <q-input  v-model="denumire" label="Nume firma" />
+                <q-input :readonly="!onboarding" v-model="cui" label="Cod fiscal" />
+                <q-input :readonly="!onboarding"  v-model="denumire" label="Nume firma" />
                 <q-input  v-model="judet" label="Judet" />
                 <q-input v-model="localitate" label="Localitate" />
                 <q-input v-model="adresa" label="Adresa sediu" />
@@ -108,9 +120,13 @@ if(response.succes){
           </q-tab-panel>
 
           <q-tab-panel name="alarms">
-            <div class="text-h4 q-mb-md">Alarms</div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+            <div class="text-h4 q-mb-md">Alte informatii</div>
+            <div class="row q-gutter-md" >
+                <q-input  v-model="cui" label="Capital social" />
+                <q-input v-model="denumire" label="Nr. Registru Comert" />
+                <q-input  v-model="judet" label="Cod CAEN" />
+
+            </div>
           </q-tab-panel>
 
           <q-tab-panel name="movies">
@@ -124,7 +140,7 @@ if(response.succes){
 
     </q-splitter>
     <div class="flex flex-center">
-      <q-btn outline rounded color="indigo" label="Inregistreaza firma" @click="firmanoua"/>
+      <q-btn outline rounded color="indigo" :label="onboarding?'Inregistreaza firma':'Actualizare date'" @click="onboarding?firmanoua():actualizare()"/>
     </div>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <script setup>
 
 
-
-
+import { useUserStore } from '~/stores/userStore';
+const utilizatorStore = useUserStore();
 
 
 
@@ -24,10 +24,10 @@ const    links3= [
     { icon: 'live_tv', text: 'Live' }
   ]
 const     links4= [
-    { icon: 'settings', text: 'Settings' },
-    { icon: 'flag', text: 'Report history' },
-    { icon: 'help', text: 'Help' },
-    { icon: 'feedback', text: 'Send feedback' }
+   // { icon: 'settings', text: 'Settings' },
+  //  { icon: 'flag', text: 'Report history' },
+  //  { icon: 'help', text: 'Help' },
+  //  { icon: 'feedback', text: 'Send feedback' }
   ]
 const    buttons1=[
     { text: 'About' },
@@ -49,6 +49,7 @@ const   buttons2= [
 
 <template>
         <q-scroll-area class="fit">
+          <client-card-client :denumire="utilizatorStore.firma.denumire" :cui="utilizatorStore.firma.cui"/>
           <q-list padding>
             <q-item v-for="link in links1" :key="link.text" v-ripple clickable>
               <q-item-section avatar>
