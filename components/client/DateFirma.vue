@@ -24,9 +24,12 @@ const adresa = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.adresa:""
 const judet = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.judet:"")
 const localitate = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.oras:"")
 const formajuridica = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.forma_juridica:"")
+const codcaen = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.codCAEN:"")
+const capitalsocial = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.capital_social:"")
+const regcom = ref(utilizatorStore.firmaDefinita?utilizatorStore.firma.registru_comert:"")
 
 function actualizare(){
-  console.log('Actualizare ...')
+  console.log('Actualizare ...',utilizatorStore.firma)
 }
 async function firmanoua(){
 const response = await $fetch("/api/firme/inregistrare",{
@@ -122,9 +125,68 @@ if(response.succes){
           <q-tab-panel name="alarms">
             <div class="text-h4 q-mb-md">Alte informatii</div>
             <div class="row q-gutter-md" >
-                <q-input  v-model="cui" label="Capital social" />
-                <q-input v-model="denumire" label="Nr. Registru Comert" />
-                <q-input  v-model="judet" label="Cod CAEN" />
+                <q-input  v-model="capitalsocial" label="Capital social" />
+                <q-input v-model="regcom" label="Nr. Registru Comert" />
+                <q-input  v-model="codcaen" label="Cod CAEN" />
+
+                <!-- <q-uploader
+                 :url="uploadURL"
+                 :form-fields="ff"
+                 auto-upload
+                 field-name="sigla"
+                 class="col-6 col-md-5"
+                 max-file-size="1048576"
+                 accept=".jpg,.png, image/*"
+                 color="secondary"
+                 label="Schimba sigla"
+                 flat
+                 bordered
+                 @uploaded="siglaUrcata"
+                 @rejected="onRejected"
+                 style="max-width: 200px"
+              /> -->
+              <q-uploader
+
+                 auto-upload
+                 field-name="sigla"
+                 class="col-6 col-md-5"
+                 max-file-size="1048576"
+                 accept=".jpg,.png, image/*"
+                 color="secondary"
+                 label="Logo firma"
+                 flat
+                 bordered
+                 style="max-width: 200px"
+              />
+
+              <q-uploader
+
+                auto-upload
+                field-name="sigla"
+                class="col-6 col-md-5"
+                max-file-size="1048576"
+                accept=".jpg,.png, image/*"
+                color="secondary"
+                label="Certificat CUI"
+                flat
+                bordered
+                style="max-width: 200px"
+                />
+
+                <q-uploader
+
+                  auto-upload
+                  field-name="sigla"
+                  class="col-6 col-md-5"
+                  max-file-size="1048576"
+                  accept=".jpg,.png, image/*"
+                  color="secondary"
+                  label="Act constitutiv"
+                  flat
+                  bordered
+                  style="max-width: 200px"
+                  />
+
 
             </div>
           </q-tab-panel>
@@ -139,8 +201,8 @@ if(response.succes){
       </template>
 
     </q-splitter>
-    <div class="flex flex-center">
-      <q-btn outline rounded color="indigo" :label="onboarding?'Inregistreaza firma':'Actualizare date'" @click="onboarding?firmanoua():actualizare()"/>
+    <div class="flex flex-center q-mt-xl">
+      <q-btn class="q-pa-sm" outline rounded color="indigo" :label="onboarding?'Inregistreaza firma':'Actualizare date'" @click="onboarding?firmanoua():actualizare()"/>
     </div>
   </div>
 </template>

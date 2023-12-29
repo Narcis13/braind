@@ -30,3 +30,6 @@ Route.post('/logout','AuthController.logout')
 Route.get('/validemail', 'AuthController.validezemail')
 Route.post('/smstrimiterecod/:key','AuthController.trimitere_cod_sms')
 Route.post('/validezcodsms','AuthController.validezcodsms')
+
+
+Route.post('/uploadsigla','ClientiController.uploadsigla')

@@ -9,7 +9,7 @@ defineProps({
 <q-card class=" bg-indigo text-white">
     <q-card-section>
       <div class="text-h6">{{ denumire }}</div>
-      <div class="text-subtitle2">{{ cui }}</div>
+      <div class="text-subtitle2">Cod fiscal: {{ cui }}</div>
     </q-card-section>
 
     <q-card-section>
