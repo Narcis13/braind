@@ -12,7 +12,8 @@ const props=defineProps({
 
 //console.log(props.onboarding)
 const utilizatorStore = useUserStore();
-
+const config = useRuntimeConfig()
+const host=config.public.apihost;
 const $q = useQuasar()
 const bannerVizibil = ref(false)
 const tab = ref("mails")
@@ -146,7 +147,7 @@ if(response.succes){
                  style="max-width: 200px"
               /> -->
               <q-uploader
-
+                 :url="host+'uploadsigla'"
                  auto-upload
                  field-name="sigla"
                  class="col-6 col-md-5"

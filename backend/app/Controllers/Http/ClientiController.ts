@@ -11,7 +11,7 @@ export default class ClientiController {
            size: '1mb',
            extnames: ['jpg', 'png', 'jpeg','bmp'],
          })
-     
+       //  console.log('incerc upload',sigla)
          if(sigla){
            
             // console.log('Upload ok',fileName)
