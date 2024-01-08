@@ -12,6 +12,7 @@ const props=defineProps({
 
 //console.log(props.onboarding)
 const utilizatorStore = useUserStore();
+console.log('date firma',utilizatorStore.arhitectura)
 const config = useRuntimeConfig()
 const host=config.public.apihost;
 const $q = useQuasar()

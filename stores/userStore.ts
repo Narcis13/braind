@@ -9,7 +9,7 @@ export const useUserStore = defineStore('userStore',()=>{
     const eAutentificat = ref(false)
     const eAdmin = ref(false)
     const onboarding_key =  ref(<string|null>null)//ref(<string|null>null)
-
+    let arhitectura = {}
     const firmaDefinita = computed(()=>{
        return firma.value!==null;
     })
@@ -54,6 +54,7 @@ export const useUserStore = defineStore('userStore',()=>{
         setOnboardingUser,
         firmaDefinita,
         asigneazaFirma,
-        firma
+        firma,
+        arhitectura
     }
 }) 

@@ -24,10 +24,11 @@ async function login(){
          
         },
       });
-    //  console.log('Raspuns de la autentificare',response)
+    //console.log('Raspuns de la autentificare',JSON.parse(response.arhitectura.client))
 
       if(response.succes){
        utilizatorStore.autentificare({...response.loggeduser,token:response.token})
+       utilizatorStore.arhitectura=response.arhitectura;
       //  utilizatorStore.setELogat()
       //  if(response.utilizator.e_admin) utilizatorStore.setEAdmin()
       const {rol,id}= response.loggeduser

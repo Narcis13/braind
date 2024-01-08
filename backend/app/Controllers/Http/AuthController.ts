@@ -4,6 +4,7 @@ import User from 'App/Models/User';
 import Encryption from '@ioc:Adonis/Core/Encryption'
 import Env from '@ioc:Adonis/Core/Env'
 import Mail from '@ioc:Adonis/Addons/Mail'
+import Database from '@ioc:Adonis/Lucid/Database';
 const axios = require('axios');
 export default class AuthController {
 
@@ -51,6 +52,11 @@ public async register({request,response}){
 
 public async login ({auth,request}){
     const {email,password} = request.all()
+    let arhitectura={}
+    const modele = await Database.from('meta').select("*")
+    modele.map(m=>{
+      arhitectura[m.model]=m.descriere
+    })
     //console.log(email,password)
     try {
         const token = await auth.use('api').attempt(email, password,{
@@ -59,7 +65,7 @@ public async login ({auth,request}){
         
         const loggeduser = await User.findBy('email',email)// aici trebuie sa ma intreb de stare ......
         if(loggeduser&&loggeduser.stare=="activ")
-        return {succes:true,mesaj:'Utilizator autentificat cu succes',loggeduser,token}
+        return {succes:true,mesaj:'Utilizator autentificat cu succes',loggeduser,token,arhitectura}
         else
           return{succes:false,mesaj:'Utilizator nu a putut fi autentificat!'}
       }
