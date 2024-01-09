@@ -2,6 +2,7 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useUserStore } from '~/stores/userStore';
+import { useArhitecturaStore } from '~/stores/arhitecturaStore';
 
 const props=defineProps({
   onboarding:{
@@ -12,7 +13,8 @@ const props=defineProps({
 
 //console.log(props.onboarding)
 const utilizatorStore = useUserStore();
-console.log('date firma',utilizatorStore.arhitectura)
+const arhitecturaStore = useArhitecturaStore()
+console.log('date firma',arhitecturaStore.arhitecturaModel("client"))
 const config = useRuntimeConfig()
 const host=config.public.apihost;
 const $q = useQuasar()

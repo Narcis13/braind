@@ -3,12 +3,14 @@
 import { useQuasar } from 'quasar'
 import useValidare from '~/composables/useValidare';
 import { useUserStore } from '~/stores/userStore';
+import { useArhitecturaStore } from '~/stores/arhitecturaStore';
 
 const config = useRuntimeConfig()
 const host=config.public.apihost;
 const {caNumar} = useValidare()
 console.log('Validare composable',caNumar)
 const utilizatorStore = useUserStore();
+const arhitecturaStore = useArhitecturaStore()
 let email=ref('')
 let parola=ref('')
 let firmaclientului =null
@@ -30,7 +32,8 @@ async function login(){
 
       if(response.succes){
        utilizatorStore.autentificare({...response.loggeduser,token:response.token})
-       utilizatorStore.arhitectura=response.arhitectura;
+       arhitecturaStore.seteazaArhitectura(response.arhitectura)
+      // utilizatorStore.arhitectura=response.arhitectura;
       //  utilizatorStore.setELogat()
       //  if(response.utilizator.e_admin) utilizatorStore.setEAdmin()
       const {rol,id}= response.loggeduser
