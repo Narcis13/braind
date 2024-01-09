@@ -1,3 +1,4 @@
+import { string } from '@ioc:Adonis/Core/Helpers';
 import {defineStore} from 'pinia'
 import {type UserPayload} from "~~/utils/types";
 import { type Firma } from '~~/utils/types';
@@ -9,7 +10,19 @@ export const useUserStore = defineStore('userStore',()=>{
     const eAutentificat = ref(false)
     const eAdmin = ref(false)
     const onboarding_key =  ref(<string|null>null)//ref(<string|null>null)
-    let arhitectura = {}
+    let arhitectura = {"cheie":"valoare"}
+
+    function arhitecturaModel(cheie:string){
+      //  if(typeof arhitectura[cheie] === 'string')
+       let obj = {}
+        try {
+          obj=JSON.parse(arhitectura[cheie as keyof typeof arhitectura])
+        } catch (e){
+            console.log(e)
+        }
+      return obj;  
+    }
+
     const firmaDefinita = computed(()=>{
        return firma.value!==null;
     })
@@ -55,6 +68,7 @@ export const useUserStore = defineStore('userStore',()=>{
         firmaDefinita,
         asigneazaFirma,
         firma,
-        arhitectura
+        arhitectura,
+        arhitecturaModel
     }
 }) 

@@ -1,11 +1,13 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
+import useValidare from '~/composables/useValidare';
 import { useUserStore } from '~/stores/userStore';
 
 const config = useRuntimeConfig()
 const host=config.public.apihost;
-
+const {caNumar} = useValidare()
+console.log('Validare composable',caNumar)
 const utilizatorStore = useUserStore();
 let email=ref('')
 let parola=ref('')
