@@ -6,11 +6,12 @@ const utilizatorStore = useUserStore();
 
 function executa(link){
   console.log('executa',link)
+  navigateTo("../nomenclatoare/"+link.ruta)
 }
 
 const  links1= [
-    { icon: 'home', text: 'Clienti' },
-    { icon: 'whatshot', text: 'Furnizori' },
+    { icon: 'home', text: 'Clienti' ,ruta:'client'},
+    { icon: 'whatshot', text: 'Furnizori', ruta:'furnizor' },
     { icon: 'subscriptions', text: 'Facturi emise' }
   ]
 const   links2= [
@@ -55,7 +56,7 @@ const   buttons2= [
           <q-list padding>
 
             <q-item-label header class="text-weight-bold text-uppercase">
-          Nomenclatoare
+                  Nomenclatoare
             </q-item-label>
 
             <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="executa(link)">
