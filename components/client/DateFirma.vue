@@ -39,7 +39,7 @@ async function firmanoua(){
 const response = await $fetch("/api/firme/inregistrare",{
   method: "POST",
         headers: {
-         
+          "b-access-token":utilizatorStore.token
         },
         body: {
           denumire:denumire.value,

@@ -4,11 +4,13 @@
 import { useUserStore } from '~/stores/userStore';
 const utilizatorStore = useUserStore();
 
-
+function executa(link){
+  console.log('executa',link)
+}
 
 const  links1= [
-    { icon: 'home', text: 'CLIENT' },
-    { icon: 'whatshot', text: 'CLIENT' },
+    { icon: 'home', text: 'Clienti' },
+    { icon: 'whatshot', text: 'Furnizori' },
     { icon: 'subscriptions', text: 'Facturi emise' }
   ]
 const   links2= [
@@ -51,7 +53,12 @@ const   buttons2= [
         <q-scroll-area class="fit">
           <client-card-client :denumire="utilizatorStore.firma.denumire" :cui="utilizatorStore.firma.cui"/>
           <q-list padding>
-            <q-item v-for="link in links1" :key="link.text" v-ripple clickable>
+
+            <q-item-label header class="text-weight-bold text-uppercase">
+          Nomenclatoare
+            </q-item-label>
+
+            <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="executa(link)">
               <q-item-section avatar>
                 <q-icon color="grey" :name="link.icon" />
               </q-item-section>
