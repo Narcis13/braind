@@ -11,7 +11,10 @@ function caNumar(config){
 
 }
 
-function caText(config){
-    
+function caText(valoare){
+ //   console.log("validare ca text",valoare)
+    if(!valoare) return true
+    else
+    return valoare.length==0||valoare.length>2;
 }
 
