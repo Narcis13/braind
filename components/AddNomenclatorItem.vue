@@ -8,13 +8,26 @@ const props=defineProps({
 const faraValidare = computed(()=>{
   return true;
 })
+
+const lipsaDate = computed(()=>{
+   
+   let interim=[]
+   cimpuri_obligatorii.map(c=>{
+    interim.push(formData[c]==null||formData[c]=="")
+   })
+  
+   return interim.some(item => item === true);
+})
+
 const validari = useValidare()
 let validatori = reactive({})
 const formData = reactive({});
 let fields =[]
+let cimpuri_obligatorii=[]
 props.context.proprietati.map(p=>{
   if(!p.hidden_in_form){
     fields.push(p)
+    if(p.label.slice(-1)=="*") cimpuri_obligatorii.push(p.name);
     if("default_value" in p){
       formData[p.name]=p.default_value
     }
@@ -38,7 +51,7 @@ props.context.proprietati.map(p=>{
 })
 console.log(validatori,"Proprietati add item in nomenclator")
 function adauga(){
-  console.log(formData)
+  console.log(formData,cimpuri_obligatorii)
 }
 </script>
 <template>
@@ -50,7 +63,9 @@ function adauga(){
             <!-- <component :is="field.type" v-bind="field" v-model="formData[field.name]" /> -->
     </div>
     <div class="flex flex-center">
-      <q-btn color="white" text-color="indigo" label="Adauga" @click="adauga"/>
+      <q-btn :disable="lipsaDate" color="white" text-color="indigo" label="Adauga" @click="adauga">
+        <q-tooltip v-if="lipsaDate" class="bg-accent">Campurile cu * sunt obligatorii</q-tooltip>
+      </q-btn>
     </div>
 </div>
 </template>
