@@ -16,5 +16,6 @@ ZKO9cbHtSzQIIWUZaenIg8GQ6ZVL6dmxMOVpKELJ
 Componenenta Nomenclatoare:
 - responsive
 - sa verifice ca sunt date in cmpurile required
+- implementare validari
 - sa incarce comboboxul prin api
 - implementare mod update.... si apoi si celelalte

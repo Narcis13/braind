@@ -18,6 +18,7 @@ const lipsaDate = computed(()=>{
   
    return interim.some(item => item === true);
 })
+const formularRef = ref(null)
 
 const validari = useValidare()
 let validatori = reactive({})
@@ -34,6 +35,7 @@ props.context.proprietati.map(p=>{
     else
     formData[p.name]=null
 
+
     if("validare" in p){
       validatori[p.name]=computed(()=>{
         let rezultat=true
@@ -49,17 +51,26 @@ props.context.proprietati.map(p=>{
 
   }
 })
-console.log(validatori,"Proprietati add item in nomenclator")
+//console.log(validatori,"Proprietati add item in nomenclator")
 function adauga(){
-  console.log(formData,cimpuri_obligatorii)
+  let rezultate=[]
+ 
+  fields.map(field=>{
+    if("validare" in field){
+      field.validare.map(v=>{
+       rezultate.push(validari[v](formData[field.name])) 
+      })
+    }
+  })
+  console.log(fields,rezultate.every(item=>item===true))
 }
 </script>
 <template>
-<div class="q-gutter-y-md column " style="max-width: 400px">
+<div ref="formularRef" class="q-gutter-y-md column " style="max-width: 400px">
      <div v-for="(field, index) in fields" :key="index" class="q-ma-sm">
-          <q-input dense bottom-slots :error="!validatori[field.name]" error-message="Continut invalid!" v-if="field.type=='QInput'" v-bind="field" v-model="formData[field.name]"/>
-          <q-select dense bottom-slots error-message="Continut invalid!" v-if="field.type=='QSelect'" v-bind="field" v-model="formData[field.name]"/>
-          <q-checkbox dense v-if="field.type=='QCheckbox'" v-bind="field" v-model="formData[field.name]"/>
+          <q-input  dense bottom-slots :error="!validatori[field.name]" error-message="Continut invalid!" v-if="field.type=='QInput'" v-bind="field" v-model="formData[field.name]"/>
+          <q-select  dense bottom-slots error-message="Continut invalid!" v-if="field.type=='QSelect'" v-bind="field" v-model="formData[field.name]"/>
+          <q-checkbox  dense v-if="field.type=='QCheckbox'" v-bind="field" v-model="formData[field.name]"/>
             <!-- <component :is="field.type" v-bind="field" v-model="formData[field.name]" /> -->
     </div>
     <div class="flex flex-center">
