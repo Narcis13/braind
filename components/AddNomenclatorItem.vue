@@ -1,10 +1,11 @@
 <script setup>
 import useValidare from '~/composables/useValidare';
+import { useUserStore } from '~/stores/userStore';
 const props=defineProps({
   tip_nomenclator:String,
   context:Object
 })
-
+const utilizatorStore = useUserStore();
 const faraValidare = computed(()=>{
   return true;
 })
@@ -18,6 +19,14 @@ const lipsaDate = computed(()=>{
   
    return interim.some(item => item === true);
 })
+
+const hidrateaza = async (url)=>{
+ return await $fetch(`/${url}`,{
+              headers:{
+               "b-access-token":utilizatorStore.token
+              }
+            })
+}
 const formularRef = ref(null)
 
 const validari = useValidare()
@@ -25,7 +34,19 @@ let validatori = reactive({})
 const formData = reactive({});
 let fields =[]
 let cimpuri_obligatorii=[]
-props.context.proprietati.map(p=>{
+props.context.proprietati.map(async p=>{
+
+  if("options" in p){
+      if(p.options[0].substr(0,3)=="api"){
+        //aici hidratez optiunile
+       // console.log("hidratez",await hidrateaza(p.options[0]))
+       let url = p.options[0]
+       p.options=[];
+       p.options=[...await hidrateaza(url)]
+      // p.options= await hidrateaza(p.options[0])
+      }
+  }
+
   if(!p.hidden_in_form){
     fields.push(p)
     if(p.label.slice(-1)=="*") cimpuri_obligatorii.push(p.name);
