@@ -15,7 +15,20 @@ const rows = [
   {id:1,denumire:"Firma A",codfiscal:3453433},
   {id:2,denumire:"Firma B",codfiscal:46767777}
 ]
+let optiuni = {}
+const hidrateaza = async (url)=>{
 
+ return await $fetch(`/${url}`,{
+              headers:{
+               "b-access-token":utilizatorStore.token
+              }
+            })
+}
+arhitectura.proprietati.map(async item=>{
+  if("options" in item){
+   optiuni[item.name]=[... await hidrateaza(item.options[0])]
+  }
+ })
 const selected = ref([])
 </script>
 
@@ -63,7 +76,7 @@ const selected = ref([])
                </q-card-section>
 
                <q-card-section>
-                   <add-nomenclator-item :context="arhitectura" :tip_nomenclator="id"/>
+                   <add-nomenclator-item :optiuni="optiuni" :context="arhitectura" :tip_nomenclator="id"/>
                </q-card-section>
                </q-card>
        </q-dialog>
