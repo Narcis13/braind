@@ -5,9 +5,19 @@ export default function useValidare(){
         caNumar,
         caText,
         codfiscalValid,
-        ibanValid
+        ibanValid,
+		telefonValid,
+		emailValid
     }
 } 
+function telefonValid(valoare){
+	if(!valoare) return true
+	return /^\d+$/.test(valoare)&&valoare.length==10&&valoare.substr(0,2)=="07"
+}
+function emailValid(valoare){
+	if(!valoare) return true
+	return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(valoare)
+}
 
 function caNumar(config){
 

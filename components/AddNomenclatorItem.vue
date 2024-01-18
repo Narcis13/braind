@@ -10,6 +10,26 @@ const faraValidare = computed(()=>{
   return true;
 })
 
+/*onBeforeMount(()=>{
+  console.log('on before mount',props.context.proprietati)
+  props.context.proprietati.map(async p=>{
+
+if("options" in p){
+    if(p.options[0].substr(0,3)=="api"){
+      //aici hidratez optiunile
+     
+     let url = p.options[0]
+    // p.options=[];
+    // let options=[...await hidrateaza(url)]
+     optiuni[p.name]=[...await hidrateaza(url)]
+    // console.log("hidratez",p.options)
+    // p.options= await hidrateaza(p.options[0])
+    }
+}
+  
+})
+})*/
+
 const lipsaDate = computed(()=>{
    
    let interim=[]
@@ -21,6 +41,7 @@ const lipsaDate = computed(()=>{
 })
 
 const hidrateaza = async (url)=>{
+  console.log('hidrateaza')
  return await $fetch(`/${url}`,{
               headers:{
                "b-access-token":utilizatorStore.token
@@ -32,23 +53,36 @@ const formularRef = ref(null)
 const validari = useValidare()
 let validatori = reactive({})
 const formData = reactive({});
-let fields =[]
+let fields =reactive([])
 let cimpuri_obligatorii=[]
 props.context.proprietati.map(async p=>{
-
-  if("options" in p){
+  let clone={...p}
+  console.log('clone si p',clone,p)
+ /* if("options" in p){
       if(p.options[0].substr(0,3)=="api"){
         //aici hidratez optiunile
-       // console.log("hidratez",await hidrateaza(p.options[0]))
+       
        let url = p.options[0]
        p.options=[];
        p.options=[...await hidrateaza(url)]
+       console.log("hidratez",p.options)
       // p.options= await hidrateaza(p.options[0])
       }
-  }
+  }*/
 
   if(!p.hidden_in_form){
-    fields.push(p)
+   
+    if("options" in p) {
+      clone.options= [...await hidrateaza(p.options[0])]
+       fields.push(clone)
+      console.log('fields push clone',fields,clone)
+    }
+    else {
+      fields.push(p)
+      console.log('fields push p',fields,p)
+    }
+  //  console.log('clona si optiuni',clone,optiuni)
+  
     if(p.label.slice(-1)=="*") cimpuri_obligatorii.push(p.name);
     if("default_value" in p){
       formData[p.name]=p.default_value
@@ -72,7 +106,7 @@ props.context.proprietati.map(async p=>{
 
   }
 })
-//console.log(validatori,"Proprietati add item in nomenclator")
+//console.log(fields,"Proprietati add item in nomenclator")
 function adauga(){
   let rezultate=[]
  
