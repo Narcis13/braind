@@ -11,7 +11,7 @@
     {"name": "tara", "align": "left", "label": "Tara *", "field": "tara", "sortable": false,"displayed_in_table":false,"type":"QInput","validare":["caText"]} , 
     {"name": "telefon", "align": "left", "label": "Telefon", "field": "telefon", "sortable": false,"displayed_in_table":true,"type":"QInput","validare":["telefonValid"]} , 
     {"name": "email", "align": "left", "label": "Email", "field": "email", "sortable": false,"displayed_in_table":true,"type":"QInput","validare":["emailValid"]} , 
-    {"name": "iban", "align": "left", "label": "Cont IBAN", "field": "iban", "sortable": false,"displayed_in_table":false,"type":"QInput","validare":["ibanValid"]} , 
+    {"name": "iban", "align": "left", "label": "Cont IBAN", "field": "iban", "sortable": false,"displayed_in_table":false,"type":"QInput","validare":["ibanValid"],"sync":["cuBanca"]} , 
     {"name": "banca", "align": "left", "label": "Banca", "field": "banca", "sortable": false,"displayed_in_table":false,"type":"QSelect","options":["api/firme/info/banci"]} , 
     {"name": "perscontact", "align": "left", "label": "Persoana contact", "field": "perscontact", "sortable": false,"displayed_in_table":true,"type":"QInput","validare":["caText"]} , 
     {"name": "platitortva", "align": "center", "label": "Platitor TVA", "field": "platitortva", "sortable": false,"displayed_in_table":false,"type":"QCheckbox","default_value":false}
