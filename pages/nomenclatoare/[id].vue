@@ -1,20 +1,29 @@
 <script setup>
 import { useArhitecturaStore } from '~/stores/arhitecturaStore';
 import { useUserStore } from '~/stores/userStore';
+import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
+const nomenclatoareStore = useNomenclatoareStore()
 const utilizatorStore = useUserStore();
 const arhitecturaStore = useArhitecturaStore()
 const {id} = useRoute().params
-console.log(arhitecturaStore.arhitecturaModel(id))
+//console.log(arhitecturaStore.arhitecturaModel(id))
 const arhitectura = arhitecturaStore.arhitecturaModel(id)
 const columns = [
 ...arhitectura.proprietati.filter(obj=>obj.displayed_in_table)
 ]
-console.log(arhitectura)
-const adaugItem = ref(false)
-const rows = [
-  {id:1,denumire:"Firma A",codfiscal:3453433},
-  {id:2,denumire:"Firma B",codfiscal:46767777}
-]
+//console.log(arhitectura)
+const  initialPagination = {
+       // sortBy: 'desc',
+       // descending: false,
+        page: 1,
+        rowsPerPage: 10
+
+      }
+
+const selected = ref([])
+const filtru=ref('')
+const adaugmodificItem = ref(false)
+
 let optiuni = {}
 const hidrateaza = async (url)=>{
 
@@ -29,7 +38,26 @@ arhitectura.proprietati.map(async item=>{
    optiuni[item.name]=[... await hidrateaza(item.options[0])]
   }
  })
-const selected = ref([])
+let alert = ref(false)
+let mesajAlerta = ref('')
+let actiune = ref('adaug')
+function afiseazaAlerta(mesaj){
+   alert.value=true
+   mesajAlerta.value=mesaj
+}
+
+function adaug(){
+  adaugmodificItem.value=true
+  actiune.value='adaug'
+}
+
+function modific(){
+  //console.log('selected',selected)
+  nomenclatoareStore.mod_item(selected.value[0],id+'_demodificat')
+  adaugmodificItem.value=true
+  actiune.value='modific'
+  selected.value=[]
+}
 </script>
 
 <template>
@@ -38,36 +66,45 @@ const selected = ref([])
         <div class="q-mt-md">
             <q-table
                 flat bordered
-               
-                :rows="rows"
+                :filter="filtru"
+                :rows="nomenclatoareStore.baza[id+'_index']"
                 :columns="columns"
+                :pagination="initialPagination"
                 row-key="id"
                 selection="single"
                 v-model:selected="selected"
              >
 
-             <template v-slot:top>
+             <template v-slot:top-left>
 
                                
                                 <div class="flex" style="min-width:200px;max-height:100px;">
-                                    <q-btn  class="q-ma-sm" label="Sterge" icon="remove" >
-                                        
-                                    </q-btn>
 
-                                    <q-btn  class="q-ma-sm" label="Adauga"   icon="add" @click="adaugItem=true">
+
+                                    <q-btn  class="q-ma-sm" label="Adauga"   icon="add" @click="adaug">
 
                                     </q-btn>
                                 
-                                    <q-btn  class="q-ma-sm" label="Modifica"   icon="add" >
+                                    <q-btn :disable="selected.length==0" class="q-ma-sm" label="Modifica"   icon="edit_note" @click="modific">
 
                                     </q-btn>
+                                    <q-btn :disable="selected.length==0" class="q-ma-sm" label="Sterge" icon="remove" >
+                                        
+                                      </q-btn>
                                 </div>
 
+              </template>
+              <template v-slot:top-right>
+                <q-input borderless dense debounce="300" v-model="filtru" placeholder="Cauta..">
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
               </template>
             </q-table>
         </div>
 
-        <q-dialog v-model="adaugItem">
+        <q-dialog v-model="adaugmodificItem">
                <q-card style="min-width: 350px;">
                <q-card-section class="row items-center q-pb-none">
                   <div class="text-h6">Adaug {{ id }}</div>
@@ -75,12 +112,26 @@ const selected = ref([])
                   <q-btn icon="close" flat round dense v-close-popup />
                </q-card-section>
 
-               <q-card-section>
-                   <add-nomenclator-item :optiuni="optiuni" :context="arhitectura" :tip_nomenclator="id"/>
+               <q-card-section >
+                   <add-nomenclator-item :mod="actiune" :optiuni="optiuni" :context="arhitectura" :tip_nomenclator="id" @nonunic="afiseazaAlerta"/>
                </q-card-section>
                </q-card>
        </q-dialog>
+       <q-dialog v-model="alert">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Alerta</div>
+            </q-card-section>
 
+            <q-card-section class="q-pt-none">
+              {{ mesajAlerta }}
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="AM INTELES" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+    </q-dialog>
      </q-page>
 
 </template>

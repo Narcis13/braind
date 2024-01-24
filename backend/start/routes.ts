@@ -33,3 +33,4 @@ Route.post('/validezcodsms','AuthController.validezcodsms')
 
 
 Route.post('/uploadsigla','ClientiController.uploadsigla')
+Route.post('/partenerinfo','ClientiController.partenerinfo')

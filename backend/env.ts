@@ -36,4 +36,5 @@ export default Env.rules({
 	SERVER_URL: Env.schema.string(),
 	CLIENT_URL: Env.schema.string(),
 	SMS_KEY: Env.schema.string(),
+	OPENAPI_KEY: Env.schema.string(),
 })

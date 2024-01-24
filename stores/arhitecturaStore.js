@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 
+
 export const useArhitecturaStore = defineStore("arhitecturaStore",()=>{
     const arhitectura = ref(null)
     function seteazaArhitectura(data){
@@ -17,8 +18,31 @@ export const useArhitecturaStore = defineStore("arhitecturaStore",()=>{
         }
       return obj;  
     }
+
+    let actions = {
+      async codfiscal(ctx){
+       // console.log(ctx)
+       if(ctx.name!==null&&ctx.name.length>0){
+        const response = await $fetch(ctx.host+"partenerinfo", {
+          method: "POST",
+          headers: {
+           
+          },
+          body: {
+           cui:ctx.name
+           
+          },
+        }); 
+      //  console.log('caut date',response)
+         
+          return response.partener;
+       }
+     return {};
+      }
+    }
     return {
        seteazaArhitectura,
-       arhitecturaModel
+       arhitecturaModel,
+       actions
     }
 })

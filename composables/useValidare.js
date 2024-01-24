@@ -7,9 +7,18 @@ export default function useValidare(){
         codfiscalValid,
         ibanValid,
 		telefonValid,
-		emailValid
+		emailValid,
+		client_unic
     }
 } 
+
+function client_unic(all,data){
+   let rez='unic'
+   all.map(p=>{
+	if(p.codfiscal==data.codfiscal) rez='Clientul '+data.denumire+' cu acest cod fiscal este deja in baza de date!'
+   })
+   return rez;
+}
 function telefonValid(valoare){
 	if(!valoare) return true
 	return /^\d+$/.test(valoare)&&valoare.length==10&&valoare.substr(0,2)=="07"
@@ -30,9 +39,37 @@ function caText(valoare){
     return valoare.length==0||valoare.length>2;
 }
 
+function validCNP( p_cnp ) {
+    var i=0 , year=0 , hashResult=0 , cnp=[] , hashTable=[2,7,9,1,4,6,3,5,8,2,7,9];
+    if( p_cnp.length !== 13 ) { return false; }
+    for( i=0 ; i<13 ; i++ ) {
+        cnp[i] = parseInt( p_cnp.charAt(i) , 10 );
+        if( isNaN( cnp[i] ) ) { return false; }
+        if( i < 12 ) { hashResult = hashResult + ( cnp[i] * hashTable[i] ); }
+    }
+    hashResult = hashResult % 11;
+    if( hashResult === 10 ) { hashResult = 1; }
+    year = (cnp[1]*10)+cnp[2];
+    switch( cnp[0] ) {
+        case 1  : case 2 : { year += 1900; } break;
+        case 3  : case 4 : { year += 1800; } break;
+        case 5  : case 6 : { year += 2000; } break;
+        case 7  : case 8 : case 9 : { year += 2000; if( year > ( parseInt( new Date().getYear() , 10 ) - 14 ) ) { year -= 100; } } break;
+        default : { return false; }
+    }
+    if( year < 1800 || year > 2099 ) { return false; }
+    return ( cnp[12] === hashResult );
+}
+
 function codfiscalValid(v){
     if(!v) return true
-    if ( v.length>10 ) return false;
+    if ( (v.length<5 || v.length>10) && v.length!==13) return false;
+	//cnp
+	if(v.length==13){
+      return validCNP(v);
+	}
+
+
     var cifra_control=v.substr(v.length-1, 1);
     var cif=v.substr(0, v.length-1);
     while (cif.length!=9){
