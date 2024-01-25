@@ -12,10 +12,10 @@ function executa(link){
 const  links1= [
     { icon: 'home', text: 'Clienti' ,ruta:'client'},
     { icon: 'whatshot', text: 'Furnizori', ruta:'furnizor' },
-    { icon: 'subscriptions', text: 'Facturi emise' }
+    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'produs' }
   ]
 const   links2= [
-    { icon: 'folder', text: 'Library' },
+    { icon: 'folder', text: 'Facturi emise',ruta:'femise' },
     { icon: 'restore', text: 'History' },
     { icon: 'watch_later', text: 'Watch later' },
     { icon: 'thumb_up_alt', text: 'Liked videos' }

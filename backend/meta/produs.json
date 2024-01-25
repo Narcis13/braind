@@ -1,0 +1,19 @@
+{
+    "titlu":"Lista produse / servicii",
+    "proprietati":[
+     {"name": "id", "align": "center", "label": "ID", "field": "id", "sortable": false,"displayed_in_table":false,"hidden_in_form":true,"type":"QInput"}
+
+    ]
+ }
+
+ id
+ denumire
+ descriere
+ tip
+ um
+ grupproduse
+ codprodus
+ codcpv
+ codnc
+ stare
+ date.....
