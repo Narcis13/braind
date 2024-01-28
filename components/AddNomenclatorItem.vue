@@ -210,13 +210,13 @@ async function modifica(){
 <template>
 <div ref="formularRef" class="q-gutter-y-md column " style="max-width: 400px">
      <div v-for="(field, index) in fields" :key="index" class="q-ma-sm">
-          <q-input  dense bottom-slots :error="!validatori[field.name]" error-message="Continut invalid!" v-if="field.type=='QInput'" v-bind="field" v-model="formData[field.name]">
+          <q-input  dense bottom-slots :error="!validatori[field.name]" error-message="Continut invalid!" v-if="field.qtype=='QInput'" v-bind="field" v-model="formData[field.name]">
             <template v-slot:after>
               <q-btn :disable="formData[field.name]==null||!validatori[field.name]||formData[field.name].length==13" v-if="field.with_action" round dense flat icon="send" @click="run(field.name)"/>
             </template>
           </q-input>
-          <q-select  dense bottom-slots error-message="Continut invalid!" v-if="field.type=='QSelect'" v-bind="field" v-model="formData[field.name]"/>
-          <q-checkbox  dense v-if="field.type=='QCheckbox'" v-bind="field" v-model="formData[field.name]"/>
+          <q-select  dense bottom-slots error-message="Continut invalid!" v-if="field.qtype=='QSelect'" v-bind="field" v-model="formData[field.name]"/>
+          <q-checkbox  dense v-if="field.qtype=='QCheckbox'" v-bind="field" v-model="formData[field.name]"/>
             <!-- <component :is="field.type" v-bind="field" v-model="formData[field.name]" /> -->
     </div>
     <div class="flex flex-center">
