@@ -4,6 +4,7 @@ import useValidare from '~/composables/useValidare';
 import { useArhitecturaStore } from '~/stores/arhitecturaStore';
 import { useUserStore } from '~/stores/userStore';
 import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
+import codselect from '~/components/codselect.vue'
 const props=defineProps({
   tip_nomenclator:String,
   mod:String,
@@ -214,6 +215,16 @@ async function modifica(){
             <template v-slot:after>
               <q-btn :disable="formData[field.name]==null||!validatori[field.name]||formData[field.name].length==13" v-if="field.with_action" round dense flat icon="send" @click="run(field.name)"/>
             </template>
+
+            <template v-if="field.with_popup" v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <component :is="field.popup_component"  />
+                </q-popup-proxy>
+              </q-icon>
+      </template>
+
+
           </q-input>
           <q-select  dense bottom-slots error-message="Continut invalid!" v-if="field.qtype=='QSelect'" v-bind="field" v-model="formData[field.name]"/>
           <q-checkbox  dense v-if="field.qtype=='QCheckbox'" v-bind="field" v-model="formData[field.name]"/>
