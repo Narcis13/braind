@@ -219,7 +219,7 @@ async function modifica(){
             <template v-if="field.with_popup" v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                  <component :is="field.popup_component"  />
+                      <codselect />
                 </q-popup-proxy>
               </q-icon>
       </template>
