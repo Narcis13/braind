@@ -29,7 +29,30 @@ furnizori.map(f=>{
   nomenclatoareStore.baza.furnizor_index.push(f)
 })
 
-//console.log(utilizatorStore.firma)
+const produsi =  await $fetch(`/api/firme/nomenclatoare/produs?cid=${utilizatorStore.firma.id}`, {
+        method: "GET",
+        headers: {
+          "b-access-token":utilizatorStore.token
+        }
+      });
+ 
+nomenclatoareStore.baza.produs_index=[]
+produsi.map(p=>{
+  nomenclatoareStore.baza.produs_index.push(p)
+})
+
+const coduricpv = await $fetch(`/api/firme/info/coduricpv`, {
+        method: "GET",
+        headers: {
+          "b-access-token":utilizatorStore.token
+        }
+      });
+nomenclatoareStore.baza.coduricpv =[]      
+coduricpv.map(c=>{
+  nomenclatoareStore.baza.coduricpv.push(c) 
+})      
+     
+//console.log('coduri cpv',coduricpv)
 </script>
 <template>
     <div>

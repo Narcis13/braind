@@ -8,7 +8,9 @@ export default function useValidare(){
         ibanValid,
 		telefonValid,
 		emailValid,
-		client_unic
+		client_unic,
+		furnizor_unic,
+		produs_unic
     }
 } 
 
@@ -19,6 +21,23 @@ function client_unic(all,data){
    })
    return rez;
 }
+
+function furnizor_unic(all,data){
+	let rez='unic'
+	all.map(p=>{
+	 if(p.codfiscal==data.codfiscal) rez='Furnizorul '+data.denumire+' cu acest cod fiscal este deja in baza de date!'
+	})
+	return rez;
+ }
+
+ function produs_unic(all,data){
+	let rez='unic'
+	all.map(p=>{
+	 if(p.denumire==data.denumire) rez='Produsul/serviciul '+data.denumire+' cu aceasta denumire este deja in baza de date!'
+	})
+	return rez;
+ }
+
 function telefonValid(valoare){
 	if(!valoare) return true
 	return /^\d+$/.test(valoare)&&valoare.length==10&&valoare.substr(0,2)=="07"

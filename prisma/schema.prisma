@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,81 +13,107 @@ model User {
   name  String?
 }
 
-
-
 model Firme {
-  id    Int     @id @default(autoincrement())
-  id_user Int
-  stare     String           @db.VarChar(20) @default("inactiv")
-  denumire     String           @db.VarChar(100)
-  cui     String           @db.VarChar(20)
-  judet     String           @db.VarChar(13)
-  oras     String           @db.VarChar(20)
-  adresa     String           @db.VarChar(120)
-  forma_juridica     String           @db.VarChar(10)
-  capital_social     Int?           
-  registru_comert     String?           @db.VarChar(20)
-  codCAEN     String?           @db.VarChar(10) 
-  logo     String?           @db.VarChar(255)
-  CIAdministrator     String?           @db.VarChar(255)
-  CertificatCUI     String?           @db.VarChar(255)
-  ActConstitutiv     String?           @db.VarChar(255)
-  administratori Administratori[]
-  created_at     DateTime         @default(now()) @db.DateTime(0)
-  updated_at     DateTime?        @updatedAt
+  id              Int              @id @default(autoincrement())
+  denumire        String           @db.VarChar(100)
+  cui             String           @db.VarChar(20)
+  judet           String           @db.VarChar(13)
+  oras            String           @db.VarChar(20)
+  adresa          String           @db.VarChar(120)
+  forma_juridica  String           @db.VarChar(10)
+  capital_social  Int?
+  registru_comert String?          @db.VarChar(20)
+  codCAEN         String?          @db.VarChar(10)
+  logo            String?          @db.VarChar(255)
+  CIAdministrator String?          @db.VarChar(255)
+  CertificatCUI   String?          @db.VarChar(255)
+  ActConstitutiv  String?          @db.VarChar(255)
+  created_at      DateTime         @default(now()) @db.DateTime(0)
+  updated_at      DateTime?        @updatedAt
+  id_user         Int
+  stare           String           @default("inactiv") @db.VarChar(20)
+  administratori  Administratori[]
 }
 
 model Administratori {
-  id           Int       @id @default(autoincrement())
-  firma         Firme?    @relation(fields: [id_firma], references: [id], onDelete: Cascade)
-  id_firma      Int
-  nume     String           @db.VarChar(120)
-  ci     String?           @db.VarChar(120)
-  cnp     String           @db.VarChar(120)
-  email     String?           @db.VarChar(120)
-  telefon     String?           @db.VarChar(120)
-  created_at     DateTime         @default(now()) @db.DateTime(0)
-  updated_at     DateTime?        @updatedAt
+  id         Int       @id @default(autoincrement())
+  id_firma   Int
+  nume       String    @db.VarChar(120)
+  ci         String?   @db.VarChar(120)
+  cnp        String    @db.VarChar(120)
+  email      String?   @db.VarChar(120)
+  telefon    String?   @db.VarChar(120)
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime? @updatedAt
+  firma      Firme     @relation(fields: [id_firma], references: [id], onDelete: Cascade)
+
+  @@index([id_firma], map: "Administratori_id_firma_fkey")
 }
 
 model clienti {
-    id           Int       @id @default(autoincrement())
-    id_client    Int
-denumire     String           @db.VarChar(80)
-regcom     String?           @db.VarChar(120)
-localitate     String?           @db.VarChar(50)
-judet     String           @db.VarChar(50)
-codfiscal     String           @db.VarChar(13)
-banca     String?           @db.VarChar(120)
-iban     String?           @db.VarChar(24)
-tara     String           @db.VarChar(50)
-perscontact     String?           @db.VarChar(60)
-platitortva     Boolean          @default(false)
-adresa     String           @db.VarChar(120)
-  email     String?           @db.VarChar(50)
-  telefon     String?           @db.VarChar(20)
-  created_at     DateTime         @default(now()) @db.DateTime(0)
-  updated_at     DateTime?        @updatedAt
-
+  id          Int       @id @default(autoincrement())
+  id_client   Int
+  denumire    String    @db.VarChar(80)
+  regcom      String?   @db.VarChar(120)
+  localitate  String?   @db.VarChar(50)
+  judet       String    @db.VarChar(50)
+  codfiscal   String    @db.VarChar(13)
+  banca       String?   @db.VarChar(120)
+  iban        String?   @db.VarChar(24)
+  tara        String    @db.VarChar(50)
+  perscontact String?   @db.VarChar(60)
+  platitortva Boolean   @default(false)
+  adresa      String    @db.VarChar(120)
+  email       String?   @db.VarChar(50)
+  telefon     String?   @db.VarChar(20)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @updatedAt
 }
 
 model furnizori {
-    id           Int       @id @default(autoincrement())
-    id_client    Int
-denumire     String           @db.VarChar(120)
-regcom     String?           @db.VarChar(120)
-localitate     String?           @db.VarChar(50)
-judet     String           @db.VarChar(50)
-codfiscal     String           @db.VarChar(13)
-banca     String?           @db.VarChar(120)
-iban     String?           @db.VarChar(24)
-tara     String           @db.VarChar(50)
-perscontact     String?           @db.VarChar(60)
-platitortva     Boolean          @default(false)
-adresa     String           @db.VarChar(120)
-  email     String?           @db.VarChar(50)
-  telefon     String?           @db.VarChar(20)
-  created_at     DateTime         @default(now()) @db.DateTime(0)
-  updated_at     DateTime?        @updatedAt
+  id          Int       @id @default(autoincrement())
+  id_client   Int
+  denumire    String    @db.VarChar(120)
+  regcom      String?   @db.VarChar(120)
+  localitate  String?   @db.VarChar(50)
+  judet       String    @db.VarChar(50)
+  codfiscal   String    @db.VarChar(13)
+  banca       String?   @db.VarChar(120)
+  iban        String?   @db.VarChar(24)
+  tara        String    @db.VarChar(50)
+  perscontact String?   @db.VarChar(60)
+  platitortva Boolean   @default(false)
+  adresa      String    @db.VarChar(120)
+  email       String?   @db.VarChar(50)
+  telefon     String?   @db.VarChar(20)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @updatedAt
+}
 
+model coduricpv {
+  id       Int     @id @unique(map: "IDCod_UNIQUE") @default(autoincrement())
+  cod      String  @db.VarChar(45)
+  denumire String? @db.VarChar(255)
+}
+
+
+model codurinc {
+  id       Int     @id @unique(map: "IDCod_UNIQUE") @default(autoincrement())
+  cod      String  @db.VarChar(45)
+  denumire String? @db.VarChar(255)
+}
+
+model produsi {
+  id          Int       @id @default(autoincrement())
+  id_client   Int
+  denumire    String    @db.VarChar(120)
+  descriere      String?   @db.VarChar(512)
+  um  String   @db.VarChar(50)
+  grupproduse       String?    @db.VarChar(50)
+  codprodus   String?    @db.VarChar(13)
+  banca       String?   @db.VarChar(120)
+  codcpv        String?   @db.VarChar(24)
+  codnc        String?   @db.VarChar(50)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @updatedAt
 }

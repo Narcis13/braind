@@ -5,7 +5,10 @@ export  const useNomenclatoareStore = defineStore('nomenclatoareStore',()=>{
         client_index:reactive([]),
         client_demodificat:{},
         furnizor_index:reactive([]),
-        furnizor_demodificat:{}
+        furnizor_demodificat:{},
+        produs_index:reactive([]),
+        produs_demodificat:{},
+        coduricpv:[]
       })
 
 
