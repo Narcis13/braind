@@ -12,7 +12,8 @@ function executa(link){
 const  links1= [
     { icon: 'home', text: 'Clienti' ,ruta:'client'},
     { icon: 'whatshot', text: 'Furnizori', ruta:'furnizor' },
-    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'produs' }
+    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'produs' },
+    { icon: 'thumb_up_alt', text: 'Serii documente',ruta:'serie' },
   ]
 const   links2= [
     { icon: 'folder', text: 'Facturi emise',ruta:'femise' },

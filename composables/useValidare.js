@@ -10,7 +10,9 @@ export default function useValidare(){
 		emailValid,
 		client_unic,
 		furnizor_unic,
-		produs_unic
+		produs_unic,
+		doarNumeric,
+		serieDocValida
     }
 } 
 
@@ -51,6 +53,15 @@ function caNumar(config){
 
 }
 
+function serieDocValida(valoare){
+	if(!valoare) return true
+    else
+    return valoare.length==0||valoare.length<6;
+}
+
+function doarNumeric(valoare){
+	return true;
+}
 function caText(valoare){
  //   console.log("validare ca text",valoare)
     if(!valoare) return true
