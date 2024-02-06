@@ -14,6 +14,7 @@ const  links1= [
     { icon: 'whatshot', text: 'Furnizori', ruta:'furnizor' },
     { icon: 'subscriptions', text: 'Produse / servicii',ruta:'produs' },
     { icon: 'thumb_up_alt', text: 'Serii documente',ruta:'serie' },
+    { icon: 'restore', text: 'Gestiuni',ruta:'gestiune' }
   ]
 const   links2= [
     { icon: 'folder', text: 'Facturi emise',ruta:'femise' },

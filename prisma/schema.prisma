@@ -117,3 +117,15 @@ model produsi {
   created_at  DateTime  @default(now()) @db.DateTime(0)
   updated_at  DateTime? @updatedAt
 }
+
+model seriei {
+  id          Int       @id @default(autoincrement())
+  id_client   Int
+  tip    String    @db.VarChar(64)
+  serie      String  @db.VarChar(12)
+  primulnumar  String   @db.VarChar(50)
+  descriere       String?    @db.VarChar(512)
+  activa Boolean   @default(true)
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @updatedAt
+}

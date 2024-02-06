@@ -60,7 +60,9 @@ function serieDocValida(valoare){
 }
 
 function doarNumeric(valoare){
-	return true;
+	if(!valoare) return true
+	
+	return /^\d+$/.test(valoare)
 }
 function caText(valoare){
  //   console.log("validare ca text",valoare)

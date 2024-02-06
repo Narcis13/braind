@@ -8,7 +8,10 @@ export  const useNomenclatoareStore = defineStore('nomenclatoareStore',()=>{
         furnizor_demodificat:{},
         produs_index:reactive([]),
         produs_demodificat:{},
-        coduricpv:[]
+        serie_index:reactive([]),
+        serie_demodificat:{},
+        coduricpv:[],
+        codurinc:[]
       })
 
 
