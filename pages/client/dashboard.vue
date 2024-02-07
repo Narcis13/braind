@@ -53,6 +53,18 @@ serii.map(s=>{
   nomenclatoareStore.baza.serie_index.push(s)
 })
 
+const gestiuni =  await $fetch(`/api/firme/nomenclatoare/gestiune?cid=${utilizatorStore.firma.id}`, {
+        method: "GET",
+        headers: {
+          "b-access-token":utilizatorStore.token
+        }
+      });
+ 
+nomenclatoareStore.baza.gestiune_index=[]
+gestiuni.map(g=>{
+  nomenclatoareStore.baza.gestiune_index.push(g)
+})
+
 const coduricpv = await $fetch(`/api/firme/info/coduricpv`, {
         method: "GET",
         headers: {

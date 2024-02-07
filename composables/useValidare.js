@@ -12,7 +12,8 @@ export default function useValidare(){
 		furnizor_unic,
 		produs_unic,
 		doarNumeric,
-		serieDocValida
+		serieDocValida,
+		gestiune_unic
     }
 } 
 
@@ -39,6 +40,15 @@ function furnizor_unic(all,data){
 	})
 	return rez;
  }
+
+function gestiune_unic(all,data){
+	let rez='unic'
+	all.map(p=>{
+	 if(p.denumire==data.denumire) rez='Gestiunea '+data.denumire+' exista deja in baza de date!'
+	})
+	return rez;
+} 
+
 
 function telefonValid(valoare){
 	if(!valoare) return true
