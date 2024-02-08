@@ -5,22 +5,22 @@ import { useUserStore } from '~/stores/userStore';
 const utilizatorStore = useUserStore();
 
 function executa(link){
-  console.log('executa',link)
-  navigateTo("../nomenclatoare/"+link.ruta)
+ // console.log('executa',link)
+  navigateTo(link.ruta)
 }
 
 const  links1= [
-    { icon: 'home', text: 'Clienti' ,ruta:'client'},
-    { icon: 'whatshot', text: 'Furnizori', ruta:'furnizor' },
-    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'produs' },
-    { icon: 'thumb_up_alt', text: 'Serii documente',ruta:'serie' },
-    { icon: 'restore', text: 'Gestiuni',ruta:'gestiune' }
+    { icon: 'home', text: 'Clienti' ,ruta:'../nomenclatoare/client'},
+    { icon: 'whatshot', text: 'Furnizori', ruta:'../nomenclatoare/furnizor' },
+    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'../nomenclatoare/produs' },
+    { icon: 'thumb_up_alt', text: 'Serii documente',ruta:'../nomenclatoare/serie' },
+    { icon: 'restore', text: 'Gestiuni',ruta:'../nomenclatoare/gestiune' }
   ]
 const   links2= [
-    { icon: 'folder', text: 'Facturi emise',ruta:'femise' },
-    { icon: 'restore', text: 'History' },
-    { icon: 'watch_later', text: 'Watch later' },
-    { icon: 'thumb_up_alt', text: 'Liked videos' }
+    { icon: 'folder', text: 'Facturi emise',ruta:'../client/femise' },
+    { icon: 'restore', text: 'Facturi primite' },
+    { icon: 'watch_later', text: 'Plati / Incasari' },
+    { icon: 'thumb_up_alt', text: 'Alte operatiuni' }
   ]
 const    links3= [
     { icon: 'local_movies', text: 'YouTube Premium' },
@@ -71,8 +71,10 @@ const   buttons2= [
             </q-item>
   
             <q-separator class="q-my-md" />
-  
-            <q-item v-for="link in links2" :key="link.text" v-ripple clickable>
+            <q-item-label header class="text-weight-bold text-uppercase">
+                  Operatiuni
+            </q-item-label>
+            <q-item v-for="link in links2" :key="link.text" v-ripple clickable  @click="executa(link)">
               <q-item-section avatar>
                 <q-icon color="grey" :name="link.icon" />
               </q-item-section>
