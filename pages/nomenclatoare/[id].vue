@@ -41,6 +41,7 @@ arhitectura.proprietati.map(async item=>{
 let alert = ref(false)
 let mesajAlerta = ref('')
 let actiune = ref('adaug')
+
 function afiseazaAlerta(mesaj){
    alert.value=true
    mesajAlerta.value=mesaj

@@ -5,16 +5,16 @@ import { useUserStore } from '~/stores/userStore';
 const utilizatorStore = useUserStore();
 
 function executa(link){
- // console.log('executa',link)
+  console.log('executa',link)
   navigateTo(link.ruta)
 }
 
 const  links1= [
-    { icon: 'home', text: 'Clienti' ,ruta:'../nomenclatoare/client'},
-    { icon: 'whatshot', text: 'Furnizori', ruta:'../nomenclatoare/furnizor' },
-    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'../nomenclatoare/produs' },
-    { icon: 'thumb_up_alt', text: 'Serii documente',ruta:'../nomenclatoare/serie' },
-    { icon: 'restore', text: 'Gestiuni',ruta:'../nomenclatoare/gestiune' }
+    { icon: 'home', text: 'Clienti' ,ruta:'/nomenclatoare/client'},
+    { icon: 'whatshot', text: 'Furnizori', ruta:'/nomenclatoare/furnizor' },
+    { icon: 'subscriptions', text: 'Produse / servicii',ruta:'/nomenclatoare/produs' },
+    { icon: 'thumb_up_alt', text: 'Serii documente',ruta:'/nomenclatoare/serie' },
+    { icon: 'restore', text: 'Gestiuni',ruta:'/nomenclatoare/gestiune' }
   ]
 const   links2= [
     { icon: 'folder', text: 'Facturi emise',ruta:'../client/femise' },
@@ -22,6 +22,12 @@ const   links2= [
     { icon: 'watch_later', text: 'Plati / Incasari' },
     { icon: 'thumb_up_alt', text: 'Alte operatiuni' }
   ]
+  const   linksfe= [
+    { icon: 'folder', text: 'Facturi fiscale',ruta:'/client/femise/fiscala' },
+    { icon: 'restore', text: 'Facturi proforma',ruta:'/client/femise/proforma'  },
+    { icon: 'watch_later', text: 'Avize',ruta:'/client/femise/avize' },
+    { icon: 'thumb_up_alt', text: 'Facturi recurente',ruta:'/client/femise/recurente'  }
+  ] 
 const    links3= [
     { icon: 'local_movies', text: 'YouTube Premium' },
     { icon: 'local_movies', text: 'Movies & Shows' },
@@ -71,17 +77,33 @@ const   buttons2= [
             </q-item>
   
             <q-separator class="q-my-md" />
-            <q-item-label header class="text-weight-bold text-uppercase">
+             <q-item-label header class="text-weight-bold text-uppercase">
                   Operatiuni
             </q-item-label>
-            <q-item v-for="link in links2" :key="link.text" v-ripple clickable  @click="executa(link)">
+    <!--        <q-item v-for="link in links2" :key="link.text" v-ripple clickable  @click="executa(link)">
               <q-item-section avatar>
                 <q-icon color="grey" :name="link.icon" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ link.text }}</q-item-label>
               </q-item-section>
+            </q-item> -->
+            <q-expansion-item group="somegroup" icon="edit_calendar" label="Facturi emise" header-class="text-weight-bold text-uppercase">
+            <q-card>
+              <q-card-section>
+
+                <q-item v-for="link in linksfe" :key="link.text" v-ripple clickable  @click="executa(link)">
+                    <q-item-section avatar>
+                      <q-icon color="grey" :name="link.icon" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ link.text }}</q-item-label>
+                    </q-item-section>
             </q-item>
+
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
   
             <q-separator class="q-mt-md q-mb-xs" />
   
