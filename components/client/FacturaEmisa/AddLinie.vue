@@ -2,6 +2,7 @@
 let options= [
         'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ]
+let model=ref('')      
 </script>
 
 

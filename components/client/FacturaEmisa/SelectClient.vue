@@ -1,7 +1,43 @@
 <script setup>
+import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
+import { useArhitecturaStore } from '~/stores/arhitecturaStore';
+import { useUserStore } from '~/stores/userStore';
+const nomenclatoareStore = useNomenclatoareStore()
+const utilizatorStore = useUserStore();
+const arhitecturaStore = useArhitecturaStore()
+
+//console.log(arhitecturaStore.arhitecturaModel(id))
+const arhitectura = arhitecturaStore.arhitecturaModel('client')
+
+const adaugmodificItem = ref(false)
+
+let optiuni = {}
+const hidrateaza = async (url)=>{
+
+ return await $fetch(`/${url}`,{
+              headers:{
+               "b-access-token":utilizatorStore.token
+              }
+            })
+}
+arhitectura.proprietati.map(async item=>{
+  if("options" in item){
+   optiuni[item.name]=[... await hidrateaza(item.options[0])]
+  }
+ })
+let alert = ref(false)
+let mesajAlerta = ref('')
+
+
+function afiseazaAlerta(mesaj){
+   alert.value=true
+   mesajAlerta.value=mesaj
+}
+
 let options= ref([])
- let stringOptions=['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']     
-const clientSelectat = ref('')    
+ let stringOptions=[...nomenclatoareStore.baza.client_index.map(item=>{return {value:item.id,label:item.denumire}})]    
+ console.log('Selext client',stringOptions) 
+const clientSelectat = ref(null)    
 function filterFn (val, update, abort) {
         if (val.length < 2) {
           abort()
@@ -10,7 +46,7 @@ function filterFn (val, update, abort) {
 
         update(() => {
           const needle = val.toLowerCase()
-          options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+          options.value = stringOptions.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
         })
       }  
 
@@ -38,13 +74,41 @@ function filterFn (val, update, abort) {
                 <template v-slot:no-option>
                     <q-item>
                         <q-item-section class="text-grey">
-                        Niciun rezultat
+                       <div> Niciun rezultat</div>
+                       <q-btn color="indigo" icon="add" label="ADAUGA CLIENT" @click="adaugmodificItem=!adaugmodificItem"/>
                         </q-item-section>
                     </q-item>
         </template>
 
         </q-select>
+        <q-dialog v-model="adaugmodificItem">
+               <q-card style="min-width: 350px;">
+               <q-card-section class="row items-center q-pb-none">
+                  <div class="text-h6">Adaug client</div>
+                  <q-space />
+                  <q-btn icon="close" flat round dense v-close-popup />
+               </q-card-section>
 
+               <q-card-section >
+                   <add-nomenclator-item mod="adaug" :optiuni="optiuni" :context="arhitectura" tip_nomenclator="client" @nonunic="afiseazaAlerta"/>
+               </q-card-section>
+               </q-card>
+       </q-dialog>
+       <q-dialog v-model="alert">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Alerta</div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+              Acest client exista deja in baza de date!
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="AM INTELES" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+    </q-dialog>
     </div>
 </template>
 
