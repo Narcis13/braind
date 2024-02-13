@@ -2,6 +2,13 @@
 import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
 import { useArhitecturaStore } from '~/stores/arhitecturaStore';
 import { useUserStore } from '~/stores/userStore';
+
+const props = defineProps({
+  
+     modelValue:Object
+})
+const emit = defineEmits(['update:modelValue'])
+
 const nomenclatoareStore = useNomenclatoareStore()
 const utilizatorStore = useUserStore();
 const arhitecturaStore = useArhitecturaStore()
@@ -49,7 +56,10 @@ function filterFn (val, update, abort) {
           options.value = stringOptions.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
         })
       }  
-
+function inputvalue(value){
+  console.log('input value',value)
+  emit('update:modelValue', value)
+}
 
 </script>
 
@@ -64,6 +74,7 @@ function filterFn (val, update, abort) {
             bottom-slots 
             v-model="clientSelectat" 
             @filter="filterFn"
+            @update:model-value="inputvalue"
             :options="options" 
             label="Nume client"
             style="min-width: 300px;">

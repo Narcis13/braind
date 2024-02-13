@@ -7,6 +7,12 @@ let options= [
       ]
 const model=ref('')      
 const date= ref('2019/02/01')
+const modelDocument = reactive({
+    client:null
+})
+function Adauga(){
+    console.log('Adaug factura',modelDocument.client)
+}
 </script>
 
 <template>
@@ -19,9 +25,9 @@ const date= ref('2019/02/01')
         </div>
             <q-card class="q-mt-sm row justify-evenly  q-gutter-md" style="width:1150px">
                 
-               <client-factura-emisa-select-client />
+               <client-factura-emisa-select-client v-model="modelDocument.client"/>
 
-                <q-input dense filled v-model="date" mask="date" :rules="['date']" style="max-width: 160px;">
+                <q-input dense filled v-model="date" mask="date" :rules="['date']" label="Data factura" style="max-width: 160px;">
                     <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -35,7 +41,7 @@ const date= ref('2019/02/01')
                     </template>
                 </q-input>
 
-                <q-input dense filled v-model="date" mask="date" :rules="['date']" style="max-width: 160px;">
+                <q-input dense filled v-model="date" mask="date" :rules="['date']" label="Scadenta" style="max-width: 160px;">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -54,6 +60,8 @@ const date= ref('2019/02/01')
             </q-card>
 
            <client-factura-emisa-add-linie />
+
+           <q-btn color="white" text-color="black" label="Adauga" @click="Adauga"/>
     </div>
 </q-page>
   
