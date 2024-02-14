@@ -7,6 +7,8 @@ const props = defineProps({
      modelValue:String
 })
 const emit = defineEmits(['update:modelValue'])
+
+
 const columns = [
 
   { name: 'cod', align: 'center', label: 'Cod', field: 'cod', sortable: true },

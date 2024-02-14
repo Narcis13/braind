@@ -8,10 +8,19 @@ const props = defineProps({
      modelValue:Object
 })
 const emit = defineEmits(['update:modelValue'])
-
+const clientSelectat = ref(null)    
 const nomenclatoareStore = useNomenclatoareStore()
 const utilizatorStore = useUserStore();
 const arhitecturaStore = useArhitecturaStore()
+watch(nomenclatoareStore.baza.client_index,(nou,vechi)=>{
+   
+     const obj={value:nou[0].id,label:nou[0].denumire}
+      console.log('S-a schimbat schimbarea ',obj)
+     clientSelectat.value=obj
+     stringOptions=[...nomenclatoareStore.baza.client_index.map(item=>{return {value:item.id,label:item.denumire}})] 
+     options.value.push(obj)
+     emit('update:modelValue', obj)
+})
 
 //console.log(arhitecturaStore.arhitecturaModel(id))
 const arhitectura = arhitecturaStore.arhitecturaModel('client')
@@ -43,8 +52,8 @@ function afiseazaAlerta(mesaj){
 
 let options= ref([])
  let stringOptions=[...nomenclatoareStore.baza.client_index.map(item=>{return {value:item.id,label:item.denumire}})]    
- console.log('Selext client',stringOptions) 
-const clientSelectat = ref(null)    
+ //console.log('Selext client',stringOptions) 
+
 function filterFn (val, update, abort) {
         if (val.length < 2) {
           abort()
