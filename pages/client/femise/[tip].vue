@@ -1,12 +1,15 @@
 <script setup>
-
+import {date} from 'quasar'
 const route = useRoute();
 const tipfactura = route.params.tip;
 let options= [
         'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ]
 const model=ref('')      
-const date= ref('2019/02/01')
+const datacurenta= ref(date.formatDate( new Date(),'YYYY/MM/DD'))
+const scadenta = new Date()
+scadenta.setDate(scadenta.getDate()+90)
+const datascadenta= ref(date.formatDate( scadenta,'YYYY/MM/DD'))
 const modelDocument = reactive({
     client:null
 })
@@ -27,11 +30,11 @@ function Adauga(){
                 
                <client-factura-emisa-select-client v-model="modelDocument.client"/>
 
-                <q-input dense filled v-model="date" mask="date" :rules="['date']" label="Data factura" style="max-width: 160px;">
+                <q-input dense filled v-model="datacurenta" mask="date"  label="Data factura" style="max-width: 160px;">
                     <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-date v-model="date">
+                            <q-date v-model="datacurenta">
                             <div class="row items-center justify-end">
                                 <q-btn v-close-popup label="Close" color="primary" flat />
                             </div>
@@ -41,11 +44,11 @@ function Adauga(){
                     </template>
                 </q-input>
 
-                <q-input dense filled v-model="date" mask="date" :rules="['date']" label="Scadenta" style="max-width: 160px;">
+                <q-input dense filled v-model="datascadenta" mask="date" :rules="['date']" label="Scadenta" style="max-width: 160px;">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                <q-date v-model="date">
+                                <q-date v-model="datascadenta">
                                 <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
                                 </div>
