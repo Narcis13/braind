@@ -1,11 +1,18 @@
 <script setup>
 import {date} from 'quasar'
+import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
+
+const nomenclatoareStore = useNomenclatoareStore()
+console.log('serii', nomenclatoareStore.baza.serie_index)
 const route = useRoute();
 const tipfactura = route.params.tip;
 let options= [
         'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ]
-const model=ref('')      
+const model=ref('')    
+const nrfact=ref(13000)
+const serie=ref('AG')
+
 const datacurenta= ref(date.formatDate( new Date(),'YYYY/MM/DD'))
 const scadenta = new Date()
 scadenta.setDate(scadenta.getDate()+90)
@@ -58,7 +65,12 @@ function Adauga(){
                         </template>
                 </q-input>
 
-                <q-select dense v-model="model" :options="options" label="Standard" style="min-width: 200px;"/>
+                <!-- <q-select dense v-model="model" :options="options" label="Standard" style="min-width: 200px;"/> -->
+                <q-input label="Nr. factura" dense filled readonly v-model="nrfact"  :prefix="serie" stack-label style="min-width: 200px;">
+                    <template v-slot:prepend>
+                         <q-icon name="mail" />
+                    </template>
+                </q-input>
 
             </q-card>
 
