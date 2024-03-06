@@ -27,13 +27,13 @@ function Adauga(){
 
 <template>
 <q-page  class="flex justify-center">
-    <div class=" q-mt-sm column items-center" style="width:1280px">
+    <div class=" q-mt-sm column items-center" >
         <div class="q-mt-md" style="width:1150px">
                 <div class="text-h6">
                    Factura {{ tipfactura }}
                 </div>
         </div>
-            <q-card class="q-mt-sm row justify-evenly  q-gutter-md" style="width:1150px">
+            <q-card class="q-mt-sm q-ml-xs row justify-evenly  q-gutter-md" style="width:1150px">
                 
                <client-factura-emisa-select-client v-model="modelDocument.client"/>
 
