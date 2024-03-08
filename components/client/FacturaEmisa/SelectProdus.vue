@@ -51,7 +51,7 @@ function afiseazaAlerta(mesaj){
 }
 
 let options= ref([])
- let stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire}})]    
+ let stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire,descriere:item.descriere}})]    
  //console.log('Selext client',stringOptions) 
 
 function filterFn (val, update, abort) {

@@ -27,7 +27,7 @@ function Adauga(){
 
 <template>
 <q-page  class="flex justify-center">
-    <div class=" q-mt-sm column items-center" >
+    <div class=" q-mt-sm column items-center q-gutter-md" >
         <div class="q-mt-md" style="width:1150px">
                 <div class="text-h6">
                    Factura {{ tipfactura }}
@@ -76,7 +76,7 @@ function Adauga(){
 
            <client-factura-emisa-add-linie />
 
-           <q-btn color="white" text-color="black" label="Adauga" @click="Adauga"/>
+           <q-btn class="q-mt-md" color="white" text-color="black" label="Adauga" @click="Adauga"/>
     </div>
 </q-page>
   

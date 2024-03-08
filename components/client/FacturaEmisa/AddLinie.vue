@@ -11,23 +11,19 @@ const valoare = computed(()=>{
   return cantitate.value*pretUnitar.value
 })
 
+const descriereProdus = computed(()=>{
+  return produsCurent.value?produsCurent.value.descriere:''
+})
+
 const columns = [
-  {
-    name: 'name',
-    required: true,
-    label: 'Dessert (100g serving)',
-    align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true
-  },
-  { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
-  { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-  { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-  { name: 'protein', label: 'Protein (g)', field: 'protein' },
-  { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-  { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-  { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+
+  { name: 'nrcrt', align: 'center', label: 'Nr. crt.', field: 'nrcrt', sortable: true },
+  { name: 'produs', label: 'Produs/serviciu', field: 'produs', sortable: true },
+  { name: 'descriere', label: 'Descriere', field: 'descriere' },
+  { name: 'um', label: 'U.M.', field: 'um' },
+  { name: 'cantitate', label: 'Cantitate', field: 'cantitate' },
+  { name: 'pret', label: 'Pret', field: 'pret', sortable: true },
+  { name: 'valoare', label: 'Valoare', field: 'valoare', sortable: true}
 ]
 
 const rows = [
@@ -44,7 +40,7 @@ const rows = [
 ]
 
 function adaugaItem(){
-  console.log('adauga item')
+  console.log('adauga item',produsCurent.value)
 }
 </script>
 
@@ -63,28 +59,37 @@ function adaugaItem(){
     </div>
  
 
-    <q-card class="q-pb-md q-ml-xs q-mt-sm row justify-evenly  q-gutter-md" style="width:1150px">
-                
-                <client-factura-emisa-select-produs v-model="produsCurent" />
+    <q-card >
+                <div class="q-pb-md q-ml-xs q-mt-sm row justify-evenly  q-gutter-md" style="width:1150px">
+       
+                    <client-factura-emisa-select-produs v-model="produsCurent" />
 
-                <q-input filled label="U.M." v-model="um" stacked style="max-width: 100px;">
+                    <q-input filled label="U.M." v-model="um" stacked style="max-width: 100px;">
 
-                </q-input>
+                    </q-input>
 
-                <q-input filled label="Cantitate" type="number" v-model.number="cantitate" style="max-width: 100px;">
-         
-                </q-input>
+                    <q-input filled label="Cantitate" type="number" v-model.number="cantitate" style="max-width: 100px;">
+            
+                    </q-input>
 
-                <q-input filled  label="Pret unitar" type="number" v-model.number="pretUnitar" style="max-width: 100px;">
-         
-                </q-input>
+                    <q-input filled  label="Pret unitar" type="number" v-model.number="pretUnitar" style="max-width: 100px;">
+            
+                    </q-input>
 
-                <q-input filled  label="Valoare" readonly type="number" v-model.number="valoare" style="max-width: 100px;">
-         
-               </q-input>
+                    <q-input filled  label="Valoare" readonly type="number" v-model.number="valoare" style="max-width: 100px;">
+            
+                    </q-input>
 
-                <q-btn color="grey-4" text-color="purple" glossy unelevated icon="add" label="Adauga" @click="adaugaItem"/>
-
+                    <q-btn color="grey-4" text-color="purple" glossy unelevated icon="add" label="Adauga" @click="adaugaItem"/>
+              </div>
+              <div class="q-ml-xl q-mb-md" style="max-width: 300px">
+                <q-input
+                  v-model="descriereProdus"
+                  label="Descriere"
+                  stacked
+                  autogrow
+                />
+              </div>
       </q-card>
 
   </div>
