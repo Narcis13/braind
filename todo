@@ -19,3 +19,9 @@ Componenenta Nomenclatoare:
 - implementare validari
 - sa incarce comboboxul prin api
 - implementare mod update.... si apoi si celelalte
+
+La factura emisa>
+   - sa sterg continutul produsului dupa ce adaug linie
+   - sa aranjez word wrap descrierea in gridyl cu linii
+   - sa mai adaug niste cimpuri la subsol factura
+   - model factuara emisa prisma si sa incep api afarent
