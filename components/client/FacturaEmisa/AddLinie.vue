@@ -26,21 +26,21 @@ const columns = [
   { name: 'valoare', label: 'Valoare', field: 'valoare', sortable: true}
 ]
 
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%'
-  }
-]
+const rows = reactive([
+  
+])
 
 function adaugaItem(){
   console.log('adauga item',produsCurent.value)
+  rows.push({
+    nrcrt:rows.length+1,
+    produs:produsCurent.value.label,
+    descriere:descriereProdus,
+    um:um.value,
+    cantitate:cantitate.value,
+    pret:pretUnitar.value,
+    valoare
+  })
 }
 </script>
 

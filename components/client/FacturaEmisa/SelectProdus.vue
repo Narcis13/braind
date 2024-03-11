@@ -14,7 +14,7 @@ const utilizatorStore = useUserStore();
 const arhitecturaStore = useArhitecturaStore()
 watch(nomenclatoareStore.baza.produs_index,(nou,vechi)=>{
    
-     const obj={value:nou[0].id,label:nou[0].denumire}
+     const obj={value:nou[0].id,label:nou[0].denumire,descriere : nou[0].descriere}
       console.log('S-a schimbat schimbarea ',obj)
      produsSelectat.value=obj
      stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire}})] 
