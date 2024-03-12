@@ -3,6 +3,7 @@ import {useFemiseStore} from '~/stores/femiseStore'
 const femiseStore = useFemiseStore()
 let produsCurent=ref({label:'',descriere:'',value:0})    
 const um= ref('buc.')  
+const editMode = ref(false)
 const cantitate = ref(1)
 const pretUnitar = ref(0)
 
@@ -43,16 +44,25 @@ function resetLinie(){
 }
 
 function adaugaItem(){
+
   console.log('adauga item',valoare)
-  femiseStore.linii.push({
+  if(editMode.value){
+     editMode.value=false
+
+  }
+  else{
+    femiseStore.linii.push({
     nrcrt:femiseStore.linii.length+1,
     produs:produsCurent.value.label,
+    idprodus:produsCurent.value.value,
     descriere:produsCurent.value.descriere,
     um:um.value,
     cantitate:cantitate.value,
     pret:pretUnitar.value,
     valoare:cantitate.value*pretUnitar.value
   })
+  }
+
   resetLinie()
 }
 
@@ -66,7 +76,12 @@ selected.value=[]
 }
 
 function editLinie(){
-
+console.log(selected.value[0])
+editMode.value=true
+um.value=selected.value[0].um
+  cantitate.value=selected.value[0].cantitate
+  pretUnitar.value=selected.value[0].pret
+  produsCurent.value={label:selected.value[0].produs,descriere:selected.value[0].descriere,value:selected.value[0].idprodus}
 }
 </script>
 
@@ -120,7 +135,7 @@ function editLinie(){
             
                     </q-input>
 
-                    <q-btn :disable="produsCurent.label==''" color="grey-4" text-color="purple" glossy unelevated icon="add" label="Adauga" @click="adaugaItem"/>
+                    <q-btn :disable="produsCurent.label==''" color="grey-4" text-color="purple" glossy unelevated icon="add" :label="editMode?'Modifica':'Adauga'" @click="adaugaItem"/>
               </div>
               <div class="q-ml-xl q-mb-md" style="max-width: 300px">
                 <q-input
