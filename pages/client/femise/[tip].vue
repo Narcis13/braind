@@ -12,7 +12,9 @@ let options= [
 const model=ref('')    
 const nrfact=ref(13000)
 const serie=ref('AG')
-
+const mentiuni =ref('')
+const intocmit = ref('E-FACTURA')
+const cnp =ref('')
 const datacurenta= ref(date.formatDate( new Date(),'YYYY/MM/DD'))
 const scadenta = new Date()
 scadenta.setDate(scadenta.getDate()+90)
@@ -75,7 +77,11 @@ function Adauga(){
             </q-card>
 
            <client-factura-emisa-add-linie />
-
+           <q-card class="q-pa-md q-mt-sm q-ml-xs row justify-evenly  q-gutter-md" style="width:1150px">
+            <q-input outlined stacked v-model="intocmit" label="Intocmit de:" />
+            <q-input outlined  stacked v-model="cnp" label="CNP" />
+            <q-input outlined stacked autogrow v-model="mentiuni" label="Mentiuni" style="min-width: 250px;"/>
+           </q-card>
            <q-btn class="q-mt-md" color="white" text-color="black" label="Adauga" @click="Adauga"/>
     </div>
 </q-page>

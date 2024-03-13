@@ -48,7 +48,19 @@ function adaugaItem(){
   console.log('adauga item',valoare)
   if(editMode.value){
      editMode.value=false
-
+     if(selected.value.length>0){
+      femiseStore.linii[selected.value[0].nrcrt-1]={
+        nrcrt:selected.value[0].nrcrt,
+        produs:produsCurent.value.label,
+        idprodus:produsCurent.value.value,
+        descriere:produsCurent.value.descriere,
+        um:um.value,
+        cantitate:cantitate.value,
+        pret:pretUnitar.value,
+        valoare:cantitate.value*pretUnitar.value
+      }
+      selected.value=[]
+     }
   }
   else{
     femiseStore.linii.push({
@@ -73,6 +85,7 @@ function stergLinie(){
     }
 });
 selected.value=[]
+femiseStore.renumeroteaza()
 }
 
 function editLinie(){
