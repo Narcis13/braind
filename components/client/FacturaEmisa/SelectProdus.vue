@@ -1,6 +1,7 @@
 <script setup>
 import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
 import { useArhitecturaStore } from '~/stores/arhitecturaStore';
+import { useFemiseStore } from '~/stores/femiseStore';
 import { useUserStore } from '~/stores/userStore';
 
 const props = defineProps({
@@ -8,15 +9,16 @@ const props = defineProps({
      modelValue:Object
 })
 const emit = defineEmits(['update:modelValue'])
-const produsSelectat = ref(null)    
+//const produsSelectat = ref(null)    
 const nomenclatoareStore = useNomenclatoareStore()
 const utilizatorStore = useUserStore();
 const arhitecturaStore = useArhitecturaStore()
+const femiseStore = useFemiseStore()
 watch(nomenclatoareStore.baza.produs_index,(nou,vechi)=>{
    
      const obj={value:nou[0].id,label:nou[0].denumire,descriere : nou[0].descriere}
       console.log('S-a schimbat schimbarea ',obj)
-     produsSelectat.value=obj
+    femiseStore.produsCurent.value=obj
      stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire}})] 
      options.value.push(obj)
      emit('update:modelValue', obj)
@@ -66,7 +68,7 @@ function filterFn (val, update, abort) {
         })
       }  
 function inputvalue(value){
-  console.log('input value',value)
+  console.log('input value!!!',value)
   emit('update:modelValue', value)
 }
 
@@ -81,7 +83,7 @@ function inputvalue(value){
             input-debounce="0"
             dense 
             bottom-slots 
-            v-model="produsSelectat" 
+            v-model="femiseStore.produsCurent" 
             @filter="filterFn"
             @update:model-value="inputvalue"
             :options="options" 

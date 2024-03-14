@@ -1,7 +1,7 @@
 <script setup>
 import {useFemiseStore} from '~/stores/femiseStore'
 const femiseStore = useFemiseStore()
-let produsCurent=ref({label:'',descriere:'',value:0})    
+ 
 const um= ref('buc.')  
 const editMode = ref(false)
 const cantitate = ref(1)
@@ -20,7 +20,7 @@ const total = computed(()=>{
 })
 
 const descriereProdus = computed(()=>{
-  return produsCurent.value?produsCurent.value.descriere:''
+  return femiseStore.produsCurent.value?femiseStore.produsCurent.value.descriere:''
 })
 const selected = ref([])
 const columns = [
@@ -40,20 +40,20 @@ function resetLinie(){
   um.value='buc.'
   cantitate.value=1
   pretUnitar.value=0
-  produsCurent.value={label:'',descriere:'',value:0}
+  femiseStore.produsCurent={label:'',descriere:'',value:0}
 }
 
 function adaugaItem(){
 
-  console.log('adauga item',valoare)
+  console.log('adauga item',femiseStore.produsCurent)
   if(editMode.value){
      editMode.value=false
      if(selected.value.length>0){
       femiseStore.linii[selected.value[0].nrcrt-1]={
         nrcrt:selected.value[0].nrcrt,
-        produs:produsCurent.value.label,
-        idprodus:produsCurent.value.value,
-        descriere:produsCurent.value.descriere,
+        produs:femiseStore.produsCurent.label,
+        idprodus:femiseStore.produsCurent.value,
+        descriere:femiseStore.produsCurent.descriere,
         um:um.value,
         cantitate:cantitate.value,
         pret:pretUnitar.value,
@@ -65,9 +65,9 @@ function adaugaItem(){
   else{
     femiseStore.linii.push({
     nrcrt:femiseStore.linii.length+1,
-    produs:produsCurent.value.label,
-    idprodus:produsCurent.value.value,
-    descriere:produsCurent.value.descriere,
+    produs:femiseStore.produsCurent.label,
+    idprodus:femiseStore.produsCurent.value,
+    descriere:femiseStore.produsCurent.descriere,
     um:um.value,
     cantitate:cantitate.value,
     pret:pretUnitar.value,
@@ -94,7 +94,7 @@ editMode.value=true
 um.value=selected.value[0].um
   cantitate.value=selected.value[0].cantitate
   pretUnitar.value=selected.value[0].pret
-  produsCurent.value={label:selected.value[0].produs,descriere:selected.value[0].descriere,value:selected.value[0].idprodus}
+  femiseStore.produsCurent={label:selected.value[0].produs,descriere:selected.value[0].descriere,value:selected.value[0].idprodus}
 }
 </script>
 
@@ -130,7 +130,7 @@ um.value=selected.value[0].um
     <q-card >
                 <div class="q-pb-md q-ml-xs q-mt-sm row justify-evenly  q-gutter-md" style="width:1150px">
        
-                    <client-factura-emisa-select-produs v-model="produsCurent" />
+                    <client-factura-emisa-select-produs v-model="femiseStore.produsCurent" />
 
                     <q-input filled label="U.M." v-model="um" stacked style="max-width: 100px;">
 
@@ -148,11 +148,11 @@ um.value=selected.value[0].um
             
                     </q-input>
 
-                    <q-btn :disable="produsCurent.label==''" color="grey-4" text-color="purple" glossy unelevated icon="add" :label="editMode?'Modifica':'Adauga'" @click="adaugaItem"/>
+                    <q-btn :disable="femiseStore.produsCurent.label==''" color="grey-4" text-color="purple" glossy unelevated icon="add" :label="editMode?'Modifica':'Adauga'" @click="adaugaItem"/>
               </div>
               <div class="q-ml-xl q-mb-md" style="max-width: 300px">
                 <q-input
-                  v-model="produsCurent.descriere"
+                  v-model="femiseStore.produsCurent.descriere"
                   label="Descriere"
                   stacked
                   autogrow
