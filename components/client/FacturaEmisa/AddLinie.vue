@@ -27,7 +27,7 @@ const columns = [
 
   { name: 'nrcrt', align: 'center', label: 'Nr. crt.', field: 'nrcrt', sortable: true },
   { name: 'produs', align:'left',label: 'Produs/serviciu', field: 'produs', sortable: true },
-  { name: 'descriere',align:'left', label: 'Descriere', field: 'descriere' },
+  { name: 'descriere',align:'left', label: 'Descriere', style: 'width: 400px', classes: 'my-special-class',field: 'descriere' },
   { name: 'um', label: 'U.M.', field: 'um' },
   { name: 'cantitate', label: 'Cantitate', field: 'cantitate' },
   { name: 'pret', label: 'Pret', field: 'pret', sortable: true },
@@ -163,3 +163,9 @@ um.value=selected.value[0].um
   </div>
 
 </template>
+<style>
+.my-special-class {
+  max-width: 250px;
+overflow: hidden;
+}
+</style>
