@@ -141,3 +141,48 @@ model gestiunei {
   created_at  DateTime  @default(now()) @db.DateTime(0)
   updated_at  DateTime? @updatedAt
 }
+
+model FacturiEmise {
+  id              Int               @id @default(autoincrement())
+  idClient        Int               // Assuming this is a foreign key to a Clients table
+  dataFactura     DateTime
+  scadenta        DateTime?
+  serie           String
+  numar           Int
+  idSerieFactura  Int?
+  intocmit        String?
+  cnp             String?
+  mentiuni        String?
+  tip             TipFactura
+  dataCreere      DateTime         @default(now())
+  dataModificare  DateTime         @updatedAt
+  stare           String
+  LiniiFacturi    LinieFacturiEmise[]
+
+  @@map("facturi_emise")
+}
+
+model LinieFacturiEmise {
+  id              Int          @id @default(autoincrement())
+  idFacturaEmisa  Int          // Foreign key to FacturiEmise
+  idProdus        Int          // Assuming this is a foreign key to a Products table
+  descriere       String?
+  um              String
+  cantitate       Float
+  pret            Float
+  valoare         Float
+  stare           String
+  dataCreere      DateTime     @default(now())
+  dataModificare  DateTime     @updatedAt
+
+  Factura         FacturiEmise @relation(fields: [idFacturaEmisa], references: [id])
+
+  @@map("linii_facturi_emise")
+}
+
+enum TipFactura {
+  FISCALA
+  PROFORMA
+  AVIZ
+  RECURENTA
+}
