@@ -1,7 +1,11 @@
 <script setup>
-import {date} from 'quasar'
+import {date,useQuasar} from 'quasar'
 import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
-
+import {useFemiseStore} from '~/stores/femiseStore'
+import { useUserStore } from '~/stores/userStore';
+const $q = useQuasar()
+const userStore = useUserStore()
+const femiseStore = useFemiseStore()
 const nomenclatoareStore = useNomenclatoareStore()
 console.log('serii', nomenclatoareStore.baza.serie_index)
 const route = useRoute();
@@ -22,8 +26,31 @@ const datascadenta= ref(date.formatDate( scadenta,'YYYY/MM/DD'))
 const modelDocument = reactive({
     client:null
 })
-function Adauga(){
-    console.log('Adaug factura',modelDocument.client)
+async function Adauga(){
+    let fe ={
+        idClient:modelDocument.client.value,
+        dataFactura:datacurenta.value,
+        scadenta:datascadenta.value,
+        serie:serie.value,
+        numar:nrfact.value,
+        idSerieFactura:1,
+        intocmit:intocmit.value,
+        mentiuni:mentiuni.value,
+        cnp:cnp.value,
+        tip:'FISCALA',
+        stare:'draft'
+    }
+
+
+    let {data}=  await useFetch(`/api/firme/facturiemise/noua`, {
+        method: "POST",
+        headers: {
+          "b-access-token":userStore.token
+        },
+        body: fe
+      });
+
+      console.log('Adaug factura',fe,femiseStore.linii,data.value)
 }
 </script>
 
