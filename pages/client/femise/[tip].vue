@@ -47,10 +47,29 @@ async function Adauga(){
         headers: {
           "b-access-token":userStore.token
         },
-        body: fe
+        body:{ antet:fe,itemi:femiseStore.linii}
       });
+      if(data.value.succes){
+            console.log('Adaug factura',fe,femiseStore.linii,data.value)
 
-      console.log('Adaug factura',fe,femiseStore.linii,data.value)
+            $q.notify({
+            type: 'positive',
+            position:'top',
+            timeout:2000,
+            message:'Factura emisa cu succes!'
+            })
+
+            }
+            else
+            {
+            $q.notify({
+            type: 'negative',
+            position:'top',
+            timeout:2000,
+            message:'EROARE!'
+            })
+            }
+      
 }
 </script>
 

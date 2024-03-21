@@ -23,5 +23,6 @@ Componenenta Nomenclatoare:
 La factura emisa>
 
 
-
-   - model factuara emisa prisma si sa incep api afarent
+- reglat serie si numar si idserie corect
+- reset factura dupa ce adaug...
+- mici validari
