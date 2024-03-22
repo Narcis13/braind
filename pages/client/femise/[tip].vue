@@ -10,10 +10,8 @@ const nomenclatoareStore = useNomenclatoareStore()
 console.log('serii', nomenclatoareStore.baza.serie_index)
 const route = useRoute();
 const tipfactura = route.params.tip;
-let options= [
-        'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-      ]
-const model=ref('')    
+
+  
 const nrfact=ref(13000)
 const serie=ref('AG')
 const mentiuni =ref('')
@@ -23,12 +21,27 @@ const datacurenta= ref(date.formatDate( new Date(),'YYYY/MM/DD'))
 const scadenta = new Date()
 scadenta.setDate(scadenta.getDate()+90)
 const datascadenta= ref(date.formatDate( scadenta,'YYYY/MM/DD'))
-const modelDocument = reactive({
-    client:null
-})
+
+
+
+function resetFactura(){
+mentiuni.value=''
+cnp.value=''
+intocmit.value='E-FACTURA'
+femiseStore.linii=[]
+femiseStore.modelDocument.client=null;
+}
+
+function print(){
+    resetFactura()
+}
+const facturaValida = computed(()=>{
+    return femiseStore.linii.length>0&femiseStore.modelDocument.client
+}
+)
 async function Adauga(){
     let fe ={
-        idClient:modelDocument.client.value,
+        idClient:femiseStore.modelDocument.client.value,
         dataFactura:datacurenta.value,
         scadenta:datascadenta.value,
         serie:serie.value,
@@ -83,7 +96,7 @@ async function Adauga(){
         </div>
             <q-card class="q-mt-sm q-ml-xs row justify-evenly  q-gutter-md" style="width:1150px">
                 
-               <client-factura-emisa-select-client v-model="modelDocument.client"/>
+               <client-factura-emisa-select-client v-model="femiseStore.modelDocument.client"/>
 
                 <q-input dense filled v-model="datacurenta" mask="date"  label="Data factura" style="max-width: 160px;">
                     <template v-slot:append>
@@ -128,7 +141,12 @@ async function Adauga(){
             <q-input outlined  stacked v-model="cnp" label="CNP" />
             <q-input outlined stacked autogrow v-model="mentiuni" label="Mentiuni" style="min-width: 250px;"/>
            </q-card>
-           <q-btn class="q-mt-md" color="white" text-color="black" label="Adauga" @click="Adauga"/>
+           <div class="flex flex-center q-gutter-md">
+            <q-btn :disable="!facturaValida" class="q-mt-md" color="white" text-color="black" label="Salveaza draft" @click="Adauga"/>
+            <q-btn class="q-mt-md" color="white" text-color="black" label="Printeaza" @click="print"/>
+
+           </div>
+        
     </div>
 </q-page>
   

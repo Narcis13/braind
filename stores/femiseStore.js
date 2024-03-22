@@ -4,6 +4,9 @@ export const useFemiseStore = defineStore('femiseStore',()=>{
 
     const linii = reactive([])
     let produsCurent=ref({label:'',descriere:'',value:0})   
+    const modelDocument = reactive({
+        client:null
+    })
     function renumeroteaza(){
         let idx=0
         linii.map(l=>{
@@ -14,6 +17,7 @@ export const useFemiseStore = defineStore('femiseStore',()=>{
     return {
         linii,
         renumeroteaza,
-        produsCurent
+        produsCurent,
+        modelDocument
     }
 })

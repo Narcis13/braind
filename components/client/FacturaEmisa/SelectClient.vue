@@ -2,11 +2,14 @@
 import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
 import { useArhitecturaStore } from '~/stores/arhitecturaStore';
 import { useUserStore } from '~/stores/userStore';
+import { useFemiseStore } from '~/stores/femiseStore';
 
 const props = defineProps({
   
      modelValue:Object
 })
+
+const femiseStore = useFemiseStore()
 const emit = defineEmits(['update:modelValue'])
 const clientSelectat = ref(null)    
 const nomenclatoareStore = useNomenclatoareStore()
@@ -16,7 +19,7 @@ watch(nomenclatoareStore.baza.client_index,(nou,vechi)=>{
    
      const obj={value:nou[0].id,label:nou[0].denumire}
       console.log('S-a schimbat schimbarea ',obj)
-     clientSelectat.value=obj
+     femiseStore.modelDocument.client=obj
      stringOptions=[...nomenclatoareStore.baza.client_index.map(item=>{return {value:item.id,label:item.denumire}})] 
      options.value.push(obj)
      emit('update:modelValue', obj)
@@ -81,7 +84,7 @@ function inputvalue(value){
             input-debounce="0"
             dense 
             bottom-slots 
-            v-model="clientSelectat" 
+            v-model="femiseStore.modelDocument.client" 
             @filter="filterFn"
             @update:model-value="inputvalue"
             :options="options" 
