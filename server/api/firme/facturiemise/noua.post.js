@@ -28,6 +28,6 @@ const linii = await prisma.linieFacturiEmise.createMany({
 })
 let rez={succes:true,antetfe,linii}
 //rez[tip]=item
-console.log('creez femisa',linii)
+//console.log('creez femisa',linii)
     return rez;
 })

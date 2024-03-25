@@ -7,13 +7,18 @@ const $q = useQuasar()
 const userStore = useUserStore()
 const femiseStore = useFemiseStore()
 const nomenclatoareStore = useNomenclatoareStore()
-console.log('serii', nomenclatoareStore.baza.serie_index)
+
 const route = useRoute();
 const tipfactura = route.params.tip;
 
-  
-const nrfact=ref(13000)
-const serie=ref('AG')
+const ultimul_numar = await $fetch("/api/firme/facturiemise/numarfactura",{
+    headers: {
+          "b-access-token":userStore.token
+        }
+})  
+console.log('serii', nomenclatoareStore.baza.serie_index,ultimul_numar)
+const nrfact=ref(ultimul_numar.nrfact)
+const serie=ref(ultimul_numar.serie)
 const mentiuni =ref('')
 const intocmit = ref('E-FACTURA')
 const cnp =ref('')
@@ -21,7 +26,7 @@ const datacurenta= ref(date.formatDate( new Date(),'YYYY/MM/DD'))
 const scadenta = new Date()
 scadenta.setDate(scadenta.getDate()+90)
 const datascadenta= ref(date.formatDate( scadenta,'YYYY/MM/DD'))
-
+const idUltimaFactura=ref(0)
 
 
 function resetFactura(){
@@ -33,10 +38,12 @@ femiseStore.modelDocument.client=null;
 }
 
 function print(){
-    resetFactura()
+   // resetFactura()
+   console.log(idUltimaFactura.value)
+
 }
 const facturaValida = computed(()=>{
-    return femiseStore.linii.length>0&femiseStore.modelDocument.client
+    return femiseStore.linii.length>0&&femiseStore.modelDocument.client
 }
 )
 async function Adauga(){
@@ -63,7 +70,7 @@ async function Adauga(){
         body:{ antet:fe,itemi:femiseStore.linii}
       });
       if(data.value.succes){
-            console.log('Adaug factura',fe,femiseStore.linii,data.value)
+            //console.log('Adaug factura',fe,femiseStore.linii,data.value)
 
             $q.notify({
             type: 'positive',
@@ -71,7 +78,9 @@ async function Adauga(){
             timeout:2000,
             message:'Factura emisa cu succes!'
             })
-
+            nrfact.value++;
+            idUltimaFactura.value=data.value.antetfe.id
+             resetFactura()
             }
             else
             {
@@ -143,7 +152,7 @@ async function Adauga(){
            </q-card>
            <div class="flex flex-center q-gutter-md">
             <q-btn :disable="!facturaValida" class="q-mt-md" color="white" text-color="black" label="Salveaza draft" @click="Adauga"/>
-            <q-btn class="q-mt-md" color="white" text-color="black" label="Printeaza" @click="print"/>
+            <q-btn :disable="idUltimaFactura==0" class="q-mt-md" color="white" text-color="black" label="Printeaza" @click="print"/>
 
            </div>
         

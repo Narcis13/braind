@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .invoice {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .header h2 {
+            color: #333;
+            margin: 0;
+        }
+        .header p {
+            margin: 0;
+        }
+        .invoice-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .mentions {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <div class="header">
+            <div>
+                <h2>Supplier Name</h2>
+                <p>Address</p>
+                <p>Phone</p>
+                <p>Email</p>
+            </div>
+            <div>
+                <h2>Client Name</h2>
+                <p>Address</p>
+                <p>Phone</p>
+                <p>Email</p>
+            </div>
+        </div>
+        <div class="invoice-info">
+            <h1>Invoice</h1>
+            <p>Invoice Number: INV-001</p>
+            <p>Date: March 22, 2024</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nr. crt.</th>
+                    <th>Product</th>
+                    <th>Measure Unit</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Product 1</td>
+                    <td>pcs</td>
+                    <td>10</td>
+                    <td>$50.00</td>
+                    <td>$500.00</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Product 2</td>
+                    <td>kg</td>
+                    <td>5</td>
+                    <td>$20.00</td>
+                    <td>$100.00</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="total">
+            <h3>Total: $600.00</h3>
+        </div>
+        <div class="mentions">
+            <p>Other mentions and text can go here.</p>
+        </div>
+    </div>
+</body>
+</html>
