@@ -145,6 +145,7 @@ model gestiunei {
 model FacturiEmise {
   id              Int               @id @default(autoincrement())
   idClient        Int               // Assuming this is a foreign key to a Clients table
+  id_client       Int
   dataFactura     DateTime
   scadenta        DateTime?
   serie           String

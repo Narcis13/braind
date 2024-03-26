@@ -23,7 +23,7 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
-Route.get('/femise','FacturiEmiseController.printfactura')
+Route.get('/femise/:idf','FacturiEmiseController.printfactura')
 Route.post('/registeruser','AuthController.register')
 Route.post('/login','AuthController.login')
 Route.post('/logout','AuthController.logout')

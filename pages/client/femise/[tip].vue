@@ -3,6 +3,8 @@ import {date,useQuasar} from 'quasar'
 import {useNomenclatoareStore} from '~/stores/nomenclatoareStore'
 import {useFemiseStore} from '~/stores/femiseStore'
 import { useUserStore } from '~/stores/userStore';
+const config = useRuntimeConfig()
+const host=config.public.apihost;
 const $q = useQuasar()
 const userStore = useUserStore()
 const femiseStore = useFemiseStore()
@@ -39,7 +41,8 @@ femiseStore.modelDocument.client=null;
 
 function print(){
    // resetFactura()
-   console.log(idUltimaFactura.value)
+   console.log(host+'femise/'+idUltimaFactura.value)
+   window.open(host+'femise/'+idUltimaFactura.value, '_blank');
 
 }
 const facturaValida = computed(()=>{
@@ -58,7 +61,8 @@ async function Adauga(){
         mentiuni:mentiuni.value,
         cnp:cnp.value,
         tip:'FISCALA',
-        stare:'draft'
+        stare:'draft',
+        id_client:userStore.firma.id
     }
 
 
