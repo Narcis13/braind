@@ -59,51 +59,48 @@
     <div class="invoice">
         <div class="header">
             <div>
-                <h2>Supplier Name</h2>
-                <p>Address</p>
-                <p>Phone</p>
-                <p>Email</p>
+                <h2>{{factura[0].denumirefurnizor}}</h2>
+                <p>Cod fiscal:{{factura[0].codfiscalfurnizor}}</p>
+                <p>Str. Negru Voda nr. 47, Pitesti</p>
+                <p>ARGES, ROMANIA</p>
+                <p>E-mail: smupitesti@mapn.ro</p>
             </div>
             <div>
-                <h2>Client Name</h2>
-                <p>Address</p>
-                <p>Phone</p>
-                <p>Email</p>
+                <h2>{{factura[0].numeclient}}</h2>
+                <p>Cod fiscal:{{factura[0].codfiscalclient}}</p>
+                <p>Str. Popa Savu nr. 45</p>
+                <p>Bucuresti, sect. 1 ROMANIA</p>
             </div>
         </div>
         <div class="invoice-info">
-            <h1>Invoice</h1>
-            <p>Invoice Number: INV-001</p>
-            <p>Date: March 22, 2024</p>
+            <h1>Factura fiscala</h1>
+            <p>Factura nr.: {{factura[0].serie}} {{factura[0].numar}}</p>
+            <p>Data: {{factura[0].dataFactura}}</p>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>Nr. crt.</th>
-                    <th>Product</th>
-                    <th>Measure Unit</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Value</th>
+                    <th>Produs/serviciu</th>
+                    <th>U.M.</th>
+                    <th>Cantitate</th>
+                    <th>Pret</th>
+                    <th>Valoare</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Product 1</td>
-                    <td>pcs</td>
-                    <td>10</td>
-                    <td>$50.00</td>
-                    <td>$500.00</td>
+              @each((linie, index) in factura)
+                   <tr>
+                    <td>{{index+1}}.</td>
+                    <td>{{linie.numeprodus}} </td>
+                    <td>{{linie.um}}</td>
+                    <td>{{linie.cantitate}}</td>
+                    <td>{{linie.pret}}</td>
+                    <td>{{linie.valoare}}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Product 2</td>
-                    <td>kg</td>
-                    <td>5</td>
-                    <td>$20.00</td>
-                    <td>$100.00</td>
-                </tr>
+            @endeach
+
+
             </tbody>
         </table>
         <div class="total">
