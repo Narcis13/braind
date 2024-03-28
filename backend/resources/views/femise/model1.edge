@@ -65,6 +65,7 @@
                 <p>ARGES, ROMANIA</p>
                 <p>E-mail: smupitesti@mapn.ro</p>
             </div>
+                    <img src="/sigle/sigla_smup.png" alt="Logo" style="max-height: 200px; max-width: 200px;">
             <div>
                 <h2>{{factura[0].numeclient}}</h2>
                 <p>Cod fiscal:{{factura[0].codfiscalclient}}</p>
@@ -104,11 +105,17 @@
             </tbody>
         </table>
         <div class="total">
-            <h3>Total: $600.00</h3>
+            <h3>Total valoare: {{total}} lei.</h3>
         </div>
-        <div class="mentions">
-            <p>Other mentions and text can go here.</p>
+        <div class="header">
+                <div class="mentions">
+                     <p>{{factura[0].mentiuni}}</p>
+                 </div>
+                <div class="mentions">
+                     Intocmit: {{factura[0].intocmit}}
+                 </div>
         </div>
+
     </div>
 </body>
 </html>

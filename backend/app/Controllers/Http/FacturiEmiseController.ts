@@ -16,7 +16,11 @@ export default class FacturiEmiseController {
 
        let lista = await  Database.rawQuery(sql)
         console.log(params.idf,lista[0]) 
-        return view.render('femise/model1',{factura:lista[0]})
+        let total=0
+        lista[0].map(item=>{
+            total+=item.valoare
+        })
+        return view.render('femise/model1',{factura:lista[0],total})
     }
 
 }
