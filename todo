@@ -23,4 +23,7 @@ Componenenta Nomenclatoare:
 La factura emisa>
 
 - sa incep joaca la printare
+    - pret cantitate valoare orientate la dreapta
+    - format A4
+    - dimensionare corespunzatoare
 - sa actualizez bazele de date ...
