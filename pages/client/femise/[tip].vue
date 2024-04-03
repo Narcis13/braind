@@ -107,7 +107,7 @@ async function Adauga(){
                 <q-expansion-item
                     group="somegroup"
                     icon="explore"
-                    label="First"
+                    label="Introducere date factura emisa"
                     default-opened
                     header-class="text-primary"
                     class="q-pa-md"
@@ -173,14 +173,10 @@ async function Adauga(){
 
                 <q-separator />
 
-                <q-expansion-item group="somegroup" icon="perm_identity" label="Second" header-class="text-teal">
-                    <q-card>
-                    <q-card-section>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos corrupti
-                        commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto suscipit iste
-                        eveniet doloribus ullam aliquid.
-                    </q-card-section>
-                    </q-card>
+                <q-expansion-item group="somegroup" icon="perm_identity" label="Lista facturi emise" header-class="text-teal"  class="q-pa-md">
+                    <div class="q-mt-md" style="width:1150px">
+                        <client-factura-emisa-lista />
+                    </div>
                 </q-expansion-item>
 
         </q-list>
