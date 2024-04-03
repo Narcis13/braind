@@ -152,6 +152,7 @@ model FacturiEmise {
   numar           Int
   idSerieFactura  Int?
   intocmit        String?
+  notainterna     String?
   cnp             String?
   mentiuni        String?
   tip             TipFactura

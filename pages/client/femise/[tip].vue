@@ -22,6 +22,7 @@ console.log('serii', nomenclatoareStore.baza.serie_index,ultimul_numar)
 const nrfact=ref(ultimul_numar.nrfact)
 const serie=ref(ultimul_numar.serie)
 const mentiuni =ref('')
+const notainterna=ref('')
 const intocmit = ref('E-FACTURA')
 const cnp =ref('')
 const datacurenta= ref(date.formatDate( new Date(),'YYYY/MM/DD'))
@@ -34,6 +35,7 @@ const idUltimaFactura=ref(0)
 function resetFactura(){
 mentiuni.value=''
 cnp.value=''
+notainterna.value=''
 intocmit.value='E-FACTURA'
 femiseStore.linii=[]
 femiseStore.modelDocument.client=null;
@@ -59,6 +61,7 @@ async function Adauga(){
         idSerieFactura:1,
         intocmit:intocmit.value,
         mentiuni:mentiuni.value,
+        notainterna:notainterna.value,
         cnp:cnp.value,
         tip:'FISCALA',
         stare:'draft',
@@ -163,6 +166,7 @@ async function Adauga(){
                         <q-input outlined stacked v-model="intocmit" label="Intocmit de:" />
                         <q-input outlined  stacked v-model="cnp" label="CNP" />
                         <q-input outlined stacked autogrow v-model="mentiuni" label="Mentiuni" style="min-width: 250px;"/>
+                        <q-input outlined  stacked v-model="notainterna" label="Nota interna" />
                     </q-card>
                     <div class="flex flex-center q-gutter-md">
                         <q-btn :disable="!facturaValida" class="q-mt-md" color="white" text-color="black" label="Salveaza draft" @click="Adauga"/>
