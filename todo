@@ -22,8 +22,6 @@ Componenenta Nomenclatoare:
 
 La factura emisa>
 
-- sa incep joaca la printare
-    - pret cantitate valoare orientate la dreapta
-    - format A4
-    - dimensionare corespunzatoare
+- sa filtrez si dupa idul client
+= sa fac totul minim functional pina la nivel de xml....
 - sa actualizez bazele de date ...
