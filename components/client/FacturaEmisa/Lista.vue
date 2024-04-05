@@ -1,5 +1,6 @@
 <script setup>
-
+const config = useRuntimeConfig()
+const host=config.public.apihost;
 
 const filter=ref('')
 const columns = [
@@ -19,6 +20,14 @@ const columns = [
   { name: 'stare', label: 'Stare', field: 'stare', sortable: true }
 ]
 
+let {data}=  await useFetch(host+'femise/toateinperioada', {
+        method: "POST",
+        headers: {
+         // "b-access-token":userStore.token
+        },
+        body:{ }
+      });
+console.log(data.value)
 const rows = [
   
 ]
