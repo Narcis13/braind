@@ -19,7 +19,7 @@ defineProps({
     <q-separator dark />
 
     <q-card-actions>
-      <q-btn flat @click="navigateTo('../client/actualizeazadate')">Actualizeaza</q-btn>
+      <q-btn flat @click="navigateTo('/client/actualizeazadate')">Actualizeaza</q-btn>
     
     </q-card-actions>
   </q-card>

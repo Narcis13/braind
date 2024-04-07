@@ -87,6 +87,16 @@ async function Adauga(){
             })
             nrfact.value++;
             idUltimaFactura.value=data.value.antetfe.id
+            femiseStore.lista.unshift({
+                client:femiseStore.modelDocument.client.label,
+                numar:fe.numar,
+                serie:fe.serie,
+                stare:'draft',
+                notainterna:fe.notainterna,
+                data:fe.dataFactura,
+                id:data.value.antetfe.id,
+                valoare:femiseStore.linii.reduce((acc, product) => acc + product.valoare, 0)
+            })
              resetFactura()
             }
             else
