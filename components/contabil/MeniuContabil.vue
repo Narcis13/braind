@@ -1,8 +1,16 @@
 <script setup>
 
+function executa(link){
+  console.log('executa',link)
+  navigateTo(link.ruta)
+}
 
-
-
+const   linksfe= [
+    { icon: 'folder', text: 'Facturi fiscale',ruta:'/client/femise/fiscala' },
+    { icon: 'restore', text: 'Facturi proforma',ruta:'/client/femise/proforma'  },
+    { icon: 'watch_later', text: 'Avize',ruta:'/client/femise/avize' },
+    { icon: 'thumb_up_alt', text: 'Facturi recurente',ruta:'/client/femise/recurente'  }
+  ] 
 
 
 
@@ -61,40 +69,26 @@ const   buttons2= [
   
             <q-separator class="q-my-md" />
   
-            <q-item v-for="link in links2" :key="link.text" v-ripple clickable>
-              <q-item-section avatar>
-                <q-icon color="grey" :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }}</q-item-label>
-              </q-item-section>
+            <q-expansion-item group="somegroup" icon="edit_calendar" label="Facturi emise" header-class="text-weight-bold text-uppercase">
+            <q-card>
+              <q-card-section>
+
+                <q-item v-for="link in linksfe" :key="link.text" v-ripple clickable  @click="executa(link)">
+                    <q-item-section avatar>
+                      <q-icon color="grey" :name="link.icon" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ link.text }}</q-item-label>
+                    </q-item-section>
             </q-item>
+
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
   
-            <q-separator class="q-mt-md q-mb-xs" />
+         
   
-            <q-item-label header class="text-weight-bold text-uppercase">
-              More from Youtube
-            </q-item-label>
-  
-            <q-item v-for="link in links3" :key="link.text" v-ripple clickable>
-              <q-item-section avatar>
-                <q-icon color="grey" :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }}</q-item-label>
-              </q-item-section>
-            </q-item>
-  
-            <q-separator class="q-my-md" />
-  
-            <q-item v-for="link in links4" :key="link.text" v-ripple clickable>
-              <q-item-section avatar>
-                <q-icon color="grey" :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }}</q-item-label>
-              </q-item-section>
-            </q-item>
+            
   
             <q-separator class="q-mt-md q-mb-lg" />
   

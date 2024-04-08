@@ -38,7 +38,7 @@ let {data}=  await useFetch(host+'femise/toateinperioada', {
         },
         body:{ }
       });
-console.log(data.value)
+console.log('Utilizator',userStore.utilizator.rol)
 femiseStore.lista=[]
 if(data.value.succes){
    data.value.lista.map(item=>{
@@ -114,7 +114,7 @@ async function schimbaStare(stare){
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-close-popup >
+        <q-item  v-show="selected.length>0&&selected[0].stare=='valida'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup >
           <q-item-section>
             <q-item-label>Trimite!</q-item-label>
           </q-item-section>
