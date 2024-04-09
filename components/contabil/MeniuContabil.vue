@@ -6,10 +6,10 @@ function executa(link){
 }
 
 const   linksfe= [
-    { icon: 'folder', text: 'Facturi fiscale',ruta:'/client/femise/fiscala' },
-    { icon: 'restore', text: 'Facturi proforma',ruta:'/client/femise/proforma'  },
-    { icon: 'watch_later', text: 'Avize',ruta:'/client/femise/avize' },
-    { icon: 'thumb_up_alt', text: 'Facturi recurente',ruta:'/client/femise/recurente'  }
+    { icon: 'folder', text: 'Facturi fiscale',ruta:'/contabil/femise/fiscala' },
+    { icon: 'restore', text: 'Facturi proforma',ruta:'/contabil/femise/proforma'  },
+    { icon: 'watch_later', text: 'Avize',ruta:'/contabil/femise/avize' },
+    { icon: 'thumb_up_alt', text: 'Facturi recurente',ruta:'/contabil/femise/recurente'  }
   ] 
 
 
