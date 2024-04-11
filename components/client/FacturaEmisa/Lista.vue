@@ -53,6 +53,11 @@ function printFactura(){
   selected.value=[]
 }
 
+async function trimiteFactura(){
+
+  let raspuns =  await $fetch(host+'femise/trimite/'+selected.value[0].id);
+   console.log('trimite factura ...')
+}
 async function schimbaStare(stare){
 
   let {data}=  await useFetch(`/api/firme/facturiemise/schimbastare`, {
@@ -114,7 +119,7 @@ async function schimbaStare(stare){
           </q-item-section>
         </q-item>
 
-        <q-item  v-show="selected.length>0&&selected[0].stare=='valida'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup >
+        <q-item  v-show="selected.length>0&&selected[0].stare=='valida'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="trimiteFactura">
           <q-item-section>
             <q-item-label>Trimite!</q-item-label>
           </q-item-section>

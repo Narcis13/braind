@@ -24,6 +24,7 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 Route.post('/femise/toateinperioada','FacturiEmiseController.toateFacturilePerioadeiCurente')
+Route.get('/femise/trimite/:id','FacturiEmiseController.trimitefactura')
 Route.get('/femise/:idf','FacturiEmiseController.printfactura')
 Route.post('/registeruser','AuthController.register')
 Route.post('/login','AuthController.login')
