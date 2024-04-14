@@ -56,7 +56,8 @@ function printFactura(){
 async function trimiteFactura(){
 
   let raspuns =  await $fetch(host+'femise/trimite/'+selected.value[0].id);
-   console.log('trimite factura ...')
+   console.log('trimite factura ...',raspuns)
+   selected.value=[]
 }
 async function schimbaStare(stare){
 
