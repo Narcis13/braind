@@ -32,6 +32,9 @@ export default class GeneratorFacturaXML {
           //furnizor
             this.genFurnizor()
 
+          //client
+            this.genClient()  
+
           return this.xml.end({ pretty: true });
     }
 
@@ -54,4 +57,27 @@ export default class GeneratorFacturaXML {
         party_legal.ele('cbc:RegistrationName',this.obj[0].denumirefurnizor)
         party_legal.ele('cbc:CompanyID',this.obj[0].codfiscalfurnizor)
     }
+
+    private genClient(){
+
+      const client=this.xml.ele('cac:AccountingCustomerParty')
+      const party = client.ele('cac:Party')
+      const postal_adress = party.ele('cac:PostalAddress')
+      postal_adress.ele('cbc:StreetName',this.obj[0].adresaclient)
+      postal_adress.ele('cbc:CityName',this.obj[0].orasclient)
+      postal_adress.ele('cbc:CountrySubentity',this.obj[0].judetclient)
+      const country = postal_adress.ele('cac:Country')
+      country.ele('cbc:IdentificationCode','RO')
+
+      const part_tax_scheme=party.ele('cac:PartyTaxScheme')
+      part_tax_scheme.ele('cbc:CompanyID',this.obj[0].codfiscalclient)
+      part_tax_scheme.ele('cac:TaxScheme')
+
+      const party_legal = party.ele('cac:PartyLegalEntity')
+      party_legal.ele('cbc:RegistrationName',this.obj[0].numeclient)
+      party_legal.ele('cbc:CompanyID',this.obj[0].codfiscalclient)
+
+    }
+
+
 }
