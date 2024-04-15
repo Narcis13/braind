@@ -35,6 +35,10 @@ export default class GeneratorFacturaXML {
           //client
             this.genClient()  
 
+            this.genTaxTotal()
+
+            this.genMonetaryTotal()
+
           return this.xml.end({ pretty: true });
     }
 
@@ -76,6 +80,41 @@ export default class GeneratorFacturaXML {
       const party_legal = party.ele('cac:PartyLegalEntity')
       party_legal.ele('cbc:RegistrationName',this.obj[0].numeclient)
       party_legal.ele('cbc:CompanyID',this.obj[0].codfiscalclient)
+
+    }
+
+    private genTaxTotal(){
+      let total=0
+      this.obj.map(item=>{
+          total+=item.valoare
+      })
+      const taxtotal= this.xml.ele('cac:TaxTotal')
+      taxtotal.ele('cbc:TaxAmount',"0.00").att('currencyID','RON')
+
+      const taxsubtotal=taxtotal.ele('cac:TaxSubtotal')
+      taxsubtotal.ele('cbc:TaxableAmount',total.toFixed(2).replace('.', '.')).att('currencyID','RON')
+      taxsubtotal.ele('cbc:TaxAmount','0.00').att('currencyID','RON')
+      const taxcategory = taxsubtotal.ele('cac:TaxCategory')
+      taxcategory.ele('cbc:ID','0')
+      taxcategory.ele('cbc:Percent','0.00')
+      taxcategory.ele('cbc:TaxExemptionReasonCode','VATEX-EU-O')
+      taxcategory.ele('cac:TaxScheme').ele('cbc:ID','VAT')
+
+
+    }
+
+    private genMonetaryTotal(){
+      let total=0
+      this.obj.map(item=>{
+          total+=item.valoare
+      })
+      const monetary_total=this.xml.ele('cac:LegalMonetaryTotal')
+      monetary_total.ele('cbc:LineExtensionAmount',total.toFixed(2).replace('.', '.')).att('currencyID','RON')
+      monetary_total.ele('cbc:TaxExclusiveAmountt',total.toFixed(2).replace('.', '.')).att('currencyID','RON')
+      monetary_total.ele('cbc:TaxInclusiveAmount',total.toFixed(2).replace('.', '.')).att('currencyID','RON')
+      monetary_total.ele('cbc:PrepaidAmount','0.00').att('currencyID','RON')
+      monetary_total.ele('cbc:PayableRoundingAmount','0.00').att('currencyID','RON')
+      monetary_total.ele('cbc:PayableAmount',total.toFixed(2).replace('.', '.')).att('currencyID','RON')
 
     }
 
