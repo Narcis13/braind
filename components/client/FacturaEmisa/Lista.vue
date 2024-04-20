@@ -14,6 +14,9 @@ let initialPagination= {
         rowsPerPage: 20
         // rowsNumber: xx if getting data from a server
       }
+
+ 
+ 
 const columns = [
   {
     name: 'client',
@@ -47,16 +50,75 @@ if(data.value.succes){
 }
 const selected = ref([])
 
+//DEOCAMDATA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//let toatemesajele =  await $fetch(host+'femise/listamesaje/'+femiseStore.lista[0].codfiscalfurnizor+'/'+userStore.utilizator.id);     
+// console.log('toate mesajele',toatemesajele.mesaje)    
+
 function printFactura(){
   window.open(host+'femise/'+selected.value[0].id, '_blank');
   //console.log('printez factura',selected.value[0].id)
   selected.value=[]
 }
 
+async function verificaFactura(){
+  let raspuns =  await $fetch(host+'femise/verifica/'+selected.value[0].indexincarcare+'/'+userStore.utilizator.id);
+  console.log('verific factura',raspuns)
+  if (raspuns.stare=='ok'){
+
+    let {data}=  await useFetch(`/api/firme/facturiemise/schimbastare`, {
+        method: "POST",
+        headers: {
+          "b-access-token":userStore.token
+        },
+        body:{ id:selected.value[0].id,stare:'Validata ANAF'}
+      });
+
+        $q.notify({
+                type: 'positive',
+                position:'top',
+                timeout:2000,
+                message:'Factura validata de ANAF cu succes!'
+                })
+                femiseStore.lista.map(f=>{
+                  if (f.id==selected.value[0].id) f.stare="Validata ANAF"
+                })
+                selected.value=[]
+      }
+      else {
+        $q.notify({
+                type: 'negative',
+                position:'top',
+                timeout:2000,
+                message:'Factura NU este validata de ANAF!'
+                })
+      }
+  selected.value=[]
+}
+
 async function trimiteFactura(){
 
-  let raspuns =  await $fetch(host+'femise/trimite/'+selected.value[0].id);
-   console.log('trimite factura ...',raspuns)
+  let raspuns =  await $fetch(host+'femise/trimite/'+selected.value[0].id+'/'+userStore.utilizator.id);
+  if(raspuns.index_incarcare!=='0'){
+    let {data}=  await useFetch(`/api/firme/facturiemise/transmiteanaf`, {
+        method: "POST",
+        headers: {
+          "b-access-token":userStore.token
+        },
+        body:{ id:selected.value[0].id,indexincarcare:raspuns.index_incarcare}
+      });
+      if (data.value.succes){
+        $q.notify({
+                type: 'positive',
+                position:'top',
+                timeout:2000,
+                message:'Factura transmisa cu succes!'
+                })
+                femiseStore.lista.map(f=>{
+                  if (f.id==selected.value[0].id) f.stare="transmisa"
+                })
+                selected.value=[]
+      }
+  }
    selected.value=[]
 }
 async function schimbaStare(stare){
@@ -123,6 +185,12 @@ async function schimbaStare(stare){
         <q-item  v-show="selected.length>0&&selected[0].stare=='valida'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="trimiteFactura">
           <q-item-section>
             <q-item-label>Trimite!</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item  v-show="selected.length>0&&selected[0].stare=='transmisa'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="verificaFactura">
+          <q-item-section>
+            <q-item-label>Verifica ANAF</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

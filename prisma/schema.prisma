@@ -16,6 +16,7 @@ model User {
 model Firme {
   id              Int              @id @default(autoincrement())
   denumire        String           @db.VarChar(100)
+  alias           String?           @db.VarChar(100)
   cui             String           @db.VarChar(20)
   judet           String           @db.VarChar(13)
   oras            String           @db.VarChar(20)
@@ -148,17 +149,18 @@ model FacturiEmise {
   id_client       Int
   dataFactura     DateTime
   scadenta        DateTime?
-  serie           String
+  serie           String @db.VarChar(12)
   numar           Int
   idSerieFactura  Int?
-  intocmit        String?
-  notainterna     String?
-  cnp             String?
-  mentiuni        String?
+  intocmit        String? @db.VarChar(64)
+  notainterna     String? @db.VarChar(256)
+  cnp             String? @db.VarChar(13)
+  mentiuni        String? @db.VarChar(512)
   tip             TipFactura
   dataCreere      DateTime         @default(now())
   dataModificare  DateTime         @updatedAt
-  stare           String
+  stare           String @db.VarChar(48)
+  indexincarcare  String? @db.VarChar(24)
   LiniiFacturi    LinieFacturiEmise[]
 
   @@map("facturi_emise")
@@ -169,11 +171,11 @@ model LinieFacturiEmise {
   idFacturaEmisa  Int          // Foreign key to FacturiEmise
   idProdus        Int          // Assuming this is a foreign key to a Products table
   descriere       String?
-  um              String
+  um              String @db.VarChar(64)
   cantitate       Float
   pret            Float
   valoare         Float
-  stare           String
+  stare           String   @db.VarChar(48)
   dataCreere      DateTime     @default(now())
   dataModificare  DateTime     @updatedAt
 

@@ -53,8 +53,8 @@ function afiseazaAlerta(mesaj){
 }
 
 let options= ref([])
- let stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire,descriere:item.descriere}})]    
- //console.log('Selext client',stringOptions) 
+ let stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire,descriere:item.descriere,um:item.um}})]    
+ console.log('Selext produs',stringOptions) 
 
 function filterFn (val, update, abort) {
         if (val.length < 2) {
@@ -101,7 +101,15 @@ function inputvalue(value){
                         </q-item-section>
                     </q-item>
         </template>
+        <template v-slot:option="scope">
+          <q-item v-bind="scope.itemProps">
 
+            <q-item-section>
+              <q-item-label>{{ scope.opt.label }}</q-item-label>
+              <q-item-label caption>{{ scope.opt.um }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
         </q-select>
         <q-dialog v-model="adaugmodificItem">
                <q-card style="min-width: 350px;">

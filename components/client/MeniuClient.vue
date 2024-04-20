@@ -107,31 +107,9 @@ const   buttons2= [
   
             <q-separator class="q-mt-md q-mb-xs" />
   
-            <q-item-label header class="text-weight-bold text-uppercase">
-              More from Youtube
-            </q-item-label>
+            
   
-            <q-item v-for="link in links3" :key="link.text" v-ripple clickable>
-              <q-item-section avatar>
-                <q-icon color="grey" :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }}</q-item-label>
-              </q-item-section>
-            </q-item>
-  
-            <q-separator class="q-my-md" />
-  
-            <q-item v-for="link in links4" :key="link.text" v-ripple clickable>
-              <q-item-section avatar>
-                <q-icon color="grey" :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }}</q-item-label>
-              </q-item-section>
-            </q-item>
-  
-            <q-separator class="q-mt-md q-mb-lg" />
+     
   
             <div class="q-px-md text-grey-9">
               <div class="row items-center q-gutter-x-sm q-gutter-y-xs">

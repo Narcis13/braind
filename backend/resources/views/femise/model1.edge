@@ -39,7 +39,7 @@
             justify-content: space-between;
             margin-bottom: 30px;
         }
-        .header h2 {
+        .header h3 {
             color: #333;
             margin: 0;
         }
@@ -56,7 +56,7 @@
             margin-bottom: 30px;
         }
         th, td {
-            padding: 10px;
+            padding: 4px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -100,22 +100,23 @@
     <div class="page">
         <div class="header">
             <div>
-                <h2>{{factura[0].denumirefurnizor}}</h2>
+                <h3>{{factura[0].alias}}</h3>
                 <p>Cod fiscal:{{factura[0].codfiscalfurnizor}}</p>
                 <p>Str. Negru Voda nr. 47, Pitesti</p>
                 <p>ARGES, ROMANIA</p>
                 <p>E-mail: smupitesti@mapn.ro</p>
             </div>
-                    <img src="/sigle/sigla_smup.png" alt="Logo" style="max-height: 200px; max-width: 200px;">
+                   
             <div>
-                <h2>{{factura[0].numeclient}}</h2>
+                <h3>{{factura[0].numeclient}}</h3>
                 <p>Cod fiscal:{{factura[0].codfiscalclient}}</p>
                 <p>Str. Popa Savu nr. 45</p>
                 <p>Bucuresti, sect. 1 ROMANIA</p>
             </div>
         </div>
         <div class="invoice-info">
-            <h1>Factura fiscala</h1>
+         <img src="/sigle/sigla_smup.png" alt="Logo" style="max-height: 150px; max-width: 150px;">
+            <h2>Factura fiscala</h2>
             <p>Factura nr.: {{factura[0].serie}} {{factura[0].numar}}</p>
             <p>Data: {{factura[0].dataFactura}}</p>
         </div>
@@ -136,7 +137,9 @@
                     <td>{{index+1}}.</td>
                     <td>
                     <p>{{linie.numeprodus}} </p>
+                    @if(linie.descriere)
                     <p style="font-size: smaller;">{{linie.descriere}} </p>
+                    @endif
                     </td>
                     <td>{{linie.um}}</td>
                     <td class="la-dreapta">{{linie.cantitate}}</td>

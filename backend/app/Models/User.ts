@@ -22,6 +22,9 @@ export default class User extends BaseModel {
   public telvalid: string | null
 
   @column()
+  public jwt: string | null
+
+  @column()
   public telefon: string
 
   @column({ serializeAs: null })

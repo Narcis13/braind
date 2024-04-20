@@ -22,6 +22,12 @@ const faraValidare = computed(()=>{
   return true;
 })
 
+const corelatieBucuresti = computed(()=>{
+//console.log('corelatie buc',formData["judet"].substr(0,4))
+const corelatie = formData["judet"].substr(0,4)=='B - '&&formData["localitate"].substr(0,6)=="SECTOR"
+return formData["judet"].substr(0,4)!=='B - '||corelatie;
+})
+
 
 const lipsaDate = computed(()=>{
    
@@ -231,7 +237,7 @@ async function modifica(){
             <!-- <component :is="field.type" v-bind="field" v-model="formData[field.name]" /> -->
     </div>
     <div class="flex flex-center">
-      <q-btn v-if="mod==='adaug'" :disable="lipsaDate||formularInvalid" color="white" text-color="indigo" label="Adauga" @click="adauga" v-close-popup>
+      <q-btn v-if="mod==='adaug'" :disable="lipsaDate||formularInvalid||!corelatieBucuresti" color="white" text-color="indigo" label="Adauga" @click="adauga" v-close-popup>
         <q-tooltip v-if="lipsaDate" class="bg-accent">Campurile cu * sunt obligatorii</q-tooltip>
       </q-btn>
       <q-btn v-if="mod==='modific'" :disable="lipsaDate||formularInvalid" color="white" text-color="indigo" label="Modifica" @click="modifica" v-close-popup>

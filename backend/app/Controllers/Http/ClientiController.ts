@@ -47,7 +47,7 @@ export default class ClientiController {
         partener = {
           denumire:response.data.denumire,
           adresa:response.data.adresa,
-          judet:response.data.judet.toUpperCase(),
+          //judet:response.data.judet.toUpperCase(),
           regcom:response.data.numar_reg_com||null,
           platitortva:response.data.tva!==null
         }

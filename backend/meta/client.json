@@ -7,7 +7,7 @@
     {"name": "regcom", "align": "left", "label": "Nr. reg. com.", "field": "regcom", "sortable": false,"displayed_in_table":false,"qtype":"QInput","validare":["caText"]},
     {"name": "adresa", "align": "left", "label": "Adresa *", "field": "adresa", "sortable": false,"displayed_in_table":false,"qtype":"QInput","validare":["caText"]},
     {"name": "judet", "align": "left", "label": "Judet *", "field": "judet", "sortable": false,"displayed_in_table":false,"qtype":"QSelect","options":["api/firme/info/judete"]} , 
-    {"name": "localitate", "align": "left", "label": "Localitate", "field": "localitate", "sortable": false,"displayed_in_table":true,"qtype":"QInput","validare":["caText"]} , 
+    {"name": "localitate", "align": "left", "label": "Localitate *", "field": "localitate", "sortable": false,"displayed_in_table":true,"qtype":"QInput","validare":["caText"],"hint":"Pt. Buc. tb. SECTOR1 SECTOR2 ..."} , 
     {"name": "tara", "align": "left", "label": "Tara *", "field": "tara", "sortable": false,"displayed_in_table":false,"qtype":"QInput","validare":["caText"],"default_value":"ROMANIA"} , 
     {"name": "telefon", "align": "left", "label": "Telefon", "field": "telefon", "sortable": false,"displayed_in_table":true,"qtype":"QInput","validare":["telefonValid"]} , 
     {"name": "email", "align": "left", "label": "Email", "field": "email", "sortable": false,"displayed_in_table":true,"qtype":"QInput","validare":["emailValid"]} , 

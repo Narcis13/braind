@@ -54,7 +54,7 @@ function adaugaItem(){
         produs:femiseStore.produsCurent.label,
         idprodus:femiseStore.produsCurent.value,
         descriere:femiseStore.produsCurent.descriere,
-        um:um.value,
+        um:femiseStore.produsCurent.um,
         cantitate:cantitate.value,
         pret:pretUnitar.value,
         valoare:cantitate.value*pretUnitar.value
@@ -68,7 +68,7 @@ function adaugaItem(){
     produs:femiseStore.produsCurent.label,
     idprodus:femiseStore.produsCurent.value,
     descriere:femiseStore.produsCurent.descriere,
-    um:um.value,
+    um:femiseStore.produsCurent.um,
     cantitate:cantitate.value,
     pret:pretUnitar.value,
     valoare:cantitate.value*pretUnitar.value
@@ -132,7 +132,7 @@ um.value=selected.value[0].um
        
                     <client-factura-emisa-select-produs v-model="femiseStore.produsCurent" />
 
-                    <q-input filled label="U.M." v-model="um" stacked style="max-width: 100px;">
+                    <q-input readonly filled label="U.M." v-model="femiseStore.produsCurent.um" stacked style="max-width: 200px;">
 
                     </q-input>
 
