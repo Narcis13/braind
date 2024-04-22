@@ -55,7 +55,7 @@ export default class FacturiEmiseController {
     public async verificafactura({params}){
         const user = await User.findOrFail(params.userid)
       var r ={stare:''}
-       const responseData = await this.getData(`https://api.anaf.ro/test/FCTEL/rest/stareMesaj?id_incarcare=${params.id}`, user.jwt)
+       const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/stareMesaj?id_incarcare=${params.id}`, user.jwt)
      
             //console.log('Response:', typeof responseData,responseData);
             const parser = new xml2js.Parser({ explicitArray: false });
@@ -100,7 +100,7 @@ export default class FacturiEmiseController {
       */
      //console.log(`/test/FCTEL/rest/upload?standard=UBL&cif=${lista[0][0].codfiscalfurnizor}`)
       const raspunsvalidare = await this.postData("https://api.anaf.ro/prod/FCTEL/rest/validare/FACT1",xmltext,user.jwt)
-      const raspunstrimitere = await this.postData(`https://api.anaf.ro/test/FCTEL/rest/upload?standard=UBL&cif=${lista[0][0].codfiscalfurnizor}`,xmltext,user.jwt)
+      const raspunstrimitere = await this.postData(`https://api.anaf.ro/prod/FCTEL/rest/upload?standard=UBL&cif=${lista[0][0].codfiscalfurnizor}`,xmltext,user.jwt)
       let indexIncarcareValue = 0;
      // console.log(raspunsvalidare,raspunstrimitere)
       if(raspunstrimitere !== undefined){

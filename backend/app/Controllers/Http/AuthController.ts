@@ -2,11 +2,27 @@
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User';
 import Encryption from '@ioc:Adonis/Core/Encryption'
+import Hash from '@ioc:Adonis/Core/Hash'
 import Env from '@ioc:Adonis/Core/Env'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
 const axios = require('axios');
 export default class AuthController {
+
+
+public async resetpwd({params,request}){
+  console.log(params.userid,request.body())
+  const pwd = request.body().pwd
+  const user = await User.findOrFail(params.userid)
+  const newpassword= await Hash.make(pwd)
+
+await user
+     .merge({password:pwd})
+     .save()
+    //user.password=pwd;
+
+   return {status:'ok',newpassword}  
+}  
 
 public async register({request,response}){
 //console.log('register')
