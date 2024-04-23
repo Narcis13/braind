@@ -16,7 +16,7 @@ let parola=ref('')
 let firmaclientului =null
 const $q = useQuasar()
 async function login(){
-
+try {
   let response=  await $fetch(host+"login", {
         method: "POST",
         headers: {
@@ -75,6 +75,10 @@ async function login(){
          email.value=""
          parola.value=""
       }
+} catch (error) {
+  console.log('Eroare autentificare',error)
+}
+
 } 
 
 </script>
