@@ -24,8 +24,8 @@ const faraValidare = computed(()=>{
 
 const corelatieBucuresti = computed(()=>{
 //console.log('corelatie buc',formData["judet"].substr(0,4))
-const corelatie = formData["judet"].substr(0,4)=='B - '&&formData["localitate"].substr(0,6)=="SECTOR"
-return formData["judet"].substr(0,4)!=='B - '||corelatie;
+//const corelatie = formData["judet"].substr(0,4)=='B - '&&formData["localitate"].substr(0,6)=="SECTOR"
+return props.tip_nomenclator=='client'?formData["judet"].substr(0,4)!=='B - '||formData["judet"].substr(0,4)=='B - '&&formData["localitate"].substr(0,6)=="SECTOR":true;
 })
 
 

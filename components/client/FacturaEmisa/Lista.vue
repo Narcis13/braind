@@ -170,7 +170,7 @@ async function schimbaStare(stare){
           </q-item-section>
         </q-item>
 
-        <q-item v-show="selected.length>0&&selected[0].stare=='draft'" clickable v-close-popup @click="schimbaStare('valida')">
+        <q-item v-show="selected.length>0&&selected[0].stare=='draft'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="schimbaStare('valida')">
           <q-item-section>
             <q-item-label>Valideaza</q-item-label>
           </q-item-section>

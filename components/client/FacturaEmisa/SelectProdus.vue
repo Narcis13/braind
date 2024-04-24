@@ -106,6 +106,7 @@ function inputvalue(value){
 
             <q-item-section>
               <q-item-label>{{ scope.opt.label }}</q-item-label>
+              <q-item-label><div class="text-body2">{{ scope.opt.descriere }}</div></q-item-label>
               <q-item-label caption>{{ scope.opt.um }}</q-item-label>
             </q-item-section>
           </q-item>

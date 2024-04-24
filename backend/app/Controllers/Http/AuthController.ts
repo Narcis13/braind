@@ -67,7 +67,7 @@ public async register({request,response}){
 }  
 
 public async login ({auth,request}){
-  console.log('Incercare autentificare')
+  //console.log('Incercare autentificare')
     const {email,password} = request.all()
     let arhitectura={}
     const modele = await Database.from('meta').select("*")

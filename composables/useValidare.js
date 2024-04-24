@@ -35,9 +35,9 @@ function furnizor_unic(all,data){
 
  function produs_unic(all,data){
 	let rez='unic'
-	all.map(p=>{
+	/*all.map(p=>{
 	 if(p.denumire==data.denumire) rez='Produsul/serviciul '+data.denumire+' cu aceasta denumire este deja in baza de date!'
-	})
+	})*/
 	return rez;
  }
 
