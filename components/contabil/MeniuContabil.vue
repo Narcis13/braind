@@ -15,9 +15,8 @@ const   linksfe= [
 
 
 const  links1= [
-    { icon: 'home', text: 'CONTABIL' },
-    { icon: 'whatshot', text: 'CONTABIL' },
-    { icon: 'subscriptions', text: 'Contabilitate' }
+
+    { icon: 'subscriptions', text: 'Lista mesaje ANAF',ruta:'/contabil/listamesaje' }
   ]
 const   links2= [
     { icon: 'folder', text: 'Library' },
@@ -58,7 +57,7 @@ const   buttons2= [
 <template>
         <q-scroll-area class="fit">
           <q-list padding>
-            <q-item v-for="link in links1" :key="link.text" v-ripple clickable>
+            <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="executa(link)">
               <q-item-section avatar>
                 <q-icon color="grey" :name="link.icon" />
               </q-item-section>

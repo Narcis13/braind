@@ -28,10 +28,10 @@ const columns = [
   },
   { name: 'serie', align: 'center', label: 'Serie', field: 'serie', sortable: true },
   { name: 'numar', label: 'Numar', field: 'numar', sortable: true },
-  { name: 'data', label: 'Data', field: 'data' },
+  { name: 'data', align: 'center',label: 'Data', field: 'data' },
   { name: 'valoare', label: 'Valoare', field: 'valoare' },
-  { name: 'notainterna', label: 'Nota interna', field: 'notainterna' },
-  { name: 'stare', label: 'Stare', field: 'stare', sortable: true }
+  { name: 'notainterna', align: 'left',label: 'Nota interna', field: 'notainterna' },
+  { name: 'stare', label: 'Stare',align: 'left', field: 'stare', sortable: true }
 ]
 
 let {data}=  await useFetch(host+'femise/toateinperioada', {
@@ -185,6 +185,12 @@ async function schimbaStare(stare){
         <q-item  v-show="selected.length>0&&selected[0].stare=='valida'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="trimiteFactura">
           <q-item-section>
             <q-item-label>Trimite!</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item  v-show="selected.length>0&&selected[0].stare=='transmisa'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="trimiteFactura">
+          <q-item-section>
+            <q-item-label>Retrimite factura</q-item-label>
           </q-item-section>
         </q-item>
 

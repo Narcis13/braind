@@ -16,7 +16,7 @@ const arhitecturaStore = useArhitecturaStore()
 const femiseStore = useFemiseStore()
 watch(nomenclatoareStore.baza.produs_index,(nou,vechi)=>{
    
-     const obj={value:nou[0].id,label:nou[0].denumire,descriere : nou[0].descriere}
+     const obj={value:nou[0].id,label:nou[0].denumire,descriere : nou[0].descriere,um:nou[0].um}
       console.log('S-a schimbat schimbarea ',obj)
     femiseStore.produsCurent.value=obj
      stringOptions=[...nomenclatoareStore.baza.produs_index.map(item=>{return {value:item.id,label:item.denumire}})] 

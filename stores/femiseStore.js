@@ -4,7 +4,7 @@ export const useFemiseStore = defineStore('femiseStore',()=>{
 
     const linii = reactive([])
     const lista=reactive([])
-    let produsCurent=ref({label:'',descriere:'',value:0})   
+    let produsCurent=ref({label:'',descriere:'',um:'',value:0})   
     const modelDocument = reactive({
         client:null
     })
