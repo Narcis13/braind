@@ -140,7 +140,7 @@ um.value=selected.value[0].um
             
                     </q-input>
 
-                    <q-input filled  label="Pret unitar" type="number" v-model.number="pretUnitar" style="max-width: 100px;">
+                    <q-input filled  label="Pret unitar" type="number" :rules="[val => val>=0 || 'Sunt acceptate doar valori pozitive']" v-model.number="pretUnitar" style="max-width: 100px;">
             
                     </q-input>
 
@@ -148,7 +148,7 @@ um.value=selected.value[0].um
             
                     </q-input>
 
-                    <q-btn :disable="femiseStore.produsCurent.label==''" color="grey-4" text-color="purple" glossy unelevated icon="add" :label="editMode?'Modifica':'Adauga'" @click="adaugaItem"/>
+                    <q-btn :disable="femiseStore.produsCurent.label==''||pretUnitar<0" color="grey-4" text-color="purple" glossy unelevated icon="add" :label="editMode?'Modifica':'Adauga'" @click="adaugaItem"/>
               </div>
               <div class="q-ml-xl q-mb-md" style="max-width: 300px">
                 <q-input
