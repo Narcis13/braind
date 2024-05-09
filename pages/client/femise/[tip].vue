@@ -125,11 +125,16 @@ async function Adauga(){
                     header-class="text-primary"
                     class="q-pa-md"
                 >
-                <div class="q-mt-md" style="width:1150px">
-                <div class="text-h6">
-                   Factura {{ tipfactura }}
-                </div>
-                    </div>
+                <div class=" row q-mt-md" style="width:1150px">
+                        <div class="text-h6">
+                              Factura {{ tipfactura }}
+                        </div>
+                        <q-btn class="q-ml-md" round color="black" icon="refresh" @click="resetFactura">
+                            <q-tooltip>
+                                 Reset Factura
+                             </q-tooltip>
+                        </q-btn>
+                 </div>
                         <q-card class="q-mt-sm q-ml-xs row justify-evenly  q-gutter-md" style="width:1150px">
                             
                         <client-factura-emisa-select-client v-model="femiseStore.modelDocument.client"/>
