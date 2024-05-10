@@ -8,7 +8,7 @@ const cantitate = ref(1)
 const pretUnitar = ref(0)
 
 const valoare = computed(()=>{
-  return (cantitate.value*pretUnitar.value).toFixed(2)
+  return parseFloat((cantitate.value*pretUnitar.value).toFixed(2))
 })
 
 const total = computed(()=>{
@@ -57,7 +57,7 @@ function adaugaItem(){
         um:femiseStore.produsCurent.um,
         cantitate:cantitate.value,
         pret:pretUnitar.value,
-        valoare:(cantitate.value*pretUnitar.value).toFixed(2)
+        valoare:parseFloat((cantitate.value*pretUnitar.value).toFixed(2))
       }
       selected.value=[]
      }
@@ -71,7 +71,7 @@ function adaugaItem(){
     um:femiseStore.produsCurent.um,
     cantitate:cantitate.value,
     pret:pretUnitar.value,
-    valoare:(cantitate.value*pretUnitar.value).toFixed(2)
+    valoare:parseFloat((cantitate.value*pretUnitar.value).toFixed(2))
   })
   }
 
