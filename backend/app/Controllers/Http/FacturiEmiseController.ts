@@ -4,6 +4,8 @@ import User from 'App/Models/User';
 import GeneratorFacturaXML from './GeneratorFacturaXML';
 const axios = require("axios");
 const xml2js = require('xml2js');
+const fs = require('fs');
+
 export default class FacturiEmiseController {
 
     public async printfactura({view,params}){
@@ -75,6 +77,31 @@ export default class FacturiEmiseController {
        
     }
 
+    public async descarcafactura({params}){
+
+     // https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=3562246100
+     const user = await User.findOrFail(params.userid)
+     //console.log('descarc factura',params.id,user.jwt)
+     const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=${params.id}`, user.jwt)
+     console.log('Response:', responseData.length);
+
+     const writeStream = fs.createWriteStream(params.id+'.zip');
+
+     // Pipe the binary data from the API response to the write stream
+     writeStream.write(responseData);
+     writeStream.end();
+   
+     writeStream.on('finish', () => {
+       console.log('File saved successfully.');
+     });
+   
+     writeStream.on('error', (error) => {
+       console.error('Error saving file:', error);
+     });
+
+
+     return {succes:true}
+    }
     public async trimitefactura({params}){
   
       const user = await User.findOrFail(params.userid)
