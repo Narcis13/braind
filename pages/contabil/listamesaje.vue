@@ -39,8 +39,9 @@ const columns = [
 ]
 
 async function descarca(){
-    console.log('descarc ID',selected.value[0].id)
-    await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id);  
+ 
+ const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id);  
+    console.log('descarc ID',r)
 }
 
 </script>

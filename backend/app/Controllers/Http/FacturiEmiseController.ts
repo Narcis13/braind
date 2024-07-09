@@ -2,9 +2,13 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User';
 import GeneratorFacturaXML from './GeneratorFacturaXML';
+import AdmZip from 'adm-zip';
 const axios = require("axios");
 const xml2js = require('xml2js');
 const fs = require('fs');
+import path from 'path'
+
+
 
 export default class FacturiEmiseController {
 
@@ -77,17 +81,17 @@ export default class FacturiEmiseController {
        
     }
 
-    public async descarcafactura({params}){
+    public async descarcafactura({params,response}){
 
      // https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=3562246100
      const user = await User.findOrFail(params.userid)
-     //console.log('descarc factura',params.id,user.jwt)
-     const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=${params.id}`, user.jwt)
-     console.log('Response:', responseData.length);
 
+     //const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=${params.id}`, user.jwt)
+     //console.log('Response:', responseData.length);
+/*
      const writeStream = fs.createWriteStream(params.id+'.zip');
 
-     // Pipe the binary data from the API response to the write stream
+
      writeStream.write(responseData);
      writeStream.end();
    
@@ -101,7 +105,103 @@ export default class FacturiEmiseController {
 
 
      return {succes:true}
+     */
+
+     const apiUrl = `https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=${params.id}`
+    const outputFilePath = params.id+'.zip'
+
+    try {
+      const writer = fs.createWriteStream(outputFilePath)
+      
+      const axiosResponse = await axios({
+        method: 'get',
+        url: apiUrl,
+        responseType: 'stream',
+        headers: {
+          'Authorization': `Bearer ${user.jwt}`
+        }
+      })
+
+      axiosResponse.data.pipe(writer)
+
+      return new Promise((resolve, reject) => {
+        writer.on('finish', () => {
+          console.log('File has been successfully saved')
+          
+          
+          const xml=  this.extractZip(outputFilePath,'./extrase',params.id+'.xml')
+           console.log('Fisiere extrase...',xml)
+
+          
+
+          resolve('File downloaded and saved successfully')
+        })
+        writer.on('error', (error) => {
+          console.error('Error writing file:', error)
+          reject(error)
+        })
+      })
+    } catch (error) {
+      console.error('Error downloading file:', error)
+      return response.status(500).send('Error downloading file')
     }
+  }
+
+  private  extractZip(zipFilePath,extractPath,xmlFileName) {
+   // const zipFilePath = 'output.zip' // Path to your downloaded zip file
+   // const extractPath = 'extracted_files' // Directory where you want to extract files
+
+    try {
+      // Check if the zip file exists
+      if (!fs.existsSync(zipFilePath)) {
+        return false
+      }
+
+      // Create the extraction directory if it doesn't exist
+      if (!fs.existsSync(extractPath)) {
+        fs.mkdirSync(extractPath, { recursive: true })
+      }
+
+      // Read the zip file
+      const zip = new AdmZip(zipFilePath)
+
+      // Extract all files
+      zip.extractAllTo(extractPath, true)
+
+      // Optional: Delete the zip file after extraction
+      // fs.unlinkSync(zipFilePath)
+      const xmlFilePath = path.join(extractPath, xmlFileName)
+
+      // Check if the XML file exists
+      if (!fs.existsSync(xmlFilePath)) {
+        return false
+      }
+
+      // Read the content of the XML file
+      fs.readFile(xmlFilePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Error reading XML file:', err)
+          return false
+        }
+  
+        // Optional: Delete the zip file and extracted files after reading
+        // fs.unlinkSync(zipFilePath)
+        // fs.rmdirSync(extractPath, { recursive: true })
+  
+        return data
+      })
+
+      // Optional: Delete the zip file and extracted files after reading
+      // fs.unlinkSync(zipFilePath)
+      // fs.rmdirSync(extractPath, { recursive: true })
+
+      return true
+    } catch (error) {
+      console.error('Error extracting zip file:', error)
+      return false
+    }
+  }
+
     public async trimitefactura({params}){
   
       const user = await User.findOrFail(params.userid)
