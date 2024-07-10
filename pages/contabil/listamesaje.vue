@@ -40,8 +40,8 @@ const columns = [
 
 async function descarca(){
  
- const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id);  
-    console.log('descarc ID',r)
+ const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id+'/'+selected.value[0].id_solicitare);  
+    console.log('descarc ID',JSON.parse(r))
 }
 
 </script>

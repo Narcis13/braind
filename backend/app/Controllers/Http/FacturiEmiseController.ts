@@ -83,33 +83,13 @@ export default class FacturiEmiseController {
 
     public async descarcafactura({params,response}){
 
-     // https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=3562246100
+
      const user = await User.findOrFail(params.userid)
 
-     //const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=${params.id}`, user.jwt)
-     //console.log('Response:', responseData.length);
-/*
-     const writeStream = fs.createWriteStream(params.id+'.zip');
-
-
-     writeStream.write(responseData);
-     writeStream.end();
-   
-     writeStream.on('finish', () => {
-       console.log('File saved successfully.');
-     });
-   
-     writeStream.on('error', (error) => {
-       console.error('Error saving file:', error);
-     });
-
-
-     return {succes:true}
-     */
 
      const apiUrl = `https://api.anaf.ro/prod/FCTEL/rest/descarcare?id=${params.id}`
     const outputFilePath = params.id+'.zip'
-
+     var json=''
     try {
       const writer = fs.createWriteStream(outputFilePath)
       
@@ -129,12 +109,25 @@ export default class FacturiEmiseController {
           console.log('File has been successfully saved')
           
           
-          const xml=  this.extractZip(outputFilePath,'./extrase',params.id+'.xml')
-           console.log('Fisiere extrase...',xml)
+          const xml=  this.extractZip(outputFilePath,'./extrase',params.idsolicitare+'.xml')
+         //  console.log('Fisiere extrase...',xml)
 
+         const parser = new xml2js.Parser({ explicitArray: false });
+         parser.parseString(xml, (err, result) => {
+         if (err) {
+             console.error('Error parsing XML:', err);
+         } else {
+            // console.log(result.header.$.stare)
+           json=JSON.stringify(result)
+           //  console.log('index_incarcare attribute value:', indexIncarcareValue);
+         }
+        // return {stare:'ok'}
+     })
           
 
-          resolve('File downloaded and saved successfully')
+          resolve(json)
+         fs.unlinkSync(outputFilePath)
+          fs.rmdirSync('./extrase', { recursive: true })
         })
         writer.on('error', (error) => {
           console.error('Error writing file:', error)
@@ -150,7 +143,7 @@ export default class FacturiEmiseController {
   private  extractZip(zipFilePath,extractPath,xmlFileName) {
    // const zipFilePath = 'output.zip' // Path to your downloaded zip file
    // const extractPath = 'extracted_files' // Directory where you want to extract files
-
+  //var xml='...'
     try {
       // Check if the zip file exists
       if (!fs.existsSync(zipFilePath)) {
@@ -176,30 +169,20 @@ export default class FacturiEmiseController {
       if (!fs.existsSync(xmlFilePath)) {
         return false
       }
-
+    
       // Read the content of the XML file
-      fs.readFile(xmlFilePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error('Error reading XML file:', err)
-          return false
-        }
-  
-        // Optional: Delete the zip file and extracted files after reading
-        // fs.unlinkSync(zipFilePath)
-        // fs.rmdirSync(extractPath, { recursive: true })
-  
-        return data
-      })
+      return  fs.readFileSync(xmlFilePath, 'utf8')
 
       // Optional: Delete the zip file and extracted files after reading
-      // fs.unlinkSync(zipFilePath)
-      // fs.rmdirSync(extractPath, { recursive: true })
+   
 
-      return true
+      //return xml
     } catch (error) {
       console.error('Error extracting zip file:', error)
       return false
     }
+
+    //return xml;
   }
 
     public async trimitefactura({params}){
