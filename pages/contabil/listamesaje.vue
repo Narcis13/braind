@@ -41,7 +41,20 @@ const columns = [
 async function descarca(){
  
  const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id+'/'+selected.value[0].id_solicitare);  
-    console.log('descarc ID',JSON.parse(r))
+    const data_factura = JSON.parse(r)
+    const factura = {
+        nrfact:data_factura.Invoice['cbc:ID'],
+        data:data_factura.Invoice['cbc:IssueDate'],
+        scadenta:data_factura.Invoice['cbc:DueDate'],
+        note:data_factura.Invoice['cbc:Note'],
+        totalfaratva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
+        totalcutva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
+        numefurnizor:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        cuifurnizor:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        numeclient:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        cuiclient:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+    }
+    console.log('descarc ID',factura,data_factura)
 }
 
 </script>
