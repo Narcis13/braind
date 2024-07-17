@@ -15,6 +15,7 @@ let email=ref('')
 let parola=ref('')
 let firmaclientului =null
 const $q = useQuasar()
+
 async function login(){
 try {
   let response=  await $fetch(host+"login", {
@@ -37,14 +38,18 @@ try {
       //  utilizatorStore.setELogat()
       //  if(response.utilizator.e_admin) utilizatorStore.setEAdmin()
       const {rol,id}= response.loggeduser
+      const verb = rol=='client'?"asignateclientului":"asignatecontabilului";
+     // console.log('verb',verb)
       try {
-         firmaclientului = await $fetch(`/api/firme/asignateclientului/${id}`,{
+         firmaclientului = await $fetch(`/api/firme/${verb}/${id}`,{
               headers:{
                "b-access-token":utilizatorStore.token
               }
             })
             if(firmaclientului){
-              utilizatorStore.asigneazaFirma(firmaclientului);
+              if(rol=='client') utilizatorStore.asigneazaFirma(firmaclientului);
+              if(rol=='contabil') utilizatorStore.asigneazaFirme(firmaclientului.firme);
+              
          //updateaza storeul User cu informatiile firmei
              }
 

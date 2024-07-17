@@ -46,7 +46,7 @@ async function descarca(){
         nrfact:data_factura.Invoice['cbc:ID'],
         data:data_factura.Invoice['cbc:IssueDate'],
         scadenta:data_factura.Invoice['cbc:DueDate'],
-        note:data_factura.Invoice['cbc:Note'],
+        note:data_factura.Invoice['cbc:Note']?data_factura.Invoice['cbc:Note']:'',
         totalfaratva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
         totalcutva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
         numefurnizor:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
@@ -54,7 +54,7 @@ async function descarca(){
         numeclient:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
         cuiclient:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
     }
-    console.log('descarc ID',factura,data_factura)
+    console.log('descarc ID',factura,data_factura,userStore.firme)
 }
 
 </script>
