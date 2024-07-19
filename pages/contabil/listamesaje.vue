@@ -19,7 +19,8 @@ rowsPerPage: 20
 $q.loading.show({
     delay: 400 // ms
   })
-let toatemesajele =  await $fetch(host+'femise/listamesaje/4318016'+'/'+userStore.utilizator.id);  
+  console.log('CUI firma curenta',userStore.firmacurenta.cui)
+let toatemesajele =  await $fetch(host+'femise/listamesaje/'+userStore.firmacurenta.cui+'/'+userStore.utilizator.id);  
 $q.loading.hide()   
 //console.log('toate mesajele',toatemesajele.mesaje)  
 let prelucrate=[]
@@ -49,12 +50,12 @@ async function descarca(){
         note:data_factura.Invoice['cbc:Note']?data_factura.Invoice['cbc:Note']:'',
         totalfaratva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
         totalcutva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
-        numefurnizor:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
-        cuifurnizor:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
-        numeclient:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
-        cuiclient:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        numefurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        cuifurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        numeclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        cuiclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
     }
-    console.log('descarc ID',factura,data_factura,userStore.firme)
+    console.log('descarc ID',factura,data_factura)
 }
 
 </script>

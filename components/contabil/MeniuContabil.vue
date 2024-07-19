@@ -1,5 +1,7 @@
 <script setup>
+import { useUserStore } from '~/stores/userStore';
 
+const userStore = useUserStore()
 function executa(link){
   console.log('executa',link)
   navigateTo(link.ruta)
@@ -56,6 +58,46 @@ const   buttons2= [
 
 <template>
         <q-scroll-area class="fit">
+
+                  <q-card v-if="userStore.eAutentificat" flat bordered class="my-card bg-grey-9" >
+                      <q-card-section>
+                        <div class="row items-center no-wrap">
+                          <div class="col">
+                            <div class="text-h6 text-white">Firma curenta:</div>
+                         
+                          </div>
+
+                          <div class="col-auto">
+                            <q-btn color="grey-2" round flat icon="more_vert">
+                              <q-menu cover auto-close>
+                                <q-list>
+                                  <q-item clickable>
+                                    <q-item-section>Schimba firma curenta</q-item-section>
+                                  </q-item>
+                                  <!-- <q-item clickable>
+                                    <q-item-section>Send Feedback</q-item-section>
+                                  </q-item>
+                                  <q-item clickable>
+                                    <q-item-section>Share</q-item-section>
+                                  </q-item> -->
+                                </q-list>
+                              </q-menu>
+                            </q-btn>
+                          </div>
+                        </div>
+                      </q-card-section>
+
+                      <q-card-section>
+                        <div class="col">
+                           <div class="text-h6 text-white">{{userStore.firmacurenta? userStore.firmacurenta.denumire: 'Nicio firma selectata'}}</div>
+                           <div class="text-subtitle2 text-white">CUI: {{userStore.firmacurenta? userStore.firmacurenta.cui: ''}}</div>
+                        </div>
+                      </q-card-section>
+
+
+                   </q-card>
+
+
           <q-list padding>
             <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="executa(link)">
               <q-item-section avatar>
@@ -127,7 +169,10 @@ text-decoration: none;
 font-weight: 500;
 font-size: .75rem;
 }
-
+.my-card{
+  width: 100%;
+  max-width: 250px;
+}
 
 .YL__drawer-footer-link:hover {
   color: #000;

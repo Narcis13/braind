@@ -12,7 +12,7 @@ export const useUserStore = defineStore('userStore',()=>{
     const eAdmin = ref(false)
     const onboarding_key =  ref(<string|null>null)//ref(<string|null>null)
 
-
+    const firmacurenta = ref(<Firma|null>null)
 
 
     const firmaDefinita = computed(()=>{
@@ -36,11 +36,13 @@ export const useUserStore = defineStore('userStore',()=>{
 
     function asigneazaFirma(f:Firma){
         firma.value=f
+
     }
 
     function asigneazaFirme( f:Firma[]){
        console.log('Store: firmele contabilului',f)
        firme.value=f;
+       firmacurenta.value=f[0];
     }
 
     function logout(){
@@ -68,7 +70,8 @@ export const useUserStore = defineStore('userStore',()=>{
         asigneazaFirma,
         firma,
         firme,
-        asigneazaFirme
+        asigneazaFirme,
+        firmacurenta
 
     }
 }) 
