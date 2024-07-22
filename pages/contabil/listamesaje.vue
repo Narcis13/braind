@@ -43,6 +43,19 @@ async function descarca(){
  
  const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id+'/'+selected.value[0].id_solicitare);  
     const data_factura = JSON.parse(r)
+
+    const linii=Array.isArray(data_factura.Invoice['cac:InvoiceLine'])?data_factura.Invoice['cac:InvoiceLine']:[data_factura.Invoice['cac:InvoiceLine']]
+    let itemi=[]
+    linii.map((linie) => {
+      itemi.push({
+        nrcrt:linie['cbc:ID'],
+        cantitate:linie['cbc:InvoicedQuantity']['_'],
+        denumire:linie['cac:Item']['cbc:Name'],
+        pret:linie['cac:Price']['cbc:PriceAmount']['_']
+      })
+
+    })
+
     const factura = {
         nrfact:data_factura.Invoice['cbc:ID'],
         data:data_factura.Invoice['cbc:IssueDate'],
@@ -54,8 +67,10 @@ async function descarca(){
         cuifurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         numeclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
         cuiclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        itemi
     }
-    console.log('descarc ID',factura,data_factura)
+
+    console.log('descarc ID',factura)
 }
 
 </script>
