@@ -1,12 +1,30 @@
 <script setup>
 import { useUserStore } from '~/stores/userStore';
-
+const prompt = ref(false)
+const nouafirma = ref(null)
 const userStore = useUserStore()
 function executa(link){
   console.log('executa',link)
   navigateTo(link.ruta)
 }
 
+let optiuni=ref([])
+
+
+function schimbaFirma(){
+  console.log('schimbaFirma',userStore.firme[1].denumire)
+prompt.value = !prompt.value
+
+optiuni.value=[]
+userStore.firme.map(f=>{
+  optiuni.value.push({label:f.denumire, value:f.id})
+})
+}
+
+function comutaFirma(){
+  console.log('comuta firma',typeof nouafirma.value.value)
+userStore.schimbaFirmaCurenta(nouafirma.value.value)
+}
 const   linksfe= [
     { icon: 'folder', text: 'Facturi fiscale',ruta:'/contabil/femise/fiscala' },
     { icon: 'restore', text: 'Facturi proforma',ruta:'/contabil/femise/proforma'  },
@@ -71,7 +89,7 @@ const   buttons2= [
                             <q-btn color="grey-2" round flat icon="more_vert">
                               <q-menu cover auto-close>
                                 <q-list>
-                                  <q-item clickable>
+                                  <q-item clickable @click="schimbaFirma">
                                     <q-item-section>Schimba firma curenta</q-item-section>
                                   </q-item>
                                   <!-- <q-item clickable>
@@ -159,6 +177,24 @@ const   buttons2= [
             </div>
           </q-list>
         </q-scroll-area>
+
+        <q-dialog v-model="prompt" persistent>
+            <q-card style="min-width: 350px">
+              <q-card-section>
+                <div class="text-h6">Schimba Firma</div>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">
+                <q-select v-model="nouafirma" :options="optiuni" label="Firme" />
+              </q-card-section>
+
+              <q-card-actions align="right" class="text-primary">
+                <q-btn flat label="Abandon" v-close-popup />
+                <q-btn :disable="!nouafirma" flat label="Schimba" v-close-popup @click="comutaFirma"/>
+              </q-card-actions>
+            </q-card>
+    </q-dialog>
+
 </template>
 <style>
  

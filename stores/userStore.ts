@@ -25,7 +25,13 @@ export const useUserStore = defineStore('userStore',()=>{
         return eAutentificat.value? fid+" "+utilizator.value?.token.token:'' 
     })
 
-
+    function schimbaFirmaCurenta(id:number){
+      firme.value.map(f=>{
+        if(f.id===id){
+            firmacurenta.value = f
+        }
+      })
+    }
 
     function autentificare(payload:UserPayload){
        // console.log('Autentificare',payload)
@@ -71,7 +77,8 @@ export const useUserStore = defineStore('userStore',()=>{
         firma,
         firme,
         asigneazaFirme,
-        firmacurenta
+        firmacurenta,
+        schimbaFirmaCurenta
 
     }
 }) 
