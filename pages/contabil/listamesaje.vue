@@ -39,6 +39,23 @@ const columns = [
 { name: 'tip', label: 'TIP',align: 'left', field: 'tip', sortable: true }
 ]
 
+function prepfactura(factura){
+  let facturaprelucrata={}
+
+  facturaprelucrata.nrfact=typeof factura['nrfact'] == 'object'? factura['nrfact']['_']:factura['nrfact']
+  facturaprelucrata.data=typeof factura['data'] == 'object'? factura['data']['_']:factura['data']
+  facturaprelucrata.scadenta=typeof factura['scadenta'] == 'object'? factura['scadenta']['_']:factura['scadenta']
+  facturaprelucrata.cuiclient=typeof factura['cuiclient'] == 'object'? factura['cuiclient']['_']:factura['cuiclient']
+  facturaprelucrata.cuifurnizor=typeof factura['cuifurnizor'] == 'object'? factura['cuifurnizor']['_']:factura['cuifurnizor']
+  facturaprelucrata.numeclient=typeof factura['numeclient'] == 'object'? factura['numeclient']['_']:factura['numeclient']
+  facturaprelucrata.numefurnizor=typeof factura['numefurnizor'] == 'object'? factura['numefurnizor']['_']:factura['numefurnizor']
+  facturaprelucrata.note=factura.note
+  facturaprelucrata.itemi=factura.itemi
+  facturaprelucrata.totalcutva=factura.totalcutva
+  facturaprelucrata.totalfaratva=factura.totalfaratva
+
+return facturaprelucrata
+}
 async function descarca(){
  
  const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id+'/'+selected.value[0].id_solicitare);  
@@ -70,7 +87,7 @@ async function descarca(){
         itemi
     }
 
-    console.log('descarc ID',factura)
+    console.log('descarc ID',factura,prepfactura(factura))
 }
 
 </script>
