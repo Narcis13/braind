@@ -195,7 +195,7 @@ enum TipFactura {
 
 model mesajepreluate {
   id          Int       @id @default(autoincrement())
-  datamesaj   Int
+  datamesaj   DateTime
   idmesaj  String   @db.VarChar(20)
   idsolicitare String   @db.VarChar(20)
   tip String   @db.VarChar(16)

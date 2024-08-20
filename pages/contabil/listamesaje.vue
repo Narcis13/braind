@@ -43,7 +43,7 @@ function prepfactura(factura){
   let facturaprelucrata={}
 
   facturaprelucrata.nrfact=typeof factura['nrfact'] == 'object'? factura['nrfact']['_']:factura['nrfact']
-  facturaprelucrata.data=typeof factura['data'] == 'object'? factura['data']['_']:factura['data']
+  facturaprelucrata.datafact=typeof factura['datafact'] == 'object'? factura['datafact']['_']:factura['datafact']
   facturaprelucrata.scadenta=typeof factura['scadenta'] == 'object'? factura['scadenta']['_']:factura['scadenta']
   facturaprelucrata.cuiclient=typeof factura['cuiclient'] == 'object'? factura['cuiclient']['_']:factura['cuiclient']
   facturaprelucrata.cuifurnizor=typeof factura['cuifurnizor'] == 'object'? factura['cuifurnizor']['_']:factura['cuifurnizor']
@@ -63,8 +63,8 @@ function prepfactura(factura){
 
 
   facturaprelucrata.itemi=JSON.stringify(itemi)
-  facturaprelucrata.totalcutva=factura.totalcutva
-  facturaprelucrata.totalfaratva=factura.totalfaratva
+  facturaprelucrata.totalcutva=parseFloat(factura.totalcutva)
+  facturaprelucrata.totalfaratva=parseFloat(factura.totalfaratva)
 
 return facturaprelucrata
 }
@@ -87,7 +87,7 @@ async function descarca(){
 
     const factura = {
         nrfact:data_factura.Invoice['cbc:ID'],
-        data:data_factura.Invoice['cbc:IssueDate'],
+        datafact:data_factura.Invoice['cbc:IssueDate'],
         scadenta:data_factura.Invoice['cbc:DueDate'],
         note:data_factura.Invoice['cbc:Note']?data_factura.Invoice['cbc:Note']:'',
         totalfaratva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
@@ -98,8 +98,27 @@ async function descarca(){
         cuiclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         itemi
     }
+  const payload = {
+    datamesaj:selected.value[0].data_creare.split('.').reverse().join('-'),
+    idmesaj:selected.value[0].id,
+    idsolicitare:selected.value[0].id_solicitare,
+    tip:selected.value[0].tip,
+    iduser:userStore.utilizator.id,
+    idfirma:userStore.firmacurenta.id,
+    stare:'preluat',
+    ...prepfactura(factura)
+  }
+   
 
-    console.log('descarc ID',typeof factura.note,prepfactura(factura))
+    let {data}=  await useFetch(`/api/firme/mesajeanaf/preluare`, {
+        method: "POST",
+        headers: {
+          "b-access-token":userStore.token
+        },
+        body: payload
+      });
+
+      console.log('descarc ID',payload,data.value)
 }
 
 </script>
