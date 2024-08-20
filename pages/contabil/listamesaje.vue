@@ -49,8 +49,20 @@ function prepfactura(factura){
   facturaprelucrata.cuifurnizor=typeof factura['cuifurnizor'] == 'object'? factura['cuifurnizor']['_']:factura['cuifurnizor']
   facturaprelucrata.numeclient=typeof factura['numeclient'] == 'object'? factura['numeclient']['_']:factura['numeclient']
   facturaprelucrata.numefurnizor=typeof factura['numefurnizor'] == 'object'? factura['numefurnizor']['_']:factura['numefurnizor']
-  facturaprelucrata.note=factura.note
-  facturaprelucrata.itemi=factura.itemi
+  facturaprelucrata.note=typeof factura.note == 'object'? factura.note.join(';'):factura.note
+  
+  let itemi=[]
+  factura.itemi.map((item) => {
+    itemi.push({
+      nrcrt:typeof item['nrcrt'] == 'object'? item['nrcrt']['_']:item['nrcrt'],
+      cantitate:typeof item['cantitate'] == 'object'? item['cantitate']['_']:item['cantitate'],
+      denumire:typeof item['denumire'] == 'object'? item['denumire']['_']:item['denumire'],
+      pret:typeof item['pret'] == 'object'? item['pret']['_']:item['pret']
+    })
+  })
+
+
+  facturaprelucrata.itemi=JSON.stringify(itemi)
   facturaprelucrata.totalcutva=factura.totalcutva
   facturaprelucrata.totalfaratva=factura.totalfaratva
 
@@ -87,7 +99,7 @@ async function descarca(){
         itemi
     }
 
-    console.log('descarc ID',factura,prepfactura(factura))
+    console.log('descarc ID',typeof factura.note,prepfactura(factura))
 }
 
 </script>
