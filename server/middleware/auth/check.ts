@@ -8,7 +8,7 @@ const forbiddenError = createError({
   export default defineEventHandler(async (event) => {
 
 
-   let  accessToken = event.node.req.headers["b-access-token"] as string;
+   let  accessToken = 'liber'//event.node.req.headers["b-access-token"] as string;
    let tokens = null
    
    

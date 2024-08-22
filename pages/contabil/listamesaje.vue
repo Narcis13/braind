@@ -10,11 +10,19 @@ const config = useRuntimeConfig()
 const host=config.public.apihost;
 //console.log('Mesaje ANAF')
 let mesaje=reactive([])
+let mesajepreluate=await $fetch("/api/firme/mesajeanaf/ultimele")
 let initialPagination= {
 
 page: 1,
 rowsPerPage: 20
 // rowsNumber: xx if getting data from a server
+}
+function estepreluat(id){
+  let r=false
+  mesajepreluate.map(m=>{
+    if (id==m.idmesaj) r=true
+  })
+  return r;
 }
 $q.loading.show({
     delay: 400 // ms
@@ -27,9 +35,12 @@ let prelucrate=[]
 let selected = ref([])
 toatemesajele.mesaje.map((element) => {
     element.data_creare=element.data_creare.substr(6,2)+'.'+element.data_creare.substr(4,2)+'.'+element.data_creare.substr(0,4)
+    element.preluat=estepreluat(element.id)
+   // element.id=parseInt(element.id)
     prelucrate.unshift(element)
 });
-mesaje=[...prelucrate]
+mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+console.log('prelucrate',prelucrate)
 const columns = [
 
 { name: 'datacreare', align: 'center', label: 'Data', field: 'data_creare', sortable: true },
@@ -130,6 +141,7 @@ async function descarca(){
                 :pagination="initialPagination"
                 :rows="mesaje"
                 :columns="columns"
+                dense
                 class="q-mt-md"
                 row-key="id"
                 selection="single"
@@ -139,16 +151,16 @@ async function descarca(){
          <template v-slot:top-left>
 
                                
-        <div class="flex" style="min-width:200px;max-height:100px;">
+              <div class="flex" style="min-width:200px;max-height:100px;">
 
 
-            <q-btn  class="q-ma-sm" label="Descarca"   icon="add" @click="descarca">
+                  <q-btn :disable="selected.length==0" class="q-ma-sm" label="Descarca"   icon="add" @click="descarca">
 
-            </q-btn>
+                  </q-btn>
 
-        </div>
+              </div>
 
-</template>
+       </template>
         </q-table>
     </div>
 </template>
