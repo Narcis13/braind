@@ -40,7 +40,7 @@ toatemesajele.mesaje.map((element) => {
     prelucrate.unshift(element)
 });
 mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
-console.log('prelucrate',prelucrate)
+//console.log('prelucrate',prelucrate)
 const columns = [
 
 { name: 'datacreare', align: 'center', label: 'Data', field: 'data_creare', sortable: true },
@@ -128,7 +128,14 @@ async function descarca(){
         },
         body: payload
       });
-
+      if(data.value.succes){
+        mesaje.map(m=>{
+          if(m.id==selected.value[0].id){
+            m.preluat=true
+          }
+        })
+        selected.value=[]
+      }
       console.log('descarc ID',payload,data.value)
 }
 
@@ -154,13 +161,29 @@ async function descarca(){
               <div class="flex" style="min-width:200px;max-height:100px;">
 
 
-                  <q-btn :disable="selected.length==0" class="q-ma-sm" label="Descarca"   icon="add" @click="descarca">
+                  <q-btn :disable="selected.length==0||selected[0].preluat" class="q-ma-sm" label="Descarca"   icon="add" @click="descarca">
 
                   </q-btn>
 
               </div>
 
        </template>
+
+       <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td auto-width>
+            <q-checkbox v-model="props.selected" />
+          </q-td>
+          <q-td
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+            :class="{ 'text-blue': props.row.preluat, 'text-black': !props.row.preluat }"
+          >
+            {{ col.value }}
+          </q-td>
+        </q-tr>
+      </template>
         </q-table>
     </div>
 </template>

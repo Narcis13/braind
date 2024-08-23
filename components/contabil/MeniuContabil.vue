@@ -36,7 +36,8 @@ const   linksfe= [
 
 const  links1= [
 
-    { icon: 'subscriptions', text: 'Lista mesaje ANAF',ruta:'/contabil/listamesaje' }
+    { icon: 'subscriptions', text: 'Lista mesaje ANAF',ruta:'/contabil/listamesaje' },
+    { icon: 'subscriptions', text: 'Facturi preluate',ruta:'/contabil/facturipreluate' }
   ]
 const   links2= [
     { icon: 'folder', text: 'Library' },
@@ -117,15 +118,22 @@ const   buttons2= [
 
 
           <q-list padding>
-            <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="executa(link)">
-              <q-item-section avatar>
-                <q-icon color="grey" :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }}</q-item-label>
-              </q-item-section>
-            </q-item>
-  
+            <q-expansion-item group="somegroup" icon="edit_calendar" label="E-FACTURA" header-class="text-weight-bold text-uppercase">
+            <q-card>
+              <q-card-section>
+
+                  <q-item v-for="link in links1" :key="link.text" v-ripple clickable @click="executa(link)">
+                    <q-item-section avatar>
+                      <q-icon color="grey" :name="link.icon" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ link.text }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+               </q-card-section>
+            </q-card>
+          </q-expansion-item>
+
             <q-separator class="q-my-md" />
   
             <q-expansion-item group="somegroup" icon="edit_calendar" label="Facturi emise" header-class="text-weight-bold text-uppercase">
