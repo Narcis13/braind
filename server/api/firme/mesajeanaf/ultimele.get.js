@@ -4,18 +4,19 @@ const prisma = new PrismaClient();
 
 
 export default defineEventHandler( async (event)=>{
-    const elevenDaysAgo = new Date();
-    elevenDaysAgo.setDate(elevenDaysAgo.getDate() - 11);
-  
-    // Fetch records from the last 11 days
-    const mesaje = await prisma.mesajepreluate.findMany({
-      where: {
-        datamesaj: {
-          gte: elevenDaysAgo, // greater than or equal to 11 days ago
-        },
+  const days = parseInt(getQuery(event).days) || 11;
+
+  const pastDate = new Date();
+  pastDate.setDate(pastDate.getDate() - days);
+
+  // Fetch records from the specified number of days ago
+  const mesaje = await prisma.mesajepreluate.findMany({
+    where: {
+      datamesaj: {
+        gte: pastDate, // greater than or equal to the specified number of days ago
       },
-    });
-  
-    
-   return mesaje
+    },
+  });
+
+  return mesaje;
 })
