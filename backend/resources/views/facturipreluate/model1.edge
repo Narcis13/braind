@@ -84,25 +84,25 @@
     <div class="invoice-container">
         <div class="invoice-header">
             <div class="invoice-title">FACTURA</div>
-            <div class="invoice-logo">Your Company Logo</div>
+            <div class="invoice-logo">preluare e-factura</div>
         </div>
         <div class="invoice-body">
             <div class="invoice-details">
                 <div class="invoice-details-col">
                     <h3>Furnizor:</h3>
-                    <p><strong>{{numefurnizor}}</strong></p>
-                    <p>CUI: {{cuifurnizor}}</p>
+                    <p><strong>{{factura.numefurnizor}}</strong></p>
+                    <p>CUI: {{factura.cuifurnizor}}</p>
                 </div>
                 <div class="invoice-details-col">
                     <h3>Client:</h3>
-                    <p><strong>{{numeclient}}</strong></p>
-                    <p>CUI: {{cuiclient}}</p>
+                    <p><strong>{{factura.numeclient}}</strong></p>
+                    <p>CUI: {{factura.cuiclient}}</p>
                 </div>
                 <div class="invoice-details-col">
                     <h3>Detalii factura:</h3>
-                    <p><strong>Nr. factura:</strong> {{nrfact}}</p>
-                    <p><strong>Data factura:</strong> {{datafact}}</p>
-                    <p><strong>Data scadenta:</strong> {{scadenta}}</p>
+                    <p><strong>Nr. factura:</strong> {{factura.nrfact}}</p>
+                    <p><strong>Data factura:</strong> {{ new Date(factura.datafact).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).split('/').join('.')}}</p>
+                    <p><strong>Data scadenta:</strong> {{new Date(factura.scadenta).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).split('/').join('.')}}</p>
                 </div>
             </div>
             <table class="invoice-table">
@@ -112,26 +112,28 @@
                         <th>Denumire</th>
                         <th>Cantitate</th>
                         <th>Pret unitar</th>
-                        <th>Total</th>
+                  
                     </tr>
                 </thead>
                 <tbody>
                     <!-- This section will be populated dynamically -->
+                 @each((linie, index) in factura.itemi)
                     <tr>
-                        <td>1</td>
-                        <td>{{itemi[0].denumire}}</td>
-                        <td>{{itemi[0].cantitate}}</td>
-                        <td>{{itemi[0].pret}} RON</td>
-                        <td>{{totalfaratva}} RON</td>
+                        <td>{{index}}</td>
+                        <td>{{linie.denumire}}</td>
+                        <td>{{linie.cantitate}}</td>
+                        <td>{{linie.pret}} RON</td>
+                       
                     </tr>
+                   @endeach  
                 </tbody>
             </table>
             <div class="invoice-total">
-                <p><strong>Total fara TVA:</strong> {{totalfaratva}} RON</p>
-                <p><strong>Total cu TVA:</strong> {{totalcutva}} RON</p>
+                <p><strong>Total fara TVA:</strong> {{factura.totalfaratva}} RON</p>
+                <p><strong>Total cu TVA:</strong> {{factura.totalcutva}} RON</p>
             </div>
             <div class="invoice-notes">
-                <p><strong>Note:</strong> {{note}}</p>
+                <p><strong>Note:</strong> {{factura.note}}</p>
             </div>
         </div>
     </div>

@@ -1,8 +1,10 @@
 <script setup>
 import { useQuasar } from 'quasar'
-
+import { useUserStore } from '~/stores/userStore';
+const config = useRuntimeConfig()
+const host=config.public.apihost;
 const $q = useQuasar()
-
+const userStore = useUserStore()
 const loading = ref(true)
 const rows = ref([])
 const filter = ref('')
@@ -34,7 +36,7 @@ const formatDate = (dateString) => {
 const fetchData = async () => {
   try {
     loading.value = true
-    const data = await $fetch("/api/firme/mesajeanaf/ultimele?days=60")
+    const data = await $fetch("/api/firme/mesajeanaf/ultimele?days=60&cui="+userStore.firmacurenta.cui)
     rows.value = data
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -50,7 +52,8 @@ const fetchData = async () => {
 }
 
 const printSelected = () => {
-  console.log('Printing selected rows:', selected.value)
+  console.log('Printing selected rows:', selected.value[0].id)
+  window.open(host+'mesajepreluate/'+selected.value[0].id, '_blank');
   // Implement your print logic here
 }
 
@@ -73,7 +76,7 @@ fetchData()
         v-model:selected="selected"
       >
         <template v-slot:top>
-          <q-btn color="primary" label="PRINT" @click="printSelected" class="q-mr-sm" />
+          <q-btn :disable="selected.length==0" color="primary" label="PRINT" @click="printSelected" class="q-mr-sm" />
           <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
           <template v-slot:append>

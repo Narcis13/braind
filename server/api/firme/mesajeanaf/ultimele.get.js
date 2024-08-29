@@ -5,7 +5,8 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler( async (event)=>{
   const days = parseInt(getQuery(event).days) || 11;
-
+ const cui = getQuery(event).cui||'*'
+  //console.log('cui',cui)
   const pastDate = new Date();
   pastDate.setDate(pastDate.getDate() - days);
 
@@ -15,6 +16,10 @@ export default defineEventHandler( async (event)=>{
       datamesaj: {
         gte: pastDate, // greater than or equal to the specified number of days ago
       },
+      OR: [
+        { cuiclient: cui },
+        { cuifurnizor: cui }
+      ]
     },
   });
 

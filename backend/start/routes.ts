@@ -31,6 +31,7 @@ Route.get('/femise/descarca/:id/:userid/:idsolicitare','FacturiEmiseController.d
 Route.get('/femise/listamesaje/:cif/:userid','FacturiEmiseController.listamesaje')
 Route.get('/femise/xmlfactura/:id','FacturiEmiseController.xmlfactura')
 Route.get('/femise/:idf','FacturiEmiseController.printfactura')
+Route.get('/mesajepreluate/:id','MesajePreluateController.printfactura')
 Route.post('/registeruser','AuthController.register')
 Route.post('/login','AuthController.login')
 Route.post('/logout','AuthController.logout')
