@@ -61,6 +61,13 @@
         }
         .invoice-table th {
             background-color: #f2f2f2;
+            text-align: center; /* Center align header text */
+        }
+        .invoice-table td.right-align {
+             text-align: right; /* Right align specific columns */
+        }
+        .invoice-table td.center-align {
+             text-align: center; /* Right align specific columns */
         }
         .invoice-total {
             margin-top: 20px;
@@ -112,17 +119,18 @@
                         <th>Denumire</th>
                         <th>Cantitate</th>
                         <th>Pret unitar</th>
-                  
+                        <th>Valoare</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- This section will be populated dynamically -->
                  @each((linie, index) in factura.itemi)
                     <tr>
-                        <td>{{index}}</td>
+                        <td class="center-align">{{index+1}}</td>
                         <td>{{linie.denumire}}</td>
-                        <td>{{linie.cantitate}}</td>
-                        <td>{{linie.pret}} RON</td>
+                        <td class="right-align">{{linie.cantitate}}</td>
+                        <td class="right-align">{{linie.pret}} RON</td>
+                        <td class="right-align">{{parseFloat(linie.pret)*parseFloat(linie.cantitate)}} RON</td>
                        
                     </tr>
                    @endeach  

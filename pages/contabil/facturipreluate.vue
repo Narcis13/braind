@@ -21,10 +21,11 @@ const columns = [
   { name: 'furnizor', required: true, label: 'Furnizor', align: 'left', field: row => row.numefurnizor, sortable: true },
   { name: 'client', required: true, label: 'Client', align: 'left', field: row => row.numeclient, sortable: true },
   { name: 'nrfact', required: true, label: 'Nr. factura', align: 'left', field: 'nrfact', sortable: true },
-  { name: 'datafact', required: true, label: 'Data factura', align: 'left', field: row => formatDate(row.datafact), sortable: true },
+  { name: 'datafact', required: true, label: 'Data factura', align: 'center', field: row => formatDate(row.datafact), sortable: true },
   { name: 'totalfaratva', required: true, label: 'Total fara TVA', align: 'right', field: 'totalfaratva', sortable: true },
   { name: 'totalcutva', required: true, label: 'Total cu TVA', align: 'right', field: 'totalcutva', sortable: true },
-  { name: 'stare', required: true, label: 'Stare', align: 'left', field: 'stare', sortable: true },
+  { name: 'tip', required: true, label: 'Tip', align: 'center', field: 'tip', sortable: true },
+  { name: 'stare', required: true, label: 'Stare', align: 'center', field: 'stare', sortable: true },
 ]
 
 const formatDate = (dateString) => {
@@ -57,6 +58,11 @@ const printSelected = () => {
   // Implement your print logic here
 }
 
+function exportSAGA(){
+  let factura = selected.value[0]
+  factura.itemi=JSON.parse(factura.itemi)
+  console.log('Export saga',JSON.stringify(factura))
+}
 // Fetch data when component is mounted
 fetchData()
 </script>
@@ -76,7 +82,8 @@ fetchData()
         v-model:selected="selected"
       >
         <template v-slot:top>
-          <q-btn :disable="selected.length==0" color="primary" label="PRINT" @click="printSelected" class="q-mr-sm" />
+          <q-btn :disable="selected.length==0||selected.length>1" color="primary" label="PRINT" @click="printSelected" class="q-mr-sm" />
+          <q-btn :disable="selected.length==0" color="primary" label="Export SAGA" @click="exportSAGA" class="q-mr-sm" />
           <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
           <template v-slot:append>
