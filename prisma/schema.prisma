@@ -35,6 +35,8 @@ model Firme {
   id_user         Int
   id_contabil     Int?
   stare           String           @default("inactiv") @db.VarChar(20)
+  banca           String?          @default("TREZORERIA PITESTI") @db.VarChar(50)
+  iban           String?           @db.VarChar(24)
   administratori  Administratori[]
 }
 
@@ -117,6 +119,7 @@ model produsi {
   banca       String?   @db.VarChar(120)
   codcpv        String?   @db.VarChar(24)
   codnc        String?   @db.VarChar(50)
+  iban   String?    @db.VarChar(24)
   created_at  DateTime  @default(now()) @db.DateTime(0)
   updated_at  DateTime? @updatedAt
 }

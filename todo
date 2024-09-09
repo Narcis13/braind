@@ -24,8 +24,5 @@ La factura emisa>
 
 
 
--implementare rol utilizator
-
-= sa fac totul minim functional pina la nivel de xml....
-- sa actualizez bazele de date ...
-- FIRST BUILD !!!!!!
+- sa afizez si sa salvez in XML contul IBAN asociat cu primul reper
+ 
