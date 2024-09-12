@@ -136,7 +136,7 @@ async function descarca(){
         })
         selected.value=[]
       }
-      console.log('descarc ID',payload,data.value)
+      console.log('descarc ID',data_factura.Invoice,data_factura.Invoice['cac:PaymentMeans']? Array.isArray(data_factura.Invoice['cac:PaymentMeans'])? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']:data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT')
 }
 
 </script>

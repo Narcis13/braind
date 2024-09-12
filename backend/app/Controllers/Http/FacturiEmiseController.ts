@@ -127,7 +127,7 @@ export default class FacturiEmiseController {
 
           resolve(json)
          fs.unlinkSync(outputFilePath)
-          fs.rmdirSync('./extrase', { recursive: true })
+         fs.rmdirSync('./extrase', { recursive: true })
         })
         writer.on('error', (error) => {
           console.error('Error writing file:', error)

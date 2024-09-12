@@ -26,3 +26,9 @@ La factura emisa>
 
 - sa afizez si sa salvez in XML contul IBAN asociat cu primul reper
  
+   <cac:PaymentMeans>
+      <cbc:PaymentMeansCode>42</cbc:PaymentMeansCode>
+      <cac:PayeeFinancialAccount>
+                <cbc:ID>R026INGB0000999901919782</cbc:ID>
+      </cac:PayeeFinancialAccount>
+</cac:PaymentMeans>
