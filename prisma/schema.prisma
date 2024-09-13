@@ -206,6 +206,7 @@ model mesajepreluate {
   cuifurnizor String   @db.VarChar(14)
   numeclient String   @db.VarChar(64)
   numefurnizor String   @db.VarChar(64)
+  ibanfurnizor String?  @default("NESPECIFICAT") @db.VarChar(36)
   datafact DateTime
   nrfact String   @db.VarChar(48)
   scadenta DateTime?

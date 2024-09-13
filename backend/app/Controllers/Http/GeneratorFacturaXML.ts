@@ -34,7 +34,7 @@ export default class GeneratorFacturaXML {
 
           //client
             this.genClient()  
-
+            this.genPaymentMean()
             this.genTaxTotal()
 
             this.genMonetaryTotal()
@@ -42,6 +42,11 @@ export default class GeneratorFacturaXML {
             this.genLinii()
 
           return this.xml.end({ pretty: true });
+    }
+
+    private genPaymentMean(){
+        const payment=this.xml.ele('cac:PaymentMeans')
+        payment.ele('cbc:PaymentMeansCode','42')
     }
 
     private genFurnizor(){

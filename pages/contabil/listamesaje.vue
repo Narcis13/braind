@@ -1,16 +1,17 @@
 <script setup>
-import {useFemiseStore} from '~/stores/femiseStore'
+
 import { useUserStore } from '~/stores/userStore';
 import {useQuasar} from 'quasar'
 const $q = useQuasar()
 const userStore = useUserStore()
-const femiseStore = useFemiseStore()
+
 
 const config = useRuntimeConfig()
 const host=config.public.apihost;
 //console.log('Mesaje ANAF')
 let mesaje=reactive([])
-let mesajepreluate=await $fetch("/api/firme/mesajeanaf/ultimele")
+let mesajepreluate=await $fetch("/api/firme/mesajeanaf/ultimele?days=60&cui="+userStore.firmacurenta.cui)
+console.log('Mesaje preluate ANAF',mesajepreluate)
 let initialPagination= {
 
 page: 1,
@@ -61,7 +62,7 @@ function prepfactura(factura){
   facturaprelucrata.numeclient=typeof factura['numeclient'] == 'object'? factura['numeclient']['_']:factura['numeclient']
   facturaprelucrata.numefurnizor=typeof factura['numefurnizor'] == 'object'? factura['numefurnizor']['_']:factura['numefurnizor']
   facturaprelucrata.note=typeof factura.note == 'object'? factura.note.join(';'):factura.note
-  
+  facturaprelucrata.ibanfurnizor=factura.ibanfurnizor
   let itemi=[]
   factura.itemi.map((item) => {
     itemi.push({
@@ -104,6 +105,7 @@ async function descarca(){
         totalfaratva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
         totalcutva:data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
         numefurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        ibanfurnizor:data_factura.Invoice['cac:PaymentMeans']? Array.isArray(data_factura.Invoice['cac:PaymentMeans'])? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']:data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT',
         cuifurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         numeclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
         cuiclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],

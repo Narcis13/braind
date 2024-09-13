@@ -54,7 +54,7 @@ export default class FacturiEmiseController {
   
         let generator = new GeneratorFacturaXML(lista[0])
         const xmltext=generator.init()
-
+        console.log(xmltext)
         return {xmltext};
     }
 
