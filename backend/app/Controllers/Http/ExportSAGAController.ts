@@ -2,8 +2,16 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import xmlbuilder from 'xmlbuilder'
 
 export default class ExportSAGAController{
-  public async transformToXml({ request, response }: HttpContextContract) {
-    const jsonData = request.input('invoiceData')
+  public async transformToXml({ params,response }: HttpContextContract) {
+
+    const xml = xmlbuilder.create('Facturi')
+    xml.ele('Factura',params.cui)
+
+    const xmlString = xml.end({ pretty: true })
+    //console.log(xmlString)
+    return response.type('application/xml').send(xmlString)
+    //return {cui:params.cui,luna:params.luna,tip:params.tip}
+    /*const jsonData = request.input('invoiceData')
 
     const xml = xmlbuilder.create('Factura')
 
@@ -75,6 +83,7 @@ export default class ExportSAGAController{
 
     const xmlString = xml.end({ pretty: true })
 
-    return response.type('application/xml').send(xmlString)
+    return response.type('application/xml').send(xmlString)*/
+
   }
 }

@@ -47,6 +47,7 @@ export default class GeneratorFacturaXML {
     private genPaymentMean(){
         const payment=this.xml.ele('cac:PaymentMeans')
         payment.ele('cbc:PaymentMeansCode','42')
+        payment.ele('cac:PayeeFinancialAccount').ele('cbc:ID',this.obj[0].ibanplata)
     }
 
     private genFurnizor(){

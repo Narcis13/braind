@@ -42,7 +42,7 @@ export default class FacturiEmiseController {
 
     public async xmlfactura({params}){
         let sql=`
-        SELECT fe.id id,furnizor.denumire denumirefurnizor,furnizor.cui codfiscalfurnizor,furnizor.adresa adresafurnizor,furnizor.oras orasfurnizor,furnizor.judet judetfurnizor,cl.denumire numeclient,cl.adresa adresaclient,cl.localitate orasclient,cl.codfiscal codfiscalclient,cl.judet judetclient, DATE_FORMAT(fe.dataFactura, '%Y-%m-%d') AS dataFactura,DATE_FORMAT(fe.scadenta, '%Y-%m-%d') AS scadenta,fe.serie serie, fe.numar numar ,fe.intocmit intocmit,fe.cnp cnp, fe.mentiuni mentiuni,produse.denumire numeprodus,liniife.descriere descriere,liniife.um um, liniife.cantitate cantitate,liniife.pret pret, liniife.valoare valoare FROM cdata.facturi_emise fe
+        SELECT fe.id id,furnizor.denumire denumirefurnizor,furnizor.cui codfiscalfurnizor,furnizor.adresa adresafurnizor,furnizor.oras orasfurnizor,furnizor.judet judetfurnizor,produse.iban ibanplata,cl.denumire numeclient,cl.adresa adresaclient,cl.localitate orasclient,cl.codfiscal codfiscalclient,cl.judet judetclient, DATE_FORMAT(fe.dataFactura, '%Y-%m-%d') AS dataFactura,DATE_FORMAT(fe.scadenta, '%Y-%m-%d') AS scadenta,fe.serie serie, fe.numar numar ,fe.intocmit intocmit,fe.cnp cnp, fe.mentiuni mentiuni,produse.denumire numeprodus,liniife.descriere descriere,liniife.um um, liniife.cantitate cantitate,liniife.pret pret, liniife.valoare valoare FROM cdata.facturi_emise fe
         inner join cdata.clienti cl on cl.id=fe.idClient
         inner join cdata.Firme furnizor on furnizor.id=fe.id_client
         inner join cdata.linii_facturi_emise liniife on liniife.idFacturaEmisa=fe.id
@@ -54,7 +54,7 @@ export default class FacturiEmiseController {
   
         let generator = new GeneratorFacturaXML(lista[0])
         const xmltext=generator.init()
-        console.log(xmltext)
+       // console.log(xmltext)
         return {xmltext};
     }
 

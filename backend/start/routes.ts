@@ -30,6 +30,7 @@ Route.get('/femise/verifica/:id/:userid','FacturiEmiseController.verificafactura
 Route.get('/femise/descarca/:id/:userid/:idsolicitare','FacturiEmiseController.descarcafactura')
 Route.get('/femise/listamesaje/:cif/:userid','FacturiEmiseController.listamesaje')
 Route.get('/femise/xmlfactura/:id','FacturiEmiseController.xmlfactura')
+Route.get('/exportsaga/:cui/:luna/:tip','ExportSAGAController.transformToXml')
 Route.get('/femise/:idf','FacturiEmiseController.printfactura')
 Route.get('/mesajepreluate/:id','MesajePreluateController.printfactura')
 Route.post('/registeruser','AuthController.register')
