@@ -1,15 +1,33 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Database from '@ioc:Adonis/Lucid/Database'
 import xmlbuilder from 'xmlbuilder'
 
 export default class ExportSAGAController{
   public async transformToXml({ params,response }: HttpContextContract) {
+   let sql=`
+   SELECT *
+        FROM cdata.mesajepreluate
+        WHERE tip = 'FACTURA PRIMITA'
+          AND cuiclient = '36510833'
+          AND MONTH(datafact) = 8
+          AND YEAR(datafact) = YEAR(CURRENT_DATE())
+   `
+   let lista = await  Database.rawQuery(sql)
 
     const xml = xmlbuilder.create('Facturi')
-    xml.ele('Factura',params.cui)
+    //xml.ele('Factura',params.cui)
+     lista[0].map(f=>{
+      this.genFactura(xml,f)
+     })
+
+
 
     const xmlString = xml.end({ pretty: true })
-    //console.log(xmlString)
+    //console.log(lista[0])
     return response.type('application/xml').send(xmlString)
+
+
+
     //return {cui:params.cui,luna:params.luna,tip:params.tip}
     /*const jsonData = request.input('invoiceData')
 
@@ -85,5 +103,15 @@ export default class ExportSAGAController{
 
     return response.type('application/xml').send(xmlString)*/
 
+  }
+
+  private genFactura(root,data){
+     const factura=root.ele('Factura')
+     this.genAntet(factura,data)
+  }
+  private genAntet(root,data){
+     const antet=root.ele('Antet')
+     antet.ele('FurnizorNume').dat(data.numefurnizor)
+     antet.ele('FurnizorCIF').dat(data.cuifurnizor)
   }
 }
