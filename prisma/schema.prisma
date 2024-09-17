@@ -19,6 +19,7 @@ model Firme {
   denumire        String           @db.VarChar(100)
   alias           String?           @db.VarChar(100)
   cui             String           @db.VarChar(20)
+  cuifull         String?           @default("RO") @db.VarChar(20)
   judet           String           @db.VarChar(13)
   oras            String           @db.VarChar(20)
   adresa          String           @db.VarChar(120)
@@ -207,6 +208,8 @@ model mesajepreluate {
   numeclient String   @db.VarChar(64)
   numefurnizor String   @db.VarChar(64)
   ibanfurnizor String?  @default("NESPECIFICAT") @db.VarChar(36)
+  fullcuiclient String?  @default("RO") @db.VarChar(20)
+  fullcuifurnizor String?  @default("RO") @db.VarChar(20)
   datafact DateTime
   nrfact String   @db.VarChar(48)
   scadenta DateTime?

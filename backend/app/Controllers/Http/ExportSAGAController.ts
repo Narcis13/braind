@@ -8,8 +8,8 @@ export default class ExportSAGAController{
    SELECT *
         FROM cdata.mesajepreluate
         WHERE tip = 'FACTURA PRIMITA'
-          AND cuiclient = '36510833'
-          AND MONTH(datafact) = 8
+          AND cuiclient = ${params.cui}
+          AND MONTH(datafact) = 9
           AND YEAR(datafact) = YEAR(CURRENT_DATE())
    `
    let lista = await  Database.rawQuery(sql)
@@ -108,10 +108,34 @@ export default class ExportSAGAController{
   private genFactura(root,data){
      const factura=root.ele('Factura')
      this.genAntet(factura,data)
+    const continut= root.ele('Detalii').ele('Continut')
   }
   private genAntet(root,data){
      const antet=root.ele('Antet')
      antet.ele('FurnizorNume').dat(data.numefurnizor)
-     antet.ele('FurnizorCIF').dat(data.cuifurnizor)
+     antet.ele('FurnizorCIF').dat(data.fullcuifurnizor)
+     antet.ele('FurnizorNrRegCom').dat('')
+     antet.ele('FurnizorAdresa').dat('')
+     antet.ele('FurnizorTara').dat('RO')
+     antet.ele('FurnizorJudet').dat('')
+     antet.ele('FurnizorLocalitate').dat('')
+     antet.ele('FurnizorTelefon').dat('')
+     antet.ele('FurnizorMail').dat('')
+     antet.ele('ClientNume').dat(data.numeclient)
+     antet.ele('ClientCIF').dat(data.fullcuiclient)
+     antet.ele('ClientNrRegCom').dat('')
+     antet.ele('ClientAdresa').dat('')
+     antet.ele('Cod').dat('')
+     antet.ele('FacturaID').dat(data.id.toString())
+     antet.ele('FacturaNumar').dat(data.nrfact)
+     antet.ele('FacturaData').dat(new Date(data.datafact).toLocaleDateString('ro-RO'))
+     antet.ele('FacturaScadenta').dat(new Date(data.scadenta).toLocaleDateString('ro-RO'))
+     antet.ele('FacturaTaxareInversa').dat('Nu')
+     antet.ele('FacturaTVAIncasare').dat('Nu')
+     antet.ele('FacturaTip').dat('F')
+     antet.ele('FacturaCurs').dat('0.0000')
+     antet.ele('FacturaMoneda').dat('RON')
+     antet.ele('FacturaCotaTVA').dat('19')
+     antet.ele('FacturaGreutate').dat('0.000')
   }
 }

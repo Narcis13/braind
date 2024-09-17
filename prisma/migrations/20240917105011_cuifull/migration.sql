@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Firme` ADD COLUMN `cuifull` VARCHAR(20) NULL DEFAULT 'RO';

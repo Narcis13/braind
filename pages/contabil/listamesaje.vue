@@ -63,6 +63,8 @@ function prepfactura(factura){
   facturaprelucrata.numefurnizor=typeof factura['numefurnizor'] == 'object'? factura['numefurnizor']['_']:factura['numefurnizor']
   facturaprelucrata.note=typeof factura.note == 'object'? factura.note.join(';'):factura.note
   facturaprelucrata.ibanfurnizor=factura.ibanfurnizor
+  facturaprelucrata.fullcuifurnizor=factura.fullcuifurnizor
+  facturaprelucrata.fullcuiclient=factura.fullcuiclient
   let itemi=[]
   factura.itemi.map((item) => {
     itemi.push({
@@ -107,8 +109,10 @@ async function descarca(){
         numefurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
         ibanfurnizor:data_factura.Invoice['cac:PaymentMeans']? Array.isArray(data_factura.Invoice['cac:PaymentMeans'])? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']:data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT',
         cuifurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        fullcuifurnizor:selected.value[0].tip=='FACTURA TRIMISA'?userStore.firmacurenta.cuifull:data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         numeclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.denumire:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
         cuiclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.cui:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        fullcuiclient:selected.value[0].tip=='FACTURA PRIMITA'?userStore.firmacurenta.cuifull:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         itemi
     }
   const payload = {
