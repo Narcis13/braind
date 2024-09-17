@@ -109,6 +109,21 @@ export default class ExportSAGAController{
      const factura=root.ele('Factura')
      this.genAntet(factura,data)
     const continut= root.ele('Detalii').ele('Continut')
+    const itemi=JSON.parse(data.itemi)
+
+    itemi.map(item=>{
+       this.genLinie(continut,item)
+    })
+
+    const sumar = root.ele('Sumar')
+    sumar.ele('TotalValoare').dat(data.totalfaratva.toFixed(2))
+    sumar.ele('TotalTVA').dat((data.totalcutva - data.totalfaratva).toFixed(2))
+    sumar.ele('Total').dat(data.totalcutva.toFixed(2))
+
+    root.ele('FacturaID').dat(data.id.toString())
+    const observatii = root.ele('Observatii')
+    observatii.ele('txtObservatii')
+    observatii.ele('SoldClient')
   }
   private genAntet(root,data){
      const antet=root.ele('Antet')
@@ -137,5 +152,10 @@ export default class ExportSAGAController{
      antet.ele('FacturaMoneda').dat('RON')
      antet.ele('FacturaCotaTVA').dat('19')
      antet.ele('FacturaGreutate').dat('0.000')
+  }
+
+  private genLinie(root,data){
+    const linie = root.ele('Linie')
+    linie.ele('LinieNrCrt').dat(data.nrcrt)
   }
 }
