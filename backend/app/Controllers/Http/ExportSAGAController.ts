@@ -7,9 +7,10 @@ export default class ExportSAGAController{
    let sql=`
    SELECT *
         FROM cdata.mesajepreluate
-        WHERE tip = 'FACTURA PRIMITA'
-          AND cuiclient = ${params.cui}
-          AND MONTH(datafact) = 9
+        WHERE 
+           cuiclient = ${params.cui}
+           OR cuifurnizor = ${params.cui}
+          AND MONTH(datafact) = ${params.luna}
           AND YEAR(datafact) = YEAR(CURRENT_DATE())
    `
    let lista = await  Database.rawQuery(sql)
