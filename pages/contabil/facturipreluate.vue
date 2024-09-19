@@ -57,7 +57,10 @@ const printSelected = () => {
   window.open(host+'mesajepreluate/'+selected.value[0].id, '_blank');
   // Implement your print logic here
 }
-
+function stergSelectia(){
+  let factura = selected.value[0]
+  console.log('Sterg factura',factura)
+}
 function exportSAGA(){
   let factura = selected.value[0]
   factura.itemi=JSON.parse(factura.itemi)
@@ -83,6 +86,7 @@ fetchData()
       >
         <template v-slot:top>
           <q-btn :disable="selected.length==0||selected.length>1" color="primary" label="PRINT" @click="printSelected" class="q-mr-sm" />
+          <q-btn :disable="selected.length==0||selected.length>1" color="secondary" label="Sterge" @click="stergSelectia" class="q-mr-sm" />
           <q-btn :disable="selected.length==0" color="primary" label="Export SAGA" @click="exportSAGA" class="q-mr-sm" />
           <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
