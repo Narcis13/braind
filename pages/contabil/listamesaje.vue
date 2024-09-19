@@ -71,7 +71,8 @@ function prepfactura(factura){
       nrcrt:typeof item['nrcrt'] == 'object'? item['nrcrt']['_']:item['nrcrt'],
       cantitate:typeof item['cantitate'] == 'object'? item['cantitate']['_']:item['cantitate'],
       denumire:typeof item['denumire'] == 'object'? item['denumire']['_']:item['denumire'],
-      pret:typeof item['pret'] == 'object'? item['pret']['_']:item['pret']
+      pret:typeof item['pret'] == 'object'? item['pret']['_']:item['pret'],
+      tva:item['tva']
     })
   })
 
@@ -94,7 +95,9 @@ async function descarca(){
         nrcrt:linie['cbc:ID'],
         cantitate:linie['cbc:InvoicedQuantity']['_'],
         denumire:linie['cac:Item']['cbc:Name'],
-        pret:linie['cac:Price']['cbc:PriceAmount']['_']
+        pret:linie['cac:Price']['cbc:PriceAmount']['_'],
+        tva:linie['cac:Item']['cac:ClassifiedTaxCategory']['cbc:Percent']
+        
       })
 
     })
