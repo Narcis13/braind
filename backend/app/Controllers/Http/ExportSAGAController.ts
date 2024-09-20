@@ -12,41 +12,51 @@ export default class ExportSAGAController{
            OR cuifurnizor = ${params.cui} )
           AND MONTH(datafact) = ${params.luna}
           AND YEAR(datafact) = YEAR(CURRENT_DATE())
+          ORDER BY datafact ASC
    `
    let lista = await  Database.rawQuery(sql)
 
+   let sqlbis=`
+   
+   SELECT * FROM cdata.detaliiimportsaga imp 
+   inner join cdata.Firme firme on firme.id=imp.idfirma 
+   where cui='${params.cui}' 
+   `
+   let parametrii = await  Database.rawQuery(sqlbis)
+   let replaced = parametrii[0][0].denumire.replace(/ /g, '_');
+   console.log(replaced)
     const xml = xmlbuilder.create('Facturi')
     //xml.ele('Factura',params.cui)
      lista[0].map(f=>{
-      this.genFactura(xml,f)
+      this.genFactura(xml,f,parametrii[0][0])
      })
       // console.log(params.luna)
 
 
     const xmlString = xml.end({ pretty: true })
     //console.log(lista[0])
-   // return response.type('application/xml').send(xmlString)
-
+    return response.type('application/xml').send(xmlString)
+/*
        
    return response
       .header('Content-Type', 'application/xml')
-      .header('Content-Disposition', `attachment; filename=F_${params.cui}_${params.luna}_${Date.now()}.xml`)
+      .header('Content-Disposition', `attachment; filename=F_${replaced}_${params.luna}_${Date.now()}.xml`)
       .send(xmlString)
 
 
-
+*/
 
 
   }
 
-  private genFactura(root,data){
+  private genFactura(root,data,params){
      const factura=root.ele('Factura')
      this.genAntet(factura,data)
     const continut= factura.ele('Detalii').ele('Continut')
     const itemi=JSON.parse(data.itemi)
 
     itemi.map(item=>{
-       this.genLinie(continut,item)
+       this.genLinie(continut,item,{params,data})
     })
 
     const sumar = factura.ele('Sumar')
@@ -88,7 +98,8 @@ export default class ExportSAGAController{
      antet.ele('FacturaGreutate').dat('0.000')
   }
 
-  private genLinie(root,data){
+  private genLinie(root,data,context){
+    //console.log('context',context)
     const linie = root.ele('Linie')
     let cantitate=parseFloat(data.cantitate)
     let pret=(parseFloat(data.pret)*(100+parseInt(data.tva))/100)
@@ -97,6 +108,7 @@ export default class ExportSAGAController{
     linie.ele('LinieNrCrt').dat(data.nrcrt)
     linie.ele('Descriere').dat(data.denumire)
     linie.ele('Cont').dat('658')
+    linie.ele('InformatiiSuplimentare').dat('Nedefinit')
     linie.ele('UM').dat('buc')
     linie.ele('Cantitate').dat(data.cantitate)
     linie.ele('Pret').dat((parseFloat(data.pret)*(100+parseInt(data.tva))/100).toFixed(2))
