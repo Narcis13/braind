@@ -66,6 +66,8 @@ async function stergSelectia(){
   console.log('Sterg factura',factura)
   try {
     const data = await $fetch("/api/firme/mesajeanaf/sterg/"+factura.id)
+    rows.value=rows.value.filter(obj=>obj.id!==factura.id)
+    selected.value=[]
     console.log(data)
     //trebuie sa sterg si din rows value!!!!
   } catch (error) {
