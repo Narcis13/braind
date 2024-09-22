@@ -13,13 +13,6 @@ Usor asa,
 
 ZKO9cbHtSzQIIWUZaenIg8GQ6ZVL6dmxMOVpKELJ
 
-Componenenta Nomenclatoare:
-- responsive
-- sa verifice ca sunt date in cmpurile required
-- implementare validari
-- sa incarce comboboxul prin api
-- implementare mod update.... si apoi si celelalte
 
-La factura emisa>
-
-- sa export facturile in SAGA in ordine cronologica si cu conturile stabilite cumva in profilul fiecarei firme.... si sa apara numele firmei in denumirea fisierului!
+- sa pot sterge o preluare pentru a prelua din nou
+- sa pot prelua bulk ....

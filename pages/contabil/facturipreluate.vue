@@ -9,7 +9,11 @@ const loading = ref(true)
 const rows = ref([])
 const filter = ref('')
 const selected = ref([])
-
+const useAI = ref(false)
+let currentDate = new Date();
+let monthIndex = currentDate.getMonth(); 
+if (monthIndex==0) monthIndex++
+const lunaexport =ref(monthIndex)
 const initialPagination = {
   sortBy: 'desc',
   descending: false,
@@ -57,14 +61,22 @@ const printSelected = () => {
   window.open(host+'mesajepreluate/'+selected.value[0].id, '_blank');
   // Implement your print logic here
 }
-function stergSelectia(){
+async function stergSelectia(){
   let factura = selected.value[0]
   console.log('Sterg factura',factura)
+  try {
+    const data = await $fetch("/api/firme/mesajeanaf/sterg/"+factura.id)
+    console.log(data)
+    //trebuie sa sterg si din rows value!!!!
+  } catch (error) {
+    console.log(error)
+  }
 }
-function exportSAGA(){
-  let factura = selected.value[0]
-  factura.itemi=JSON.parse(factura.itemi)
-  console.log('Export saga',JSON.stringify(factura))
+async function exportSAGA(){
+
+  console.log('Export saga',userStore.firmacurenta.cui)
+ // await $fetch(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}`)
+  window.open(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}`, '_blank');
 }
 // Fetch data when component is mounted
 fetchData()
@@ -86,8 +98,48 @@ fetchData()
       >
         <template v-slot:top>
           <q-btn :disable="selected.length==0||selected.length>1" color="primary" label="PRINT" @click="printSelected" class="q-mr-sm" />
-          <q-btn :disable="selected.length==0||selected.length>1" color="secondary" label="Sterge" @click="stergSelectia" class="q-mr-sm" />
-          <q-btn :disable="selected.length==0" color="primary" label="Export SAGA" @click="exportSAGA" class="q-mr-sm" />
+          <q-btn :disable="selected.length==0||selected.length>1" color="negative" label="Sterge" @click="stergSelectia" class="q-mr-sm" />
+          <!-- <q-btn  color="primary" label="Export SAGA" @click="exportSAGA" class="q-mr-sm" /> -->
+          <q-btn-dropdown
+            class="glossy"
+            color="purple"
+            label="Export SAGA"
+          >
+            <div class="row no-wrap q-pa-md">
+              <div class="column">
+                <div class="text-h6 q-mb-md">Detalii export</div>
+                <!-- <q-toggle v-model="mobileData" label="Use Mobile Data" /> -->
+                <q-input
+                  v-model.number="lunaexport"
+                  type="number"
+                  filled
+                  label="Luna export"
+                  style="max-width: 200px"
+                  :rules="[ val => (val>=1 && val <= 12 )|| 'Interval corect 1..12']"
+                />
+                <q-toggle v-model="useAI" label="Utilizeaza AI" />
+              </div>
+
+              <q-separator vertical inset class="q-mx-lg" />
+
+              <div class="column items-center">
+                <!-- <q-avatar size="72px">
+                  <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                </q-avatar>
+
+                <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div> -->
+
+                <q-btn
+                  color="primary"
+                  label="Genereaza XML"
+                  push
+                  size="sm"
+                  @click="exportSAGA"
+                  v-close-popup
+                />
+              </div>
+            </div>
+          </q-btn-dropdown>
           <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
           <template v-slot:append>

@@ -24,7 +24,7 @@ export default class ExportSAGAController{
    `
    let parametrii = await  Database.rawQuery(sqlbis)
    let replaced = parametrii[0][0].denumire.replace(/ /g, '_');
-   console.log(replaced)
+   //console.log(replaced)
     const xml = xmlbuilder.create('Facturi')
     //xml.ele('Factura',params.cui)
      lista[0].map(f=>{
@@ -35,8 +35,8 @@ export default class ExportSAGAController{
 
     const xmlString = xml.end({ pretty: true })
     //console.log(lista[0])
-    return response.type('application/xml').send(xmlString)
-/*
+   // return response.type('application/xml').send(xmlString)
+
        
    return response
       .header('Content-Type', 'application/xml')
@@ -44,7 +44,7 @@ export default class ExportSAGAController{
       .send(xmlString)
 
 
-*/
+
 
 
   }
@@ -99,7 +99,7 @@ export default class ExportSAGAController{
   }
 
   private genLinie(root,data,context){
-    //console.log('context',context)
+    //console.log('context',context.params.contdebitimplicit,context.data.tip)
     const linie = root.ele('Linie')
     let cantitate=parseFloat(data.cantitate)
     let pret=(parseFloat(data.pret)*(100+parseInt(data.tva))/100)
@@ -107,7 +107,7 @@ export default class ExportSAGAController{
 
     linie.ele('LinieNrCrt').dat(data.nrcrt)
     linie.ele('Descriere').dat(data.denumire)
-    linie.ele('Cont').dat('658')
+    linie.ele('Cont').dat(context.data.tip=='FACTURA PRIMITA'?context.params.contdebitimplicit:context.params.contcreditimplicit)
     linie.ele('InformatiiSuplimentare').dat('Nedefinit')
     linie.ele('UM').dat('buc')
     linie.ele('Cantitate').dat(data.cantitate)

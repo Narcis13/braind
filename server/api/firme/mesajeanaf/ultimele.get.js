@@ -21,6 +21,10 @@ export default defineEventHandler( async (event)=>{
         { cuifurnizor: cui }
       ]
     },
+    
+      orderBy: {
+        id: 'desc'
+      }
   });
 
   return mesaje;
