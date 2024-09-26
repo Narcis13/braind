@@ -9,6 +9,7 @@ const userStore = useUserStore()
 const config = useRuntimeConfig()
 const host=config.public.apihost;
 //console.log('Mesaje ANAF')
+const processing = ref(false)
 let mesaje=reactive([])
 let mesajepreluate=await $fetch("/api/firme/mesajeanaf/ultimele?days=60&cui="+userStore.firmacurenta.cui)
 console.log('Mesaje preluate ANAF',mesajepreluate)
@@ -83,6 +84,80 @@ function prepfactura(factura){
 
 return facturaprelucrata
 }
+
+async function descarcaBulk() {
+  processing.value = true
+  const unprocessedMessages = mesaje.value.filter(m => !m.preluat)
+  
+  for (const message of unprocessedMessages) {
+    try {
+      const r = await $fetch(host + 'femise/descarca/' + message.id + '/' + userStore.utilizator.id + '/' + message.id_solicitare)
+      const data_factura = JSON.parse(r)
+      
+      const linii = Array.isArray(data_factura.Invoice['cac:InvoiceLine']) 
+        ? data_factura.Invoice['cac:InvoiceLine'] 
+        : [data_factura.Invoice['cac:InvoiceLine']]
+      
+      let itemi = linii.map((linie) => ({
+        nrcrt: linie['cbc:ID'],
+        cantitate: linie['cbc:InvoicedQuantity']['_'],
+        denumire: linie['cac:Item']['cbc:Name'],
+        pret: linie['cac:Price']['cbc:PriceAmount']['_'],
+        tva: linie['cac:Item']['cac:ClassifiedTaxCategory']['cbc:Percent']
+      }))
+
+      const factura = {
+        nrfact: data_factura.Invoice['cbc:ID'],
+        datafact: data_factura.Invoice['cbc:IssueDate'],
+        scadenta: data_factura.Invoice['cbc:DueDate'],
+        note: data_factura.Invoice['cbc:Note'] ? data_factura.Invoice['cbc:Note'] : '',
+        totalfaratva: data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
+        totalcutva: data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
+        numefurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.denumire : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        ibanfurnizor: data_factura.Invoice['cac:PaymentMeans'] 
+          ? Array.isArray(data_factura.Invoice['cac:PaymentMeans'])
+            ? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']
+            : data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']
+          : 'NESPECIFICAT',
+        cuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        fullcuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        numeclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.denumire : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
+        cuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        fullcuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        itemi
+      }
+      
+      const payload = {
+        datamesaj: message.data_creare.split('.').reverse().join('-'),
+        idmesaj: message.id,
+        idsolicitare: message.id_solicitare,
+        tip: message.tip,
+        iduser: userStore.utilizator.id,
+        idfirma: userStore.firmacurenta.id,
+        stare: 'preluat',
+        ...prepfactura(factura)
+      }
+      
+      const { data } = await useFetch(`/api/firme/mesajeanaf/preluare`, {
+        method: "POST",
+        headers: {
+          "b-access-token": userStore.token
+        },
+        body: payload
+      })
+      
+      if (data.value.succes) {
+        message.preluat = true
+      }
+    } catch (error) {
+      console.error('Error processing message:', message.id, error)
+    }
+  }
+  
+  processing.value = false
+  selected.value = []
+}
+
 async function descarca(){
  
  const r=   await $fetch(host+'femise/descarca/'+selected.value[0].id+'/'+userStore.utilizator.id+'/'+selected.value[0].id_solicitare);  
@@ -171,8 +246,10 @@ async function descarca(){
 
 
                   <q-btn :disable="selected.length==0||selected[0].preluat" class="q-ma-sm" label="Descarca"   icon="add" @click="descarca">
+                 
 
                   </q-btn>
+                  <q-btn  :disable="processing" class="q-ma-sm" label="Descarca tot"   icon="add" @click="descarcaBulk"></q-btn>
 
               </div>
 
