@@ -87,7 +87,7 @@ return facturaprelucrata
 
 async function descarcaBulk() {
   processing.value = true
-  const unprocessedMessages = mesaje.value.filter(m => !m.preluat)
+  const unprocessedMessages = mesaje.filter(m => !m.preluat)
   
   for (const message of unprocessedMessages) {
     try {

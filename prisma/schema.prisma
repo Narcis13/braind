@@ -216,7 +216,7 @@ model mesajepreluate {
   note String @db.VarChar(1024)
   totalfaratva Float
   totalcutva Float
-  itemi String @db.VarChar(1024)
+  itemi String @db.VarChar(4096)
   iduser Int
   idfirma Int
   stare String   @db.VarChar(48)

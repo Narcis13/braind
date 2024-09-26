@@ -35,7 +35,7 @@ export default class FacturiEmiseController {
     public async listamesaje({params}){
      //console.log(params)
      const user = await User.findOrFail(params.userid)
-     const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/listaMesajeFactura?zile=10&cif=${params.cif}`, user.jwt)
+     const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/listaMesajeFactura?zile=60&cif=${params.cif}`, user.jwt)
      //console.log(responseData)
      return {mesaje:responseData.mesaje}
     }

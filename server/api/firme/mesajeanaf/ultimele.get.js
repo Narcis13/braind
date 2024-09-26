@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export default defineEventHandler( async (event)=>{
   const days = parseInt(getQuery(event).days) || 11;
  const cui = getQuery(event).cui||'*'
-  //console.log('cui',cui)
+  console.log('days',days)
   const pastDate = new Date();
   pastDate.setDate(pastDate.getDate() - days);
 
