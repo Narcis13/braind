@@ -42,6 +42,7 @@
     "axios": "^1.6.2",
     "luxon": "^3.4.4",
     "mysql2": "^3.6.5",
+    "openai": "^4.65.0",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",

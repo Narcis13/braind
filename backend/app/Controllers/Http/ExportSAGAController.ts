@@ -1,7 +1,12 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
 import xmlbuilder from 'xmlbuilder'
+import OpenAI from "openai";
 
+
+const openai = new OpenAI({
+  apiKey: '',
+})
 export default class ExportSAGAController{
   public async transformToXml({ params,response }: HttpContextContract) {
    let sql=`
@@ -96,6 +101,17 @@ export default class ExportSAGAController{
      antet.ele('FacturaMoneda').dat('RON')
      antet.ele('FacturaCotaTVA').dat('19')
      antet.ele('FacturaGreutate').dat('0.000')
+  }
+
+  private async askAI(model,systemprompt,userprompt){
+    if(model==='gpt-4o'||model==='gpt-3.5-turbo'){
+      const completion = await openai.chat.completions.create({
+          messages: [{ role: "system", content: systemprompt },{role:"user", content:userprompt}],
+          model: model,
+        });
+  
+       return completion.choices[0].message.content;
+  }
   }
 
   private genLinie(root,data,context){
