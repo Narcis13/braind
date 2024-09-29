@@ -60,12 +60,16 @@ function prepfactura(factura){
   facturaprelucrata.scadenta=typeof factura['scadenta'] == 'object'? factura['scadenta']['_']:factura['scadenta']
   facturaprelucrata.cuiclient=typeof factura['cuiclient'] == 'object'? factura['cuiclient']['_']:factura['cuiclient']
   facturaprelucrata.cuifurnizor=typeof factura['cuifurnizor'] == 'object'? factura['cuifurnizor']['_']:factura['cuifurnizor']
+  facturaprelucrata.fullcuiclient=typeof factura['fullcuiclient'] == 'object'? factura['fullcuiclient']['_']:factura['fullcuiclient']
+  facturaprelucrata.fullcuifurnizor=typeof factura['fullcuifurnizor'] == 'object'? factura['fullcuifurnizor']['_']:factura['fullcuifurnizor']
+  facturaprelucrata.ibanfurnizor=typeof factura['ibanfurnizor'] == 'object'? factura['ibanfurnizor']['_']:factura['ibanfurnizor']
   facturaprelucrata.numeclient=typeof factura['numeclient'] == 'object'? factura['numeclient']['_']:factura['numeclient']
   facturaprelucrata.numefurnizor=typeof factura['numefurnizor'] == 'object'? factura['numefurnizor']['_']:factura['numefurnizor']
   facturaprelucrata.note=typeof factura.note == 'object'? factura.note.join(';'):factura.note
-  facturaprelucrata.ibanfurnizor=factura.ibanfurnizor
-  facturaprelucrata.fullcuifurnizor=factura.fullcuifurnizor
-  facturaprelucrata.fullcuiclient=factura.fullcuiclient
+  facturaprelucrata.note=facturaprelucrata.note.slice(0,1000)
+  //facturaprelucrata.ibanfurnizor=factura.ibanfurnizor
+  //facturaprelucrata.fullcuifurnizor=factura.fullcuifurnizor
+  //facturaprelucrata.fullcuiclient=factura.fullcuiclient
   let itemi=[]
   factura.itemi.map((item) => {
     itemi.push({
@@ -81,7 +85,7 @@ function prepfactura(factura){
   facturaprelucrata.itemi=JSON.stringify(itemi)
   facturaprelucrata.totalcutva=parseFloat(factura.totalcutva)
   facturaprelucrata.totalfaratva=parseFloat(factura.totalfaratva)
-
+//console.log('factura prelucrata',facturaprelucrata)
 return facturaprelucrata
 }
 
@@ -109,15 +113,15 @@ async function descarcaBulk() {
       const factura = {
         nrfact: data_factura.Invoice['cbc:ID'],
         datafact: data_factura.Invoice['cbc:IssueDate'],
-        scadenta: data_factura.Invoice['cbc:DueDate'],
+        scadenta: data_factura.Invoice['cbc:DueDate']?data_factura.Invoice['cbc:DueDate']:data_factura.Invoice['cbc:IssueDate'],
         note: data_factura.Invoice['cbc:Note'] ? data_factura.Invoice['cbc:Note'] : '',
         totalfaratva: data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
         totalcutva: data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
         numefurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.denumire : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
         ibanfurnizor: data_factura.Invoice['cac:PaymentMeans'] 
           ? Array.isArray(data_factura.Invoice['cac:PaymentMeans'])
-            ? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']
-            : data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']
+            ? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']?data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT'
+            : data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']?data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT'
           : 'NESPECIFICAT',
         cuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         fullcuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
