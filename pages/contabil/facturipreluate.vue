@@ -28,8 +28,9 @@ const columns = [
   { name: 'datafact', required: true, label: 'Data factura', align: 'center', field: row => formatDate(row.datafact), sortable: true },
   { name: 'totalfaratva', required: true, label: 'Total fara TVA', align: 'right', field: 'totalfaratva', sortable: true },
   { name: 'totalcutva', required: true, label: 'Total cu TVA', align: 'right', field: 'totalcutva', sortable: true },
-  { name: 'tip', required: true, label: 'Tip', align: 'center', field: 'tip', sortable: true },
-  { name: 'stare', required: true, label: 'Stare', align: 'center', field: 'stare', sortable: true },
+  { name: 'primalinie', required: true, label: 'Continut', align:'left',field:'primalinie'},
+ // { name: 'tip', required: true, label: 'Tip', align: 'center', field: 'tip', sortable: true },
+ // { name: 'stare', required: true, label: 'Stare', align: 'center', field: 'stare', sortable: true },
 ]
 
 const formatDate = (dateString) => {
@@ -86,7 +87,7 @@ fetchData()
 
 <template>
   <q-page class="flex flex-center">
-    <div style="width: 95%; max-width: 1200px;">
+    <div style="width: 95%; max-width: 1440px;">
       <div class="text-h4 q-mb-md">Facturi preluate</div>
       <q-table
         :rows="rows"

@@ -91,24 +91,35 @@ return facturaprelucrata
 
 async function descarcaBulk() {
   processing.value = true
-  const unprocessedMessages = mesaje.filter(m => !m.preluat)
+  const unprocessedMessages = mesaje.filter(m => !m.preluat||m.tip!=='ERORI FACTURA')
   
   for (const message of unprocessedMessages) {
     try {
       const r = await $fetch(host + 'femise/descarca/' + message.id + '/' + userStore.utilizator.id + '/' + message.id_solicitare)
       const data_factura = JSON.parse(r)
-      
+      const _cac=data_factura.Invoice['$']['xmlns:cac']?'cac:':''
+      const _cbc=data_factura.Invoice['$']['xmlns:cbc']?'cbc:':''
       const linii = Array.isArray(data_factura.Invoice['cac:InvoiceLine']) 
         ? data_factura.Invoice['cac:InvoiceLine'] 
         : [data_factura.Invoice['cac:InvoiceLine']]
-      
-      let itemi = linii.map((linie) => ({
+      console.log('linii',_cac,_cbc)
+      let itemi = linii.map((linie) => (
+      linie['cbc:ID']
+      ?{
         nrcrt: linie['cbc:ID'],
         cantitate: linie['cbc:InvoicedQuantity']['_'],
         denumire: linie['cac:Item']['cbc:Name'],
         pret: linie['cac:Price']['cbc:PriceAmount']['_'],
         tva: linie['cac:Item']['cac:ClassifiedTaxCategory']['cbc:Percent']
-      }))
+      }
+      :{
+        nrcrt: '1',
+        cantitate: '1',
+        denumire: 'ATIPIC',
+        pret: '1',
+        tva: '19'
+      }
+      ))
 
       const factura = {
         nrfact: data_factura.Invoice['cbc:ID'],
@@ -126,8 +137,8 @@ async function descarcaBulk() {
         cuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         fullcuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
         numeclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.denumire : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
-        cuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
-        fullcuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
+        cuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']?data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID']:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:CompanyID'],
+        fullcuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']?data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID']:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:CompanyID'],
         itemi
       }
       
@@ -139,6 +150,7 @@ async function descarcaBulk() {
         iduser: userStore.utilizator.id,
         idfirma: userStore.firmacurenta.id,
         stare: 'preluat',
+        primalinie:itemi[0].denumire.substr(0,100),
         ...prepfactura(factura)
       }
       
