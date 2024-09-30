@@ -91,26 +91,26 @@ return facturaprelucrata
 
 async function descarcaBulk() {
   processing.value = true
-  const unprocessedMessages = mesaje.filter(m => !m.preluat||m.tip!=='ERORI FACTURA')
-  
+  const unprocessedMessages = mesaje.filter(m => !m.preluat&&(m.tip!=='ERORI FACTURA'))
+  console.log('mesaje neprocesate',unprocessedMessages)
   for (const message of unprocessedMessages) {
     try {
       const r = await $fetch(host + 'femise/descarca/' + message.id + '/' + userStore.utilizator.id + '/' + message.id_solicitare)
       const data_factura = JSON.parse(r)
       const _cac=data_factura.Invoice['$']['xmlns:cac']?'cac:':''
       const _cbc=data_factura.Invoice['$']['xmlns:cbc']?'cbc:':''
-      const linii = Array.isArray(data_factura.Invoice['cac:InvoiceLine']) 
-        ? data_factura.Invoice['cac:InvoiceLine'] 
-        : [data_factura.Invoice['cac:InvoiceLine']]
-      console.log('linii',_cac,_cbc)
+      const linii = Array.isArray(data_factura.Invoice[_cac+'InvoiceLine']) 
+        ? data_factura.Invoice[_cac+'InvoiceLine'] 
+        : [data_factura.Invoice[_cac+'InvoiceLine']]
+      //console.log('linii',_cac,_cbc)
       let itemi = linii.map((linie) => (
-      linie['cbc:ID']
+      linie[_cbc+'ID']
       ?{
-        nrcrt: linie['cbc:ID'],
-        cantitate: linie['cbc:InvoicedQuantity']['_'],
-        denumire: linie['cac:Item']['cbc:Name'],
-        pret: linie['cac:Price']['cbc:PriceAmount']['_'],
-        tva: linie['cac:Item']['cac:ClassifiedTaxCategory']['cbc:Percent']
+        nrcrt: linie[_cbc+'ID'],
+        cantitate: linie[_cbc+'InvoicedQuantity']['_'],
+        denumire: linie[_cac+'Item'][_cbc+'Name'],
+        pret: linie[_cac+'Price'][_cbc+'PriceAmount']['_'],
+        tva: linie[_cac+'Item'][_cac+'ClassifiedTaxCategory'][_cbc+'Percent']
       }
       :{
         nrcrt: '1',
@@ -122,23 +122,23 @@ async function descarcaBulk() {
       ))
 
       const factura = {
-        nrfact: data_factura.Invoice['cbc:ID'],
-        datafact: data_factura.Invoice['cbc:IssueDate'],
-        scadenta: data_factura.Invoice['cbc:DueDate']?data_factura.Invoice['cbc:DueDate']:data_factura.Invoice['cbc:IssueDate'],
-        note: data_factura.Invoice['cbc:Note'] ? data_factura.Invoice['cbc:Note'] : '',
-        totalfaratva: data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxExclusiveAmount']['_'],
-        totalcutva: data_factura.Invoice['cac:LegalMonetaryTotal']['cbc:TaxInclusiveAmount']['_'],
-        numefurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.denumire : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
-        ibanfurnizor: data_factura.Invoice['cac:PaymentMeans'] 
-          ? Array.isArray(data_factura.Invoice['cac:PaymentMeans'])
-            ? data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']?data_factura.Invoice['cac:PaymentMeans'][0]['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT'
-            : data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']?data_factura.Invoice['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cbc:ID']:'NESPECIFICAT'
+        nrfact: data_factura.Invoice[_cbc+'ID'],
+        datafact: data_factura.Invoice[_cbc+'IssueDate'],
+        scadenta: data_factura.Invoice[_cbc+'DueDate']?data_factura.Invoice[_cbc+'DueDate']:data_factura.Invoice[_cbc+'IssueDate'],
+        note: data_factura.Invoice[_cbc+'Note'] ? data_factura.Invoice[_cbc+'Note'] : '',
+        totalfaratva: data_factura.Invoice[_cac+'LegalMonetaryTotal'][_cbc+'TaxExclusiveAmount']['_'],
+        totalcutva: data_factura.Invoice[_cac+'LegalMonetaryTotal'][_cbc+'TaxInclusiveAmount']['_'],
+        numefurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.denumire : data_factura.Invoice[_cac+'AccountingSupplierParty'][_cac+'Party'][_cac+'PartyLegalEntity'][_cbc+'RegistrationName'],
+        ibanfurnizor: data_factura.Invoice[_cac+'PaymentMeans'] 
+          ? Array.isArray(data_factura.Invoice[_cac+'PaymentMeans'])
+            ? data_factura.Invoice[_cac+'PaymentMeans'][0][_cac+'PayeeFinancialAccount']?data_factura.Invoice[_cac+'PaymentMeans'][0][_cac+'PayeeFinancialAccount'][_cbc+'ID']:'NESPECIFICAT'
+            : data_factura.Invoice[_cac+'PaymentMeans'][_cac+'PayeeFinancialAccount']?data_factura.Invoice[_cac+'PaymentMeans'][_cac+'PayeeFinancialAccount'][_cbc+'ID']:'NESPECIFICAT'
           : 'NESPECIFICAT',
-        cuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
-        fullcuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingSupplierParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID'],
-        numeclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.denumire : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:RegistrationName'],
-        cuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cui : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']?data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID']:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:CompanyID'],
-        fullcuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cuifull : data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']?data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyTaxScheme']['cbc:CompanyID']:data_factura.Invoice['cac:AccountingCustomerParty']['cac:Party']['cac:PartyLegalEntity']['cbc:CompanyID'],
+        cuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cui : data_factura.Invoice[_cac+'AccountingSupplierParty'][_cac+'Party'][_cac+'PartyTaxScheme'][_cbc+'CompanyID'],
+        fullcuifurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.cuifull : data_factura.Invoice[_cac+'AccountingSupplierParty'][_cac+'Party'][_cac+'PartyTaxScheme'][_cbc+'CompanyID'],
+        numeclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.denumire : data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyLegalEntity'][_cbc+'RegistrationName'],
+        cuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cui : data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyTaxScheme']?data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyTaxScheme'][_cbc+'CompanyID']:data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyLegalEntity'][_cbc+'CompanyID'],
+        fullcuiclient: message.tip == 'FACTURA PRIMITA' ? userStore.firmacurenta.cuifull : data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyTaxScheme']?data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyTaxScheme'][_cbc+'CompanyID']:data_factura.Invoice[_cac+'AccountingCustomerParty'][_cac+'Party'][_cac+'PartyLegalEntity'][_cbc+'CompanyID'],
         itemi
       }
       

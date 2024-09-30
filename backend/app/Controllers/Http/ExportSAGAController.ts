@@ -1,11 +1,12 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Env from '@ioc:Adonis/Core/Env'
 import Database from '@ioc:Adonis/Lucid/Database'
 import xmlbuilder from 'xmlbuilder'
 import OpenAI from "openai";
 
 
 const openai = new OpenAI({
-  apiKey: '',
+  apiKey: Env.get('OPENAPI_KEY'),
 })
 export default class ExportSAGAController{
   public async transformToXml({ params,response }: HttpContextContract) {
@@ -32,6 +33,19 @@ export default class ExportSAGAController{
    //console.log(replaced)
     const xml = xmlbuilder.create('Facturi')
     //xml.ele('Factura',params.cui)
+    let conturi:any[]=[]
+    lista[0].map(f=>{
+      if(f.tip=='FACTURA PRIMITA'){
+        conturi.push({
+          id:f.id,
+          continut:f.primalinie,
+          cont:''
+        })
+      }
+     })
+
+     console.log(conturi)
+
      lista[0].map(f=>{
       this.genFactura(xml,f,parametrii[0][0])
      })
