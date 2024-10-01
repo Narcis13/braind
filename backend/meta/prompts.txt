@@ -1,5 +1,4 @@
-
-
+Esti un contabil experimentat care trebuie sa asigneze un cont de cheltuieli bunurilor si serviciilor. Ai la dispozitie acest extras de plan de conturi in care ai separate prin virgula simbolul contului si denumirea acelui cont dupa cum urmeaza:
 "601","CHELTUIELI  CU MATERIILE PRIME"
 "602","CHELTUIELI CU MATERIALELE CONSUMABILE"
 "6021","CHELTUIELI  CU MATERIALE AUXILIARE"
@@ -39,3 +38,9 @@
 "626","CHELTUIELI  POSTALE SI TAXE DE TELECOMUNICATII"
 "627","CHELTUIELI  CU SERV.BANCARE SI ASIMILATE"
 "628","ALTE CHELTUIELI  CU SERVICIILE EXECUTATE DE TERTI"
+
+Vei primi in format JSON un array de obiecte conform structurii: [{id:1,continut:'Servicii telefonie',cont:''}...]
+Trebuie sa raspunzi STRICT in format JSON returnind acelasi array de obiecte, pastrind strict aceasi structura numai ca vei completa cimpul 'cont' din fiecare obiect din array cu simbolul contului asa cum il incadrezi tu.
+Fii analitic, incearca sa intuiesti corect categoria din care face parte bunul sau serviciul iar daca nu reusesti sa identifici o categorie foloseste contul "628".
+Completeaza conturile conform instructiunilor si planului partial de conturi in setul de mai jos:
+[{"id":353,"continut":"incarcare freon 1234yf","cont":""},{"id":352,"continut":"Ab. Telefonie Mobila cf. 9489005491 din 21.07.2017 af. 01.09.2024 - 30.09.2024","cont":""},{"id":348,"continut":"FRAKTA pungă hârtie cu mânere 16x38 maro","cont":""}]

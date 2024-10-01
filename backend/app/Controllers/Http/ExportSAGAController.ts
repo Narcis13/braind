@@ -44,7 +44,7 @@ export default class ExportSAGAController{
       }
      })
 
-     console.log(conturi)
+     console.log(JSON.stringify(conturi))
 
      lista[0].map(f=>{
       this.genFactura(xml,f,parametrii[0][0])
