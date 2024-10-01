@@ -43,8 +43,59 @@ export default class ExportSAGAController{
         })
       }
      })
+const systemprompt=`
 
-     console.log(JSON.stringify(conturi))
+Esti un contabil experimentat care trebuie sa asigneze un cont de cheltuieli bunurilor si serviciilor. Ai la dispozitie acest extras de plan de conturi in care ai separate prin virgula simbolul contului si denumirea acelui cont dupa cum urmeaza:
+"601","CHELTUIELI  CU MATERIILE PRIME"
+"602","CHELTUIELI CU MATERIALELE CONSUMABILE"
+"6021","CHELTUIELI  CU MATERIALE AUXILIARE"
+"6022","CHELTUIELI  PRIVIND COMBUSTIBILUL"
+"6023","CHELTUIELI  PRIVIND AMBALAJUL"
+"6024","CHELTUIELI  CU PIESELE DE SCHIMB"
+"6025","CHELTUIELI  CU SEMINTE SI MAT. PLANT."
+"6026","CHELTUIELI  CU FURAJELE"
+"6028","CHELTUIELI CU ALTE MAT.CONSUMABILE"
+"603","CHELTUIELI  CU OBIECTE DE INVENTAR"
+"604","CHELTUIELI  CU MAT.NESTOCATE"
+"605","CHELTUIELI  CU ENERGIA SI APA"
+"6051","CHELTUIELI  PRIVIND CONSUMUL DE ENERGIE"
+"6052","CHELTUIELI  PRIVIND CONSUMUL DE APA"
+"6053","CHELTUIELI  PRIVIND CONSUMUL DE GAZE NATURALE"
+"6058","CHELTUIELI  CU ALTE UTILITATI"
+"606","CHELTUIELI  CU PRIVIND ACTIVELE BIOLOGICE DE NATURA STOCURILOR"
+"607","CHELTUIELI  PRIVIND MARFURILE"
+"608","CHELTUIELI  PRIVIND AMBALAJELE"
+"609","REDUCERI COMERCIALE PRIMITE"
+"611","CHELTUIELI  CU INTRETINEREA SI REPARATIILE"
+"612","CHELTUIELI  CU REDEVENTE, LOCATIILE DE GESTIUNE SI CHIRIILE"
+"6121","CHELTUIELI CU REDEVENTELE"
+"6122","CHELTUIELI CU LOCATIILE DE GESTIUNE"
+"6123","CHELTUIELI CU CHIRIILE"
+"613","CHELTUIELI  CU PRIME DE ASIGURARE"
+"614","CHELTUIELI  CU STUDII SI CERCETARI"
+"615","CHELTUIELI  CU PREGATIREA PERSONALULUI"
+"616","CHELTUIELI AFERENTE DREPTURILOR DE PROPRIETATE INTELECTUALA"
+"617","CHELTUIELI DE MANAGEMENT"
+"618","CHELTUIELI DE CONSULTANTA"
+"621","CHELTUIELI  CU COLABORATORII"
+"622","CHELTUIELI  CU COMISIOANE SI ONORARIILE"
+"623","CHELTUIELI  DE PROTOCOL, RECLAMA SI PUBLICITATE"
+"624","CHELTUIELI  CU TRANSPORTUL DE BUNURI SI PERSONAL"
+"625","CHELTUIELI  CU DEPLASARI, DETASARI SI TRANSFERARI"
+"626","CHELTUIELI  POSTALE SI TAXE DE TELECOMUNICATII"
+"627","CHELTUIELI  CU SERV.BANCARE SI ASIMILATE"
+"628","ALTE CHELTUIELI  CU SERVICIILE EXECUTATE DE TERTI"
+
+Vei primi in format JSON un array de obiecte conform structurii: [{id:1,continut:'Servicii telefonie',cont:''}...]
+Trebuie sa raspunzi STRICT in format JSON returnind acelasi array de obiecte, pastrind strict aceasi structura numai ca vei completa cimpul 'cont' din fiecare obiect din array cu simbolul contului asa cum il incadrezi tu.
+Fii analitic, incearca sa intuiesti corect categoria din care face parte bunul sau serviciul iar daca nu reusesti sa identifici o categorie foloseste contul "628".
+`
+const userprompt=`
+Completeaza conturile conform instructiunilor si planului partial de conturi in setul de mai jos:
+${JSON.stringify(conturi)}
+`
+//const airesponse = await this.askAI('gpt-4o',systemprompt,userprompt)
+  //   console.log(airesponse)
 
      lista[0].map(f=>{
       this.genFactura(xml,f,parametrii[0][0])
@@ -118,14 +169,14 @@ export default class ExportSAGAController{
   }
 
   private async askAI(model,systemprompt,userprompt){
-    if(model==='gpt-4o'||model==='gpt-3.5-turbo'){
+ 
       const completion = await openai.chat.completions.create({
           messages: [{ role: "system", content: systemprompt },{role:"user", content:userprompt}],
           model: model,
         });
   
        return completion.choices[0].message.content;
-  }
+  
   }
 
   private genLinie(root,data,context){

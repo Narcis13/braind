@@ -9,7 +9,24 @@ const loading = ref(true)
 const rows = ref([])
 const filter = ref('')
 const selected = ref([])
-const useAI = ref(false)
+
+const group= ref('noai')
+
+const options= [
+  {
+    label: 'Fara A.I.',
+    value: 'noai'
+  },
+  {
+    label: 'A.I. rapid',
+    value: 'fastai'
+  },
+  {
+    label: 'A.I. Pro',
+    value: 'aipro'
+  }
+]
+
 let currentDate = new Date();
 let monthIndex = currentDate.getMonth(); 
 if (monthIndex==0) monthIndex++
@@ -120,7 +137,12 @@ fetchData()
                   style="max-width: 200px"
                   :rules="[ val => (val>=1 && val <= 12 )|| 'Interval corect 1..12']"
                 />
-                <q-toggle v-model="useAI" label="Utilizeaza AI" />
+                <q-option-group
+                  v-model="group"
+                  :options="options"
+                  color="green"
+                  type="radio"
+                />
               </div>
 
               <q-separator vertical inset class="q-mx-lg" />
