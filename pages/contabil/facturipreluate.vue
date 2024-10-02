@@ -96,7 +96,7 @@ async function exportSAGA(){
 
   console.log('Export saga',userStore.firmacurenta.cui)
  // await $fetch(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}`)
-  window.open(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}`, '_blank');
+  window.open(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}/${group.value}`, '_blank');
 }
 // Fetch data when component is mounted
 fetchData()

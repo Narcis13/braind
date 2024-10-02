@@ -9,6 +9,7 @@ const openai = new OpenAI({
   apiKey: Env.get('OPENAPI_KEY'),
 })
 export default class ExportSAGAController{
+
   public async transformToXml({ params,response }: HttpContextContract) {
    let sql=`
    SELECT *
@@ -87,18 +88,31 @@ Esti un contabil experimentat care trebuie sa asigneze un cont de cheltuieli bun
 "628","ALTE CHELTUIELI  CU SERVICIILE EXECUTATE DE TERTI"
 
 Vei primi in format JSON un array de obiecte conform structurii: [{id:1,continut:'Servicii telefonie',cont:''}...]
-Trebuie sa raspunzi STRICT in format JSON returnind acelasi array de obiecte, pastrind strict aceasi structura numai ca vei completa cimpul 'cont' din fiecare obiect din array cu simbolul contului asa cum il incadrezi tu.
+Trebuie sa raspunzi STRICT in format JSON fara niciun alt text , doar obiectul JSON, returnind acelasi array de obiecte, pastrind strict aceasi structura numai ca vei completa cimpul 'cont' din fiecare obiect din array cu simbolul contului asa cum il incadrezi tu.
 Fii analitic, incearca sa intuiesti corect categoria din care face parte bunul sau serviciul iar daca nu reusesti sa identifici o categorie foloseste contul "628".
 `
 const userprompt=`
 Completeaza conturile conform instructiunilor si planului partial de conturi in setul de mai jos:
 ${JSON.stringify(conturi)}
 `
+let airesult=null
+const modelai = params.tipai=='fastai'?'gpt-4o-mini':'gpt-4o'
+if(params.tipai!=='noai'){
+  const airesponse = await this.askAI(modelai,systemprompt,userprompt)
+
+  try {
+     airesult = this.validateJSONString(airesponse);
+   // console.log("Valid JSON:", airesult);
+  } catch (error) {
+    console.error("Error:", error.message,airesponse);
+  }
+ 
+}
 //const airesponse = await this.askAI('gpt-4o',systemprompt,userprompt)
   //   console.log(airesponse)
 
      lista[0].map(f=>{
-      this.genFactura(xml,f,parametrii[0][0])
+      this.genFactura(xml,f,parametrii[0][0],airesult)
      })
       // console.log(params.luna)
 
@@ -119,14 +133,31 @@ ${JSON.stringify(conturi)}
 
   }
 
-  private genFactura(root,data,params){
+  private isValidJSON(str) {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  private validateJSONString(str) {
+    if (this.isValidJSON(str)) {
+      return JSON.parse(str);
+    } else {
+      throw new Error("Invalid JSON string");
+    }
+  }
+
+  private genFactura(root,data,params,airesult){
      const factura=root.ele('Factura')
      this.genAntet(factura,data)
     const continut= factura.ele('Detalii').ele('Continut')
     const itemi=JSON.parse(data.itemi)
 
     itemi.map(item=>{
-       this.genLinie(continut,item,{params,data})
+       this.genLinie(continut,item,{params,data},airesult)
     })
 
     const sumar = factura.ele('Sumar')
@@ -179,8 +210,8 @@ ${JSON.stringify(conturi)}
   
   }
 
-  private genLinie(root,data,context){
-    //console.log('context',context.params.contdebitimplicit,context.data.tip)
+  private genLinie(root,data,context,airesult){
+   // console.log('linie',airesult&&context.data.tip=='FACTURA PRIMITA'?airesult.filter(item=>item.id==context.data.id)[0]['cont']:{})
     const linie = root.ele('Linie')
     let cantitate=parseFloat(data.cantitate)
     let pret=(parseFloat(data.pret)*(100+parseInt(data.tva))/100)
@@ -188,7 +219,7 @@ ${JSON.stringify(conturi)}
 
     linie.ele('LinieNrCrt').dat(data.nrcrt)
     linie.ele('Descriere').dat(data.denumire)
-    linie.ele('Cont').dat(context.data.tip=='FACTURA PRIMITA'?context.params.contdebitimplicit:context.params.contcreditimplicit)
+    linie.ele('Cont').dat(context.data.tip=='FACTURA PRIMITA'?airesult?airesult.filter(item=>item.id==context.data.id)[0]['cont']:context.params.contdebitimplicit:context.params.contcreditimplicit)
     linie.ele('InformatiiSuplimentare').dat('Nedefinit')
     linie.ele('UM').dat('buc')
     linie.ele('Cantitate').dat(data.cantitate)
