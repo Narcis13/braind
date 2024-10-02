@@ -107,7 +107,7 @@ export default class FacturiEmiseController {
 
       return new Promise((resolve, reject) => {
         writer.on('finish', () => {
-          console.log('File has been successfully saved')
+       //   console.log('File has been successfully saved')
           
           
           const xml=  this.extractZip(outputFilePath,'./extrase',params.idsolicitare+'.xml')
