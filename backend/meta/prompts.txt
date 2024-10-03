@@ -1,46 +1,39 @@
-Esti un contabil experimentat care trebuie sa asigneze un cont de cheltuieli bunurilor si serviciilor. Ai la dispozitie acest extras de plan de conturi in care ai separate prin virgula simbolul contului si denumirea acelui cont dupa cum urmeaza:
-"601","CHELTUIELI  CU MATERIILE PRIME"
-"602","CHELTUIELI CU MATERIALELE CONSUMABILE"
-"6021","CHELTUIELI  CU MATERIALE AUXILIARE"
-"6022","CHELTUIELI  PRIVIND COMBUSTIBILUL"
-"6023","CHELTUIELI  PRIVIND AMBALAJUL"
-"6024","CHELTUIELI  CU PIESELE DE SCHIMB"
-"6025","CHELTUIELI  CU SEMINTE SI MAT. PLANT."
-"6026","CHELTUIELI  CU FURAJELE"
-"6028","CHELTUIELI CU ALTE MAT.CONSUMABILE"
-"603","CHELTUIELI  CU OBIECTE DE INVENTAR"
-"604","CHELTUIELI  CU MAT.NESTOCATE"
-"605","CHELTUIELI  CU ENERGIA SI APA"
-"6051","CHELTUIELI  PRIVIND CONSUMUL DE ENERGIE"
-"6052","CHELTUIELI  PRIVIND CONSUMUL DE APA"
-"6053","CHELTUIELI  PRIVIND CONSUMUL DE GAZE NATURALE"
-"6058","CHELTUIELI  CU ALTE UTILITATI"
-"606","CHELTUIELI  CU PRIVIND ACTIVELE BIOLOGICE DE NATURA STOCURILOR"
-"607","CHELTUIELI  PRIVIND MARFURILE"
-"608","CHELTUIELI  PRIVIND AMBALAJELE"
-"609","REDUCERI COMERCIALE PRIMITE"
-"611","CHELTUIELI  CU INTRETINEREA SI REPARATIILE"
-"612","CHELTUIELI  CU REDEVENTE, LOCATIILE DE GESTIUNE SI CHIRIILE"
-"6121","CHELTUIELI CU REDEVENTELE"
-"6122","CHELTUIELI CU LOCATIILE DE GESTIUNE"
-"6123","CHELTUIELI CU CHIRIILE"
-"613","CHELTUIELI  CU PRIME DE ASIGURARE"
-"614","CHELTUIELI  CU STUDII SI CERCETARI"
-"615","CHELTUIELI  CU PREGATIREA PERSONALULUI"
-"616","CHELTUIELI AFERENTE DREPTURILOR DE PROPRIETATE INTELECTUALA"
-"617","CHELTUIELI DE MANAGEMENT"
-"618","CHELTUIELI DE CONSULTANTA"
-"621","CHELTUIELI  CU COLABORATORII"
-"622","CHELTUIELI  CU COMISIOANE SI ONORARIILE"
-"623","CHELTUIELI  DE PROTOCOL, RECLAMA SI PUBLICITATE"
-"624","CHELTUIELI  CU TRANSPORTUL DE BUNURI SI PERSONAL"
-"625","CHELTUIELI  CU DEPLASARI, DETASARI SI TRANSFERARI"
-"626","CHELTUIELI  POSTALE SI TAXE DE TELECOMUNICATII"
-"627","CHELTUIELI  CU SERV.BANCARE SI ASIMILATE"
-"628","ALTE CHELTUIELI  CU SERVICIILE EXECUTATE DE TERTI"
-
-Vei primi in format JSON un array de obiecte conform structurii: [{id:1,continut:'Servicii telefonie',cont:''}...]
-Trebuie sa raspunzi STRICT in format JSON returnind acelasi array de obiecte, pastrind strict aceasi structura numai ca vei completa cimpul 'cont' din fiecare obiect din array cu simbolul contului asa cum il incadrezi tu.
-Fii analitic, incearca sa intuiesti corect categoria din care face parte bunul sau serviciul iar daca nu reusesti sa identifici o categorie foloseste contul "628".
-Completeaza conturile conform instructiunilor si planului partial de conturi in setul de mai jos:
-[{"id":353,"continut":"incarcare freon 1234yf","cont":""},{"id":352,"continut":"Ab. Telefonie Mobila cf. 9489005491 din 21.07.2017 af. 01.09.2024 - 30.09.2024","cont":""},{"id":348,"continut":"FRAKTA pungă hârtie cu mânere 16x38 maro","cont":""}]
+CREATE TABLE `detaliiimportsaga` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `contdebitimplicit` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '628',
+  `contcreditimplicit` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '704',
+  `configurare` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idfirma` int(11) NOT NULL,
+  `stare` varchar(48) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `mesajepreluate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idmesaj` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idsolicitare` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tip` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cuiclient` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cuifurnizor` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `numeclient` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `numefurnizor` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `datafact` datetime(3) NOT NULL,
+  `nrfact` varchar(48) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `scadenta` datetime(3) DEFAULT NULL,
+  `note` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `totalfaratva` double NOT NULL,
+  `totalcutva` double NOT NULL,
+  `itemi` varchar(8000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `idfirma` int(11) NOT NULL,
+  `stare` varchar(48) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `datamesaj` datetime(3) NOT NULL,
+  `ibanfurnizor` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT 'NESPECIFICAT',
+  `fullcuiclient` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'RO',
+  `fullcuifurnizor` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'RO',
+  `primalinie` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'ATIPIC',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=365 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
