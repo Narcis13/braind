@@ -155,10 +155,14 @@ if(params.tipai!=='noai'){
      this.genAntet(factura,data)
     const continut= factura.ele('Detalii').ele('Continut')
     const itemi=JSON.parse(data.itemi)
-
-    itemi.map(item=>{
-       this.genLinie(continut,item,{params,data},airesult)
-    })
+    if(params.contdebitimplicit=='371.001'&&!airesult){
+    // console.log('Factura linii cumulate')
+    } else {
+      itemi.map(item=>{
+        this.genLinie(continut,item,{params,data},airesult)
+     })
+    }
+ 
 
     const sumar = factura.ele('Sumar')
     sumar.ele('TotalValoare').dat(data.totalfaratva.toFixed(2))
@@ -227,5 +231,9 @@ if(params.tipai!=='noai'){
     linie.ele('Valoare').dat((parseFloat(data.cantitate)*parseFloat(data.pret)).toFixed(2))
     linie.ele('TVA').dat((cantitate*pret-valoare).toFixed(2))
    // console.log('Linie',data,cantitate,pret,valoare)
+  }
+
+  private genLinieCumulata(root,data,context){
+    
   }
 }
