@@ -157,6 +157,7 @@ if(params.tipai!=='noai'){
     const itemi=JSON.parse(data.itemi)
     if(params.contdebitimplicit=='371.001'&&!airesult){
     // console.log('Factura linii cumulate')
+      this.genLinieCumulata(continut,{params,data})
     } else {
       itemi.map(item=>{
         this.genLinie(continut,item,{params,data},airesult)
@@ -199,7 +200,7 @@ if(params.tipai!=='noai'){
      antet.ele('FacturaTip').dat('F')
      antet.ele('FacturaCurs').dat('0.0000')
      antet.ele('FacturaMoneda').dat('RON')
-     antet.ele('FacturaCotaTVA').dat('19')
+     antet.ele('FacturaCotaTVA').dat(data.procenttva)
      antet.ele('FacturaGreutate').dat('0.000')
   }
 
@@ -233,7 +234,19 @@ if(params.tipai!=='noai'){
    // console.log('Linie',data,cantitate,pret,valoare)
   }
 
-  private genLinieCumulata(root,data,context){
-    
+  private genLinieCumulata(root,context){
+    //console.log(context.data)
+    const linie = root.ele('Linie')
+ 
+
+    linie.ele('LinieNrCrt').dat('1')
+    linie.ele('Descriere').dat('Marfa')
+    linie.ele('Cont').dat(context.data.tip=='FACTURA PRIMITA'?context.params.contdebitimplicit:context.params.contcreditimplicit)
+    linie.ele('InformatiiSuplimentare').dat('Nedefinit')
+    linie.ele('UM').dat('buc')
+    linie.ele('Cantitate').dat('1')
+    linie.ele('Pret').dat(context.data.totalcutva.toFixed(2))
+    linie.ele('Valoare').dat(context.data.totalfaratva.toFixed(2))
+    linie.ele('TVA').dat((context.data.totalcutva - context.data.totalfaratva).toFixed(2))
   }
 }

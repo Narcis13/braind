@@ -29,7 +29,7 @@ export default class FacturiEmiseController {
         lista[0].map(item=>{
             total+=item.valoare
         })
-        return view.render('femise/model1',{factura:lista[0],total})
+        return view.render('femise/model1',{factura:lista[0],total:total.toFixed(2)})
     }
   
     public async listamesaje({params}){

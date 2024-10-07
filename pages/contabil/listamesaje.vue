@@ -64,6 +64,7 @@ function prepfactura(factura){
   facturaprelucrata.fullcuifurnizor=typeof factura['fullcuifurnizor'] == 'object'? factura['fullcuifurnizor']['_']:factura['fullcuifurnizor']
   facturaprelucrata.ibanfurnizor=typeof factura['ibanfurnizor'] == 'object'? factura['ibanfurnizor']['_']:factura['ibanfurnizor']
   facturaprelucrata.numeclient=typeof factura['numeclient'] == 'object'? factura['numeclient']['_']:factura['numeclient']
+  facturaprelucrata.procenttva=typeof factura['procenttva'] == 'object'? factura['procenttva']['_']:factura['procenttva']
   facturaprelucrata.numefurnizor=typeof factura['numefurnizor'] == 'object'? factura['numefurnizor']['_']:factura['numefurnizor']
   facturaprelucrata.note=typeof factura.note == 'object'? factura.note.join(';'):factura.note
   facturaprelucrata.note=facturaprelucrata.note.slice(0,1000)
@@ -128,6 +129,7 @@ async function descarcaBulk() {
         note: data_factura.Invoice[_cbc+'Note'] ? data_factura.Invoice[_cbc+'Note'] : '',
         totalfaratva: data_factura.Invoice[_cac+'LegalMonetaryTotal'][_cbc+'TaxExclusiveAmount']['_'],
         totalcutva: data_factura.Invoice[_cac+'LegalMonetaryTotal'][_cbc+'TaxInclusiveAmount']['_'],
+        procenttva: data_factura.Invoice[_cac+'TaxTotal'][_cac+'TaxSubtotal'][_cac+'TaxCategory'][_cbc+'Percent'],
         numefurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.denumire : data_factura.Invoice[_cac+'AccountingSupplierParty'][_cac+'Party'][_cac+'PartyLegalEntity'][_cbc+'RegistrationName'],
         ibanfurnizor: data_factura.Invoice[_cac+'PaymentMeans'] 
           ? Array.isArray(data_factura.Invoice[_cac+'PaymentMeans'])

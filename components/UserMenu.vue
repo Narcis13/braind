@@ -19,7 +19,7 @@ function logout(){
 
                         <q-separator />
                         <q-item clickable v-close-popup>
-                        <q-item-section>Help &amp; Feedback v.02102024</q-item-section>
+                        <q-item-section>Help &amp; Feedback v.07102024</q-item-section>
                         </q-item>
                     </q-list>
         </q-menu>
