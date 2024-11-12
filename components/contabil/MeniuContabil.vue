@@ -37,6 +37,7 @@ const   linksfe= [
 const  links1= [
 
     { icon: 'subscriptions', text: 'Lista mesaje ANAF',ruta:'/contabil/listamesaje' },
+    { icon: 'subscriptions', text: 'Mesaje ANAF paginatie',ruta:'/contabil/listamesajepaginatie' },
     { icon: 'subscriptions', text: 'Facturi preluate',ruta:'/contabil/facturipreluate' }
   ]
 const   links2= [
@@ -78,7 +79,7 @@ const   buttons2= [
 <template>
         <q-scroll-area class="fit">
 
-                  <q-card v-if="userStore.eAutentificat" flat bordered class="my-card bg-grey-9" >
+                  <q-card v-if="userStore.eAutentificat" flat bordered class=" my-card bg-grey-9" >
                       <q-card-section>
                         <div class="row items-center no-wrap">
                           <div class="col">
@@ -215,7 +216,7 @@ font-size: .75rem;
 }
 .my-card{
   width: 100%;
-  max-width: 250px;
+  max-width: 300px;
 }
 
 .YL__drawer-footer-link:hover {

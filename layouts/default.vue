@@ -53,7 +53,7 @@
         show-if-above 
         bordered
         class="bg-grey-2"
-        :width="240"
+        :width="300"
       >
         <client-meniu-client v-if="utilizatorStore.utilizator&&utilizatorStore.firmaDefinita&&utilizatorStore.utilizator.rol=='client'"/>
         <!-- <contabil-meniu-contabil v-if="utilizatorStore.eAutentificat&&utilizatorStore.utilizator.rol=='contabil'"/> -->
