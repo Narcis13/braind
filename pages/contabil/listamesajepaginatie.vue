@@ -22,7 +22,11 @@ page: 1,
 rowsPerPage: 20
 // rowsNumber: xx if getting data from a server
 }
-const from= ref(date.formatDate(new Date(new Date().getFullYear(), 0, 1), 'YYYY/MM/DD'))
+const today = new Date();
+
+const earlierDate = new Date(today);
+earlierDate.setDate(today.getDate() - 45);
+const from= ref(date.formatDate(new Date(earlierDate), 'YYYY/MM/DD'))
 const to = ref(date.formatDate(new Date(),'YYYY/MM/DD') )
 function estepreluat(id){
   let r=false
@@ -45,7 +49,9 @@ async function incarcaMesaje(){
   $q.loading.show({
     delay: 400 // ms
   })
-  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,from.value)
+  const fromms=(new Date(from.value)).getTime()
+  const toms=(new Date(to.value)).getTime()
+  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,fromms,toms)
 let toatemesajele =  []//await $fetch(host+'femise/listamesaje/'+userStore.firmacurenta.cui+'/'+userStore.utilizator.id);  
 $q.loading.hide()   
 //console.log('toate mesajele',toatemesajele.mesaje)  
