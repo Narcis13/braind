@@ -1,13 +1,14 @@
 <script setup>
 
 import { useUserStore } from '~/stores/userStore';
-import {useQuasar} from 'quasar'
+import {useQuasar,date} from 'quasar'
 const $q = useQuasar()
 const userStore = useUserStore()
 
 
 const config = useRuntimeConfig()
 const host=config.public.apihost;
+let selected = ref([])
 //console.log('Mesaje ANAF')
 const processing = ref(false)
 let mesaje=reactive([])
@@ -19,6 +20,8 @@ page: 1,
 rowsPerPage: 20
 // rowsNumber: xx if getting data from a server
 }
+const from= ref(date.formatDate(new Date(new Date().getFullYear(), 0, 1), 'YYYY/MM/DD'))
+const to = ref(date.formatDate(new Date(),'YYYY/MM/DD') )
 function estepreluat(id){
   let r=false
   mesajepreluate.map(m=>{
@@ -26,22 +29,7 @@ function estepreluat(id){
   })
   return r;
 }
-$q.loading.show({
-    delay: 400 // ms
-  })
-  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui)
-let toatemesajele =  []//await $fetch(host+'femise/listamesaje/'+userStore.firmacurenta.cui+'/'+userStore.utilizator.id);  
-$q.loading.hide()   
-//console.log('toate mesajele',toatemesajele.mesaje)  
-let prelucrate=[]
-let selected = ref([])
-toatemesajele.mesaje.map((element) => {
-    element.data_creare=element.data_creare.substr(6,2)+'.'+element.data_creare.substr(4,2)+'.'+element.data_creare.substr(0,4)
-    element.preluat=estepreluat(element.id)
-   // element.id=parseInt(element.id)
-    prelucrate.unshift(element)
-});
-mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+
 //console.log('prelucrate',prelucrate)
 const columns = [
 
@@ -51,6 +39,28 @@ const columns = [
 { name: 'idsolicitare', align: 'left',label: 'ID Solicitare', field: 'id_solicitare' },
 { name: 'tip', label: 'TIP',align: 'left', field: 'tip', sortable: true }
 ]
+async function incarcaMesaje(){
+  q.loading.show({
+    delay: 400 // ms
+  })
+  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui)
+let toatemesajele =  []//await $fetch(host+'femise/listamesaje/'+userStore.firmacurenta.cui+'/'+userStore.utilizator.id);  
+$q.loading.hide()   
+//console.log('toate mesajele',toatemesajele.mesaje)  
+let prelucrate=[]
+
+if(toatemesajele.length>0){
+  toatemesajele.mesaje.map((element) => {
+    element.data_creare=element.data_creare.substr(6,2)+'.'+element.data_creare.substr(4,2)+'.'+element.data_creare.substr(0,4)
+    element.preluat=estepreluat(element.id)
+   // element.id=parseInt(element.id)
+    prelucrate.unshift(element)
+});
+}
+
+mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+}
+
 
 function prepfactura(factura){
   let facturaprelucrata={}
@@ -245,7 +255,44 @@ async function descarca(){
 
 <template>
     <div class="q-pa-xl text-h5">
-        Lista mesaje ANAF (SPV)
+
+      <div class="row q-col-gutter-sm" style="width:600px">
+            <div class="col-6">
+              <q-input label="De la data"  v-model="from" mask="date" :rules="['date']">
+                                        <template v-slot:append>
+                                            <q-icon name="event" class="cursor-pointer">
+                                            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                                <q-date v-model="from">
+                                                <div class="row items-center justify-end">
+                                                    <q-btn v-close-popup label="Inchide" color="primary" flat />
+                                                </div>
+                                                </q-date>
+                                            </q-popup-proxy>
+                                            </q-icon>
+                                        </template>
+                 </q-input>
+
+
+            </div>
+            <div class="col-6">
+                           <q-input label="La data"  v-model="to" mask="date" :rules="['date']">
+                                        <template v-slot:append>
+                                            <q-icon name="event" class="cursor-pointer">
+                                            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                                <q-date v-model="to">
+                                                <div class="row items-center justify-end">
+                                                    <q-btn  v-close-popup  label="Inchide" color="primary" flat />
+                                                </div>
+                                                </q-date>
+                                            </q-popup-proxy>
+                                            </q-icon>
+                                        </template>
+                           </q-input>
+            </div>
+          </div>
+        <div>
+
+        </div>Lista mesaje ANAF (SPV)
         <q-table
                 :pagination="initialPagination"
                 :rows="mesaje"
