@@ -9,6 +9,8 @@ const userStore = useUserStore()
 const config = useRuntimeConfig()
 const host=config.public.apihost;
 let selected = ref([])
+const paginacurenta=ref(1)
+const totalpagini=ref(0)
 //console.log('Mesaje ANAF')
 const processing = ref(false)
 let mesaje=reactive([])
@@ -40,10 +42,10 @@ const columns = [
 { name: 'tip', label: 'TIP',align: 'left', field: 'tip', sortable: true }
 ]
 async function incarcaMesaje(){
-  q.loading.show({
+  $q.loading.show({
     delay: 400 // ms
   })
-  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui)
+  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,from.value)
 let toatemesajele =  []//await $fetch(host+'femise/listamesaje/'+userStore.firmacurenta.cui+'/'+userStore.utilizator.id);  
 $q.loading.hide()   
 //console.log('toate mesajele',toatemesajele.mesaje)  
@@ -58,7 +60,7 @@ if(toatemesajele.length>0){
 });
 }
 
-mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+//mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
 }
 
 
@@ -255,9 +257,12 @@ async function descarca(){
 
 <template>
     <div class="q-pa-xl text-h5">
-
+      <div class="q-mb-md">
+          Lista mesaje ANAF (SPV) cu paginatie
+        </div>
       <div class="row q-col-gutter-sm" style="width:600px">
-            <div class="col-6">
+
+            <div class="col-3">
               <q-input label="De la data"  v-model="from" mask="date" :rules="['date']">
                                         <template v-slot:append>
                                             <q-icon name="event" class="cursor-pointer">
@@ -274,7 +279,7 @@ async function descarca(){
 
 
             </div>
-            <div class="col-6">
+            <div class="col-3">
                            <q-input label="La data"  v-model="to" mask="date" :rules="['date']">
                                         <template v-slot:append>
                                             <q-icon name="event" class="cursor-pointer">
@@ -289,10 +294,22 @@ async function descarca(){
                                         </template>
                            </q-input>
             </div>
+            <div class="col-6 row q-col-gutter-sm">
+              <div class="col-5">
+                <q-input
+                  v-model.number="paginacurenta"
+                  type="number"
+                  label="Pagina"
+                  style="max-width: 130px"
+                />
+              </div>
+              <div class="col-4 q-pa-md">din {{ totalpagini }}</div>
+              <div class="col-3">
+                <q-btn color="white" text-color="black" label="Incarca!" @click="incarcaMesaje"/>
+              </div>
+            </div>
           </div>
-        <div>
 
-        </div>Lista mesaje ANAF (SPV)
         <q-table
                 :pagination="initialPagination"
                 :rows="mesaje"
@@ -314,7 +331,7 @@ async function descarca(){
                  
 
                   </q-btn>
-                  <q-btn  :disable="processing" class="q-ma-sm" label="Descarca tot"   icon="add" @click="descarcaBulk"></q-btn>
+                  <q-btn  :disable="processing||mesaje.length==0" class="q-ma-sm" label="Descarca tot"   icon="add" @click="descarcaBulk"></q-btn>
 
               </div>
 
