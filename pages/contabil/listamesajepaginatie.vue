@@ -51,8 +51,25 @@ async function incarcaMesaje(){
   })
   const fromms=(new Date(from.value)).getTime()
   const toms=(new Date(to.value)).getTime()
-  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,fromms,toms)
-let toatemesajele =  []//await $fetch(host+'femise/listamesaje/'+userStore.firmacurenta.cui+'/'+userStore.utilizator.id);  
+
+  let response=  await $fetch(host+"femise/listamesajepaginatie", {
+        method: "POST",
+        headers: {
+         
+        },
+        body: {
+          fromms,
+          toms,
+          cui:userStore.firmacurenta.cui,
+          iduser:userStore.utilizator.id,
+          pagina:paginacurenta.value
+         
+        },
+      });
+
+totalpagini.value=response.mesaje.numar_total_pagini
+  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,fromms,toms,response)
+let toatemesajele = response.mesaje//await $fetch(host+'femise/listamesaje/'+femise/listamesaje+'/'+userStore.utilizator.id);  
 $q.loading.hide()   
 //console.log('toate mesajele',toatemesajele.mesaje)  
 let prelucrate=[]
@@ -66,7 +83,7 @@ if(toatemesajele.length>0){
 });
 }
 
-//mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
 }
 
 

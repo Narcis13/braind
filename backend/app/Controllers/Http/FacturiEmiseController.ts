@@ -1,5 +1,6 @@
 
 import Database from '@ioc:Adonis/Lucid/Database'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import GeneratorFacturaXML from './GeneratorFacturaXML';
 import AdmZip from 'adm-zip';
@@ -41,6 +42,14 @@ export default class FacturiEmiseController {
      //console.log('raspuns anaf ',responseData)
      return {mesaje:responseData.mesaje}
     }
+
+    public async listamesajepaginatie({ request }: HttpContextContract){
+      const body = request.body()
+      //console.log(body)
+     const user = await User.findOrFail(body.iduser)
+     const responseData = await this.getData(`https://api.anaf.ro/prod/FCTEL/rest/listaMesajePaginatieFactura?startTime=${body.fromms}&endTime=${body.toms}&cif=${body.cui}&pagina=${body.pagina}`, user.jwt)
+     return {mesaje:responseData}
+     }
 
     public async xmlfactura({params}){
         let sql=`

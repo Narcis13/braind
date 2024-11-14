@@ -29,6 +29,8 @@ Route.get('/femise/trimite/:id/:userid','FacturiEmiseController.trimitefactura')
 Route.get('/femise/verifica/:id/:userid','FacturiEmiseController.verificafactura')
 Route.get('/femise/descarca/:id/:userid/:idsolicitare','FacturiEmiseController.descarcafactura')
 Route.get('/femise/listamesaje/:cif/:userid','FacturiEmiseController.listamesaje')
+Route.post('/femise/listamesajepaginatie','FacturiEmiseController.listamesajepaginatie')
+
 Route.get('/femise/xmlfactura/:id','FacturiEmiseController.xmlfactura')
 Route.get('/exportsaga/:cui/:luna/:tipai','ExportSAGAController.transformToXml')
 Route.get('/femise/:idf','FacturiEmiseController.printfactura')
