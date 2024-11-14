@@ -35,7 +35,7 @@ const initialPagination = {
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 25
+  rowsPerPage: 50
 }
 
 const columns = [
@@ -109,6 +109,7 @@ fetchData()
       <q-table
         :rows="rows"
         :columns="columns"
+        dense
         row-key="id"
         :filter="filter"
         :pagination="initialPagination"

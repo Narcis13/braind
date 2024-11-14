@@ -155,7 +155,7 @@ if(params.tipai!=='noai'){
      this.genAntet(factura,data)
     const continut= factura.ele('Detalii').ele('Continut')
     const itemi=JSON.parse(data.itemi)
-    if(params.contdebitimplicit=='371.001'&&!airesult){
+    if(params.contdebitimplicit.substr(0,3)=='371'&&!airesult){
     // console.log('Factura linii cumulate')
       this.genLinieCumulata(continut,{params,data})
     } else {
@@ -200,7 +200,7 @@ if(params.tipai!=='noai'){
      antet.ele('FacturaTip').dat('F')
      antet.ele('FacturaCurs').dat('0.0000')
      antet.ele('FacturaMoneda').dat('RON')
-     antet.ele('FacturaCotaTVA').dat(data.procenttva)
+     antet.ele('FacturaCotaTVA').dat(parseInt(data.procenttva))
      antet.ele('FacturaGreutate').dat('0.000')
   }
 

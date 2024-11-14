@@ -13,7 +13,7 @@ const paginacurenta=ref(1)
 const totalpagini=ref(0)
 //console.log('Mesaje ANAF')
 const processing = ref(false)
-let mesaje=reactive([])
+let mesaje=ref([])
 let mesajepreluate=await $fetch("/api/firme/mesajeanaf/ultimele?days=60&cui="+userStore.firmacurenta.cui)
 console.log('Mesaje preluate ANAF',mesajepreluate)
 let initialPagination= {
@@ -28,6 +28,7 @@ const earlierDate = new Date(today);
 earlierDate.setDate(today.getDate() - 45);
 const from= ref(date.formatDate(new Date(earlierDate), 'YYYY/MM/DD'))
 const to = ref(date.formatDate(new Date(),'YYYY/MM/DD') )
+const titlu = ref('Lista mesaje ANAF (SPV) cu paginatie')
 function estepreluat(id){
   let r=false
   mesajepreluate.map(m=>{
@@ -51,7 +52,7 @@ async function incarcaMesaje(){
   })
   const fromms=(new Date(from.value)).getTime()
   const toms=(new Date(to.value)).getTime()
-
+  mesaje.value=[]
   let response=  await $fetch(host+"femise/listamesajepaginatie", {
         method: "POST",
         headers: {
@@ -68,14 +69,15 @@ async function incarcaMesaje(){
       });
 
 totalpagini.value=response.mesaje.numar_total_pagini
-  console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,fromms,toms,response)
-let toatemesajele = response.mesaje//await $fetch(host+'femise/listamesaje/'+femise/listamesaje+'/'+userStore.utilizator.id);  
+titlu.value=response.mesaje.titlu
+  
+let toatemesajele = response.mesaje.mesaje//await $fetch(host+'femise/listamesaje/'+femise/listamesaje+'/'+userStore.utilizator.id);  
 $q.loading.hide()   
 //console.log('toate mesajele',toatemesajele.mesaje)  
 let prelucrate=[]
 
 if(toatemesajele.length>0){
-  toatemesajele.mesaje.map((element) => {
+  toatemesajele.map((element) => {
     element.data_creare=element.data_creare.substr(6,2)+'.'+element.data_creare.substr(4,2)+'.'+element.data_creare.substr(0,4)
     element.preluat=estepreluat(element.id)
    // element.id=parseInt(element.id)
@@ -83,7 +85,8 @@ if(toatemesajele.length>0){
 });
 }
 
-mesaje=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+mesaje.value=[...prelucrate.sort((a, b) => new Date(b.data_creare.split('.').reverse().join('-')) - new Date(a.data_creare.split('.').reverse().join('-')))]
+console.log('CUI firma curenta paginatie',userStore.firmacurenta.cui,fromms,toms,prelucrate)
 }
 
 
@@ -127,7 +130,7 @@ return facturaprelucrata
 
 async function descarcaBulk() {
   processing.value = true
-  const unprocessedMessages = mesaje.filter(m => !m.preluat&&(m.tip!=='ERORI FACTURA'))
+  const unprocessedMessages = mesaje.value.filter(m => !m.preluat&&(m.tip!=='ERORI FACTURA'))
   console.log('mesaje neprocesate',unprocessedMessages)
   for (const message of unprocessedMessages) {
     try {
@@ -266,7 +269,7 @@ async function descarca(){
         body: payload
       });
       if(data.value.succes){
-        mesaje.map(m=>{
+        mesaje.value.map(m=>{
           if(m.id==selected.value[0].id){
             m.preluat=true
           }
@@ -281,7 +284,7 @@ async function descarca(){
 <template>
     <div class="q-pa-xl text-h5">
       <div class="q-mb-md">
-          Lista mesaje ANAF (SPV) cu paginatie
+         {{ titlu }}
         </div>
       <div class="row q-col-gutter-sm" style="width:600px">
 
