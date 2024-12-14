@@ -167,7 +167,7 @@ async function descarcaBulk() {
         note: data_factura.Invoice[_cbc+'Note'] ? data_factura.Invoice[_cbc+'Note'] : '',
         totalfaratva: data_factura.Invoice[_cac+'LegalMonetaryTotal'][_cbc+'TaxExclusiveAmount']['_'],
         totalcutva: data_factura.Invoice[_cac+'LegalMonetaryTotal'][_cbc+'TaxInclusiveAmount']['_'],
-        procenttva: data_factura.Invoice[_cac+'TaxTotal'][_cac+'TaxSubtotal'][_cac+'TaxCategory'][_cbc+'Percent'],
+        procenttva: Array.isArray(data_factura.Invoice[_cac+'TaxTotal'][_cac+'TaxSubtotal'])?'19':data_factura.Invoice[_cac+'TaxTotal'][_cac+'TaxSubtotal'][_cac+'TaxCategory'][_cbc+'Percent'],
         numefurnizor: message.tip == 'FACTURA TRIMISA' ? userStore.firmacurenta.denumire : data_factura.Invoice[_cac+'AccountingSupplierParty'][_cac+'Party'][_cac+'PartyLegalEntity'][_cbc+'RegistrationName'],
         ibanfurnizor: data_factura.Invoice[_cac+'PaymentMeans'] 
           ? Array.isArray(data_factura.Invoice[_cac+'PaymentMeans'])
