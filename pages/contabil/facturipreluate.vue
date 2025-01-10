@@ -29,8 +29,10 @@ const options= [
 
 let currentDate = new Date();
 let monthIndex = currentDate.getMonth(); 
+let year = currentDate.getFullYear();
 if (monthIndex==0) monthIndex++
 const lunaexport =ref(monthIndex)
+const yearexport =ref(year)
 const initialPagination = {
   sortBy: 'desc',
   descending: false,
@@ -96,7 +98,7 @@ async function exportSAGA(){
 
   console.log('Export saga',userStore.firmacurenta.cui)
  // await $fetch(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}`)
-  window.open(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}/${group.value}`, '_blank');
+  window.open(host+`exportsaga/${userStore.firmacurenta.cui}/${lunaexport.value}/${group.value}/${yearexport.value}`, '_blank');
 }
 // Fetch data when component is mounted
 fetchData()
@@ -137,6 +139,14 @@ fetchData()
                   label="Luna export"
                   style="max-width: 200px"
                   :rules="[ val => (val>=1 && val <= 12 )|| 'Interval corect 1..12']"
+                />
+                <q-input
+                  v-model.number="yearexport"
+                  type="number"
+                  filled
+                  label="An export"
+                  style="max-width: 200px"
+                  :rules="[ val => (val>=2024 && val <= 2050 )|| 'Interval corect 2024..50']"
                 />
                 <q-option-group
                   v-model="group"

@@ -18,7 +18,7 @@ export default class ExportSAGAController{
           ( cuiclient = ${params.cui}
            OR cuifurnizor = ${params.cui} )
           AND MONTH(datafact) = ${params.luna}
-          AND YEAR(datafact) = YEAR(CURRENT_DATE())
+          AND YEAR(datafact) = ${params.an}
           ORDER BY datafact ASC
    `
    let lista = await  Database.rawQuery(sql)
