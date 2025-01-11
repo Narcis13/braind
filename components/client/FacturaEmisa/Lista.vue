@@ -33,7 +33,7 @@ const columns = [
   { name: 'notainterna', align: 'left',label: 'Nota interna', field: 'notainterna' },
   { name: 'stare', label: 'Stare',align: 'left', field: 'stare', sortable: true }
 ]
-
+const emit = defineEmits(['stareschimbata'])
 let {data}=  await useFetch(host+'femise/toateinperioada', {
         method: "POST",
         headers: {
@@ -141,6 +141,7 @@ async function schimbaStare(stare){
               if (f.id==selected.value[0].id) f.stare=stare
             })
             selected.value=[]
+            emit('stareschimbata')
   }
 }
 </script>
@@ -170,7 +171,7 @@ async function schimbaStare(stare){
           </q-item-section>
         </q-item>
 
-        <q-item v-show="selected.length>0&&selected[0].stare=='draft'&&userStore.utilizator.rol=='contabil'" clickable v-close-popup @click="schimbaStare('valida')">
+        <q-item v-show="selected.length>0&&selected[0].stare=='draft'" clickable v-close-popup @click="schimbaStare('valida')">
           <q-item-section>
             <q-item-label>Valideaza</q-item-label>
           </q-item-section>

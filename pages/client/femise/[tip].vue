@@ -18,6 +18,7 @@ const ultimul_numar = await $fetch("/api/firme/facturiemise/numarfactura",{
           "b-access-token":userStore.token
         }
 })  
+const suntdrafturi= ref(ultimul_numar.drafts>0)
 console.log('serii', nomenclatoareStore.baza.serie_index,ultimul_numar)
 const nrfact=ref(ultimul_numar.nrfact)
 const serie=ref(ultimul_numar.serie)
@@ -32,13 +33,20 @@ const datascadenta= ref(date.formatDate( scadenta,'YYYY/MM/DD'))
 const idUltimaFactura=ref(0)
 
 
-function resetFactura(){
+async function resetFactura(){
 mentiuni.value=''
 cnp.value=''
 notainterna.value=''
 intocmit.value='E-FACTURA'
 femiseStore.linii=[]
 femiseStore.modelDocument.client=null;
+const ultimulnumar = await $fetch("/api/firme/facturiemise/numarfactura",{
+    headers: {
+          "b-access-token":userStore.token
+        }
+}) 
+nrfact.value=ultimulnumar.nrfact
+serie.value=ultimulnumar.serie
 }
 
 function print(){
@@ -85,7 +93,7 @@ async function Adauga(){
             timeout:2000,
             message:'Factura emisa cu succes!'
             })
-            nrfact.value++;
+            nrfact.value++; // aici am de lucru....
             idUltimaFactura.value=data.value.antetfe.id
             femiseStore.lista.unshift({
                 client:femiseStore.modelDocument.client.label,
@@ -98,6 +106,8 @@ async function Adauga(){
                 valoare:femiseStore.linii.reduce((acc, product) => acc + product.valoare, 0)
             })
              resetFactura()
+             suntdrafturi.value=true
+           //  navigateTo('/client/dashboard') dar asa va fi pina la urma
             }
             else
             {
@@ -110,14 +120,19 @@ async function Adauga(){
             }
       
 }
+const handleStareSchimbata = ()=>{
+    suntdrafturi.value=false
+    resetFactura()
+}
 </script>
 
 <template>
 <q-page  class="flex justify-center">
     <div class=" q-mt-sm column items-center q-gutter-md" >
-
+     <div v-if="suntdrafturi" class="text-h5 text-red">Exista facturi emise cu stare 'draft' in anul curent! Fie le validati fie le stergeti! </div>
         <q-list bordered>
                 <q-expansion-item
+                   v-if="!suntdrafturi"
                     group="somegroup"
                     icon="explore"
                     label="Introducere date factura emisa"
@@ -194,7 +209,7 @@ async function Adauga(){
 
                 <q-expansion-item group="somegroup" icon="perm_identity" label="Lista facturi emise" header-class="text-teal"  class="q-pa-md">
                     <div class="q-mt-md" style="width:1150px">
-                        <client-factura-emisa-lista />
+                        <client-factura-emisa-lista @stareschimbata="handleStareSchimbata"/>
                     </div>
                 </q-expansion-item>
 

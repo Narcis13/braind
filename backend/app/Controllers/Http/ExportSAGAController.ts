@@ -200,7 +200,7 @@ if(params.tipai!=='noai'){
      antet.ele('FacturaTip').dat('F')
      antet.ele('FacturaCurs').dat('0.0000')
      antet.ele('FacturaMoneda').dat('RON')
-     antet.ele('FacturaCotaTVA').dat(parseInt(data.procenttva))
+     //antet.ele('FacturaCotaTVA').dat(parseInt(data.procenttva))
      antet.ele('FacturaGreutate').dat('0.000')
   }
 

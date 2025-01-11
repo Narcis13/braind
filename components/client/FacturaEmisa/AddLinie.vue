@@ -6,7 +6,11 @@ const um= ref('buc.')
 const editMode = ref(false)
 const cantitate = ref(1)
 const pretUnitar = ref(0)
+const pagination = ref({
 
+      rowsPerPage: 10
+      // rowsNumber: xx if getting data from a server
+    })
 const valoare = computed(()=>{
   return parseFloat((cantitate.value*pretUnitar.value).toFixed(2))
 })
@@ -100,7 +104,7 @@ um.value=selected.value[0].um
 
 
 <template>
-  <div class="column">
+  <div class="column q-gutter-sm">
 
     <div class="row justify-evenly  q-mt-sm " >
       <q-table
@@ -109,6 +113,7 @@ um.value=selected.value[0].um
         :columns="columns"
         row-key="nrcrt"
         selection="single"
+        v-model:pagination="pagination"
         v-model:selected="selected"
       >
       <template v-slot:top>
@@ -117,11 +122,62 @@ um.value=selected.value[0].um
         <q-btn :disable="selected.length==0" square color="grey-4" text-color="purple" icon="delete" @click="stergLinie"/>
        </div>
       </template>
-      <template v-slot:bottom>
+
+      <template v-slot:pagination="scope">
+        <div class="row  " >
+         <div class="text-subtitle1 text-weight-medium ">
+          Total valoare: {{ total }} lei
+         </div> 
+      
+        <q-btn
+          v-if="scope.pagesNumber > 2"
+          icon="first_page"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isFirstPage"
+          @click="scope.firstPage"
+        />
+
+        <q-btn
+          icon="chevron_left"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isFirstPage"
+          @click="scope.prevPage"
+        />
+
+        <q-btn
+          icon="chevron_right"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isLastPage"
+          @click="scope.nextPage"
+        />
+
+        <q-btn
+          v-if="scope.pagesNumber > 2"
+          icon="last_page"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isLastPage"
+          @click="scope.lastPage"
+        />
+      </div>
+      </template>
+
+      <!-- <template v-slot:bottom>
         <div class="text-subtitle1 text-weight-medium text-right " style="width:1150px">
           Total valoare: {{ total }} lei
         </div>
-      </template>
+      </template> -->
 
       </q-table>
     </div>

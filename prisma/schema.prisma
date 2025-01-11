@@ -156,7 +156,7 @@ model FacturiEmise {
   dataFactura     DateTime
   scadenta        DateTime?
   serie           String @db.VarChar(12)
-  numar           Int
+  numar           String @db.VarChar(64)
   idSerieFactura  Int?
   intocmit        String? @db.VarChar(64)
   notainterna     String? @db.VarChar(256)

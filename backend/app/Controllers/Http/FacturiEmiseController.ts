@@ -250,7 +250,7 @@ export default class FacturiEmiseController {
        inner join cdata.Firme furnizor on furnizor.id=fe.id_client
        inner join cdata.linii_facturi_emise liniife on liniife.idFacturaEmisa=fe.id
        inner join cdata.produsi produse on produse.id=liniife.idProdus
-       where fe.id_client=1 and fe.stare <> 'stearsa'
+       where fe.id_client=1 and fe.stare <> 'stearsa' and YEAR(fe.dataFactura) = YEAR(CURDATE())
        group by fe.id
        order by fe.id desc
        `
