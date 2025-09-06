@@ -118,7 +118,7 @@ async function descarcaBulk() {
         cantitate: '1',
         denumire: 'ATIPIC',
         pret: '1',
-        tva: '19'
+        tva: '21'
       }
       ))
 
